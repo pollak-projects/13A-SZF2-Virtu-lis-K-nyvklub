@@ -1,0 +1,35 @@
+model MovieActor {
+    movie_Id Int
+    actor_Id Int
+    movie   Movie @relation(fields: [movie_Id], references: [id])
+    actor   Actor @relation(fields: [actor_Id], references: [id])
+
+    @@id([movie_Id, actor_Id])
+}
+
+model MovieGenre {
+    movie_Id Int
+    genre_Id Int
+    movie   Movie @relation(fields: [movie_Id], references: [id])
+    genre   Genre @relation(fields: [genre_Id], references: [id])
+
+    @@id([movie_Id, genre_Id])
+}
+
+model CharacterActor {
+    character_Id Int
+    actor_Id     Int
+    character    Character @relation(fields: [character_Id], references: [id])
+    actor        Actor     @relation(fields: [actor_Id], references: [id])
+
+    @@id([character_Id, actor_Id])
+}
+
+model CharacterMovie {
+    character_Id Int
+    movie_Id     Int
+    character    Character @relation(fields: [character_Id], references: [id])
+    movie        Movie     @relation(fields: [movie_Id], references: [id])
+
+    @@id([character_Id, movie_Id])
+}
