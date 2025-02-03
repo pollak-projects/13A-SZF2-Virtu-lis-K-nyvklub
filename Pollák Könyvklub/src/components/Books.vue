@@ -1,6 +1,7 @@
-<script setup>
-import { ref, onMounted } from 'vue';
-import { RouterLink } from "vue-router";
+<script>
+import Card from './Card.vue';
+import Card from './components/Card.vue'
+
 
 const props = defineProps({
     id: Number,
@@ -14,15 +15,15 @@ const props = defineProps({
     movie_cover: String,
 });
 
-const imageUrl = ref("")
 
-onMounted(() => {
-    imageUrl.value = new URL(`../assets/images/${props.kep}`,
-    import.meta.url).href;
-});
 </script>
 
 <template>
+    <h1> {{ title }} </h1>
+    <div>
+        <Card
+            :id="Movies.id"
+        />
+    </div>
 
-    
 </template>
