@@ -3,5 +3,6 @@ model Character {
     name     String
 
     movies   CharacterMovie[]
+    books    CharacterBook[]
     actors   CharacterActor[]
 }

@@ -1,7 +1,6 @@
-model Actor {
+model Author {
     id   Int    @id @default(autoincrement())
     name String
     picture String?
-    movies MovieActor[]
-    characters CharacterActor[]
+    books Book[]
 }

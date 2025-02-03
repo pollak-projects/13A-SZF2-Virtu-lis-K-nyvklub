@@ -5,6 +5,10 @@ model Movie {
     director  Director @relation(fields: [director_Id], references: [id])
     director_Id Int
 
+    releaseYear Int
+    description String
+    coverArt  String?
+
     actors    MovieActor[]
     genres    MovieGenre[]
     characters CharacterMovie[]

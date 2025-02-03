@@ -2,4 +2,5 @@ model Genre {
     id    Int    @id @default(autoincrement())
     genre String
     movies MovieGenre[]
+    books BookGenre[]
 }
