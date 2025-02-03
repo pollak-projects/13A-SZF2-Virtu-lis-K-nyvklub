@@ -2,8 +2,6 @@
 import { ref, onMounted } from 'vue';
 import { RouterLink } from "vue-router";
 
-
-
 const props = defineProps({
     id: Number,
     title: String,
@@ -15,4 +13,16 @@ const props = defineProps({
     description: String,
     movie_cover: String,
 });
+
+const imageUrl = ref("")
+
+onMounted(() => {
+    imageUrl.value = new URL(`../assets/images/${props.kep}`,
+    import.meta.url).href;
+});
 </script>
+
+<template>
+
+    
+</template>
