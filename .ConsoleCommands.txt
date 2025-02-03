@@ -1,0 +1,5 @@
+FUTTASD EZEKET A PARANCSOKAT
+
+1. npm i
+2. npm i prisma
+3. 
