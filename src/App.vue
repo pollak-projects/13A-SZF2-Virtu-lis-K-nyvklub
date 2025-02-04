@@ -1,5 +1,6 @@
 <script setup>
 import Card from './components/Card.vue'
+import Home from './pages/Home.vue';
 </script>
 
 <template>

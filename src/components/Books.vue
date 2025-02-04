@@ -15,15 +15,19 @@ const props = defineProps({
     movie_cover: String,
 });
 
-
 </script>
 
+
 <template>
-    <h1> {{ title }} </h1>
-    <div>
-        <Card
-            :id="Movies.id"
-        />
+     <div>
+      <h2>Legújabb könyvek</h2>
+      <div class="book-list">
+        <div v-for="book in books" :key="book.id" class="book">
+          <img :src="book.cover" alt="Book cover" />
+          <p>{{ book.title }} - {{ book.author }}</p>
+          <p>Értékelés: {{ book.rating }}</p>
+        </div>
+      </div>
     </div>
 
 </template>
