@@ -1,5 +1,9 @@
-model Director {
+model Creative {
     id   Int    @id @default(autoincrement())
     name String
+    picture String?
+    
     movies Movie[]
+    shows TvShow[]
+    book Book[]
 }

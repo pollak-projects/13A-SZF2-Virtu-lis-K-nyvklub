@@ -2,7 +2,8 @@ model Character {
     id       Int    @id @default(autoincrement())
     name     String
 
-    movies   CharacterMovie[]
-    books    CharacterBook[]
+    movies   MovieCharacter[]
+    books    BookCharacter[]
+    tv       TvCharacter[]
     actors   CharacterActor[]
 }

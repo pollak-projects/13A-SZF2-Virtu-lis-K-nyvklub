@@ -1,6 +1,0 @@
-model Author {
-    id   Int    @id @default(autoincrement())
-    name String
-    picture String?
-    books Book[]
-}

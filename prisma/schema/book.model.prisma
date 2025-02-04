@@ -1,14 +1,12 @@
 model Book {
     id          Int            @id @default(autoincrement())
     title       String
-
-    author      Author         @relation(fields: [author_Id], references: [id])
+    author      Creative         @relation(fields: [author_Id], references: [id])
     author_Id   Int
-
     releaseYear Int
     description String
     coverArt    String?
 
     genres      BookGenre[]
-    characters  CharacterBook[]
+    characters  BookCharacter[]
 }
