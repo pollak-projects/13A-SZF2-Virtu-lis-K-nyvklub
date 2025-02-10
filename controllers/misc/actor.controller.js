@@ -1,10 +1,9 @@
-/* REDO REDO REDO REDO
 import express from "express";
-import actorService from "../services/actor.service.js";
+import actorService from "../../services/misc/actor.service.js";
 
-const router = express.Router();
+const actorRouter = express.Router();
 
-router.get("/actors", async (req, res) => {
+actorRouter.get("/actors", async (req, res) => {
   try {
     const actors = await actorService.getAllActors();
     res.status(200).json(actors);
@@ -13,7 +12,7 @@ router.get("/actors", async (req, res) => {
   }
 });
 
-router.get("/actors/:id", async (req, res) => {
+actorRouter.get("/actors/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const actor = await actorService.getActorById(id);
@@ -27,36 +26,35 @@ router.get("/actors/:id", async (req, res) => {
   }
 });
 
-router.post("/actors", async (req, res) => {
+actorRouter.post("/actors", async (req, res) => {
   try {
-    const { name, picture } = req.body;
-    const newActor = await actorService.createActor({ name, picture });
+    const data = req.body;
+    const newActor = await actorService.createActor(data);
     res.status(201).json(newActor);
   } catch (error) {
     res.status(500).json({ message: "Failed to create actor" });
   }
 });
 
-router.put("/actors/:id", async (req, res) => {
+actorRouter.put("/actors/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, picture } = req.body;
-    const updatedActor = await actorService.updateActor(id, { name, picture });
+    const data = req.body;
+    const updatedActor = await actorService.updateActor(id, data);
     res.status(200).json(updatedActor);
   } catch (error) {
     res.status(500).json({ message: "Failed to update actor" });
   }
 });
 
-router.delete("/actors/:id", async (req, res) => {
+actorRouter.delete("/actors/:id", async (req, res) => {
   try {
     const { id } = req.params;
     await actorService.deleteActor(id);
-    res.status(204).json({ message: "Actor successfully deleted" });
+    res.status(200).json({ message: "Actor deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Failed to delete actor" });
   }
 });
 
-export { router as actorController };
-*/
+export default actorRouter;

@@ -1,0 +1,60 @@
+import express from "express";
+import bookService from "../../services/book/book.service.js";
+
+const bookRouter = express.Router();
+
+bookRouter.get("/books", async (req, res) => {
+  try {
+    const books = await bookService.getAllBooks();
+    res.status(200).json(books);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch books" });
+  }
+});
+
+bookRouter.get("/books/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const book = await bookService.getBookById(id);
+    if (book) {
+      res.status(200).json(book);
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch book" });
+  }
+});
+
+bookRouter.post("/books", async (req, res) => {
+  try {
+    const { title, author } = req.body;
+    const newBook = await bookService.createBook({ title, author });
+    res.status(201).json(newBook);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to create book" });
+  }
+});
+
+bookRouter.put("/books/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, author } = req.body;
+    const updatedBook = await bookService.updateBook(id, { title, author });
+    res.status(200).json(updatedBook);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update book" });
+  }
+});
+
+bookRouter.delete("/books/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await bookService.deleteBook(id);
+    res.status(200).json({ message: "Book deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete book" });
+  }
+});
+
+export default bookRouter;
