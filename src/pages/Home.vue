@@ -1,18 +1,20 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Card from "../components/Card.vue";
+import axios from "axios";
 
-const books = ref([
-  {
-    id: "1",
-    title: "Konyv cim",
-    author: "iro",
-    releaseYear: "2025.02.11.",
-    genre: "mufajok",
-    description: "leiras",
-    cover: "borito",
+const books = ref([]);
+
+const fetchBooks = async () => {
+  try {
+    const response = await axios.get("https://localhost:3306/books");
+    books.value = response.data;
+  } catch (error) {
+    console.error("Hiba történt a, könyvek betöltése sikertelen:", error);
   }
-]);
+};
+
+onMounted(fetchBooks);
 </script>
 
 <template>
