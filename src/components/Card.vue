@@ -1,52 +1,73 @@
-<script setup>
-import VLazyImage from "v-lazy-image";
-import { ref, onMounted } from "vue";
-import { RouterLink } from "vue-router";
 
-const props = defineProps({
+<template>
+  <div class="card">
+    <img :src="cover" class="card-image" />
+    <div class="card-content">
+      <h2 class="card-title">{{ title }}</h2>
+      <p class="card-author">{{ author }}</p>
+      <p class="card-realeaseYear">{{ realaseYear }}</p>
+      <p class="card-genre">{{ genre }}</p>
+      <p class="card-description">{{ description }}</p>
+    </div>
+  </div>
+</template>
+
+
+<script setup>
+
+defineProps({
   id: Number,
-  cim: String,
-  iro: String,
-  kiadasiDatum: String,
-  mufajok: Array,
-  leiras: String,
-  borito: String,
+  title: String,
+  author: String,
+  realaseYear: String,
+  genre: String,
+  description: String,
+  cover: String,
 });
 
-const imageUrl = ref("");
+/*const imageUrl = ref("");
 
 onMounted(() => {
   imageUrl.value = new URL(`../assets/images/${props.cover}`, import.meta.url).href;
 });
+*/
 </script>
 
-<template>
-  <div class="bg-white rounded-md border-[#9EA8FF] border-2 drop-shadow-lg p-3 w-60 h-[400px]" id="app">
-    <RouterLink :to="`/konyv/${id}`">
-      <VLazyImage :src="imageUrl" alt="Book Cover" class="w-full h-3/5 mb-2 mainImg" />
-      <p class="font-sans font-bold h-[12%] leading-4">{{ cim }}</p>
-      <p class="font-sans h-[8%]">Író: {{ author }}</p>
-      <p class="font-sans h-[8%]">Kiadási dátum: {{ releaseYear }}</p>
-      <p class="font-sans h-[8%]">Műfajok: {{ genre.join(", ") }}</p>
-      <p class="font-sans h-[12%] overflow-hidden text-ellipsis">{{ description }}</p>
-    </RouterLink>
-  </div>
-</template>
-
 <style scoped>
-.mainImg {
+
+.card {
+  width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  transition: transform 0.2s ease-in-out;
+}
+.card:hover {
+  transform: scale(1.05);
+}
+.card-image {
   width: 100%;
-  aspect-ratio: 4/4;
-  object-fit: contain;
+  height: 150px;
+  object-fit: cover;
+}
+.card-content {
+  padding: 10px;
+}
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.card-author, .card-releaseYear, .card-genre {
+  font-size: 0.9rem;
+  color: #555;
+}
+.card-description {
+  font-size: 0.9rem;
+  margin-top: 5px;
+  color: #333;
 }
 
-.bg-white {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 24rem;
-  width: 15rem;
-  padding: 1rem;
-  box-sizing: border-box;
-}
 </style>
