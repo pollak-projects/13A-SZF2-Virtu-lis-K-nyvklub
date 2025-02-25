@@ -1,0 +1,48 @@
+npm init - kezdés
+
+npm i prisma express cookie-parser bcryptjs - packek feltelepitese  
+
+npx prisma init (sql letrehozasa)
+	- previewFeatures = ["prismaSchemaFolder"]
+	- provider = "mysql"
+
+.env
+	mysql://root@localhost:3306/projekt_neve
+
+index.js letrehozasa (callback function)
+
+	import express from 'express'
+
+	const app = express();
+
+	app.listen(3300, () => 
+	{
+  	  console.log
+	})
+
+user model letrehozasa
+	model User {
+  		id Int @id @default(autoincrement())
+		username String @unique
+		password String
+    		email String @unique
+		}
+
+npx prisma migrate dev
+	(valami random nev)
+
+controller letrehozasa
+	import { PrismaClient } from "@prisma/client";
+	import express from 'express'
+
+	const prisma = new PrismaClient();
+	const router = express.Router();
+
+	router.get("/getAll", async (req, res) =>
+	{
+  	  const data = await prisma.user.findMany();
+  	  res.status(200).json(data);
+	})
+
+
+POSTMAN http://localhost:3300/user/add

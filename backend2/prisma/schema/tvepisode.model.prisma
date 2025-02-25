@@ -1,0 +1,9 @@
+model TvEpisode {
+    id           Int      @id @default(autoincrement())
+    episodeNumber Int
+    title        String
+    description  String?
+    releaseDate  DateTime
+    tvSeason_Id  Int
+    tvSeason     TvSeason @relation(fields: [tvSeason_Id], references: [id])
+}
