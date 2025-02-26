@@ -12,24 +12,6 @@ export async function getBookById(id) {
   });
 }
 
-export async function getBooksByGenreId(genreId) {
-  return await prisma.bookGenre
-    .findMany({
-      where: { genre_Id: parseInt(genreId) },
-      include: { book: true },
-    })
-    .then((bookGenres) => bookGenres.map((bg) => bg.book));
-}
-
-export async function getBooksByCharacterId(characterId) {
-  return await prisma.bookCharacter
-    .findMany({
-      where: { character_Id: parseInt(characterId) },
-      include: { book: true },
-    })
-    .then((bookCharacters) => bookCharacters.map((bc) => bc.book));
-}
-
 export async function getBooksByAuthorId(authorId) {
   return await prisma.bookAuthor
     .findMany({

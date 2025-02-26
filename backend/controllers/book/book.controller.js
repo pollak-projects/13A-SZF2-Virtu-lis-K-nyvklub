@@ -2,8 +2,6 @@ import express from "express";
 import {
   getAllBooks,
   getBookById,
-  getBooksByGenreId,
-  getBooksByCharacterId,
   getBooksByAuthorId,
   createBook,
   updateBook,
@@ -27,6 +25,20 @@ bookRouter.get("/books/:id", async (req, res) => {
     const book = await getBookById(id);
     if (book) {
       res.status(200).json(book);
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch book" });
+  }
+});
+
+bookRouter.get("/books/:id", async (req, res) => {
+  try {
+    const { author_id } = req.params;
+    const books = await getBooksByAuthorId(author_id);
+    if (books) {
+      res.status(200).json(books);
     } else {
       res.status(404).json({ message: "Book not found" });
     }

@@ -9,7 +9,7 @@ const bookCharacterRouter = express.Router();
 
 bookCharacterRouter.get("/bookcharacters", async (req, res) => {
   try {
-    const bookCharacters = await bookCharacterService.getAllBookCharacters();
+    const bookCharacters = await getAllBookCharacters();
     res.status(200).json(bookCharacters);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch book characters" });
@@ -19,7 +19,7 @@ bookCharacterRouter.get("/bookcharacters", async (req, res) => {
 bookCharacterRouter.get("/bookcharacters/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const bookCharacter = await bookCharacterService.getBookCharacterById(id);
+    const bookCharacter = await getBookCharacterById(id);
     if (bookCharacter) {
       res.status(200).json(bookCharacter);
     } else {
@@ -33,7 +33,7 @@ bookCharacterRouter.get("/bookcharacters/:id", async (req, res) => {
 bookCharacterRouter.post("/bookcharacters", async (req, res) => {
   try {
     const { name, bookId } = req.body;
-    const newBookCharacter = await bookCharacterService.createBookCharacter({
+    const newBookCharacter = await createBookCharacter({
       name,
       bookId,
     });
@@ -47,7 +47,7 @@ bookCharacterRouter.put("/bookcharacters/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { name, bookId } = req.body;
-    const updatedBookCharacter = await bookCharacterService.updateBookCharacter(
+    const updatedBookCharacter = await updateBookCharacter(
       id,
       { name, bookId }
     );
@@ -60,7 +60,7 @@ bookCharacterRouter.put("/bookcharacters/:id", async (req, res) => {
 bookCharacterRouter.delete("/bookcharacters/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    await bookCharacterService.deleteBookCharacter(id);
+    await deleteBookCharacter(id);
     res.status(200).json({ message: "Book character deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Failed to delete book character" });
