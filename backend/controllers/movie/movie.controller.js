@@ -35,10 +35,11 @@ movieRouter.get("/movies/:id", async (req, res) => {
 
 movieRouter.post("/movies", async (req, res) => {
   try {
-    const { title, director } = req.body;
-    const newMovie = await createMovie({ title, director });
+    const { title,  releaseYear,description,director_Id } = req.body;
+    const newMovie = await createMovie({ title,releaseYear,description, director_Id });
     res.status(201).json(newMovie);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: "Failed to create movie" });
   }
 });

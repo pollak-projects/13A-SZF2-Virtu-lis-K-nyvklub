@@ -4,6 +4,8 @@ import bookController from "./controllers/book/book.controller.js";
 import  genreController  from "./controllers/misc/genre.controller.js";
 import  movieController  from "./controllers/movie/movie.controller.js";
 //import movieRouter from "./controllers/movie/movie.controller.js";
+import { createActor } from "./services/misc/actor.service.js";
+
 
 
 //import Vue from "vue";
@@ -17,6 +19,7 @@ import  movieController  from "./controllers/movie/movie.controller.js";
 
 const app = express();
 //app.use(Router);
+
 //app.use(movieRouter);
 /*
 export default new Router({
@@ -74,6 +77,7 @@ export default new Router({
 app.use(express.json());
 
 app.use("/actors", actorController);
+app.use("/create", createActor);
 app.use("/books", bookController);
 app.use("/genres", genreController);
 app.use("/movies", movieController);
