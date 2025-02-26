@@ -15,6 +15,7 @@ bookRouter.get("/books", async (req, res) => {
     const books = await getAllBooks();
     res.status(200).json(books);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: "Failed to fetch books" });
   }
 });
