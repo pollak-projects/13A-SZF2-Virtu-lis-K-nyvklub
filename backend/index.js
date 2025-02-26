@@ -4,6 +4,7 @@ import bookController from "./controllers/book/book.controller.js";
 import  genreController  from "./controllers/misc/genre.controller.js";
 import  movieController  from "./controllers/movie/movie.controller.js";
 import movieRouter from "./controllers/movie/movie.controller.js";
+import { getAllMovies } from "./services/movie/movie.service.js";
 
 //import Vue from "vue";
 //import Router from "vue";
@@ -69,6 +70,9 @@ export default new Router({
   ]
 });
 */
+app.get("/movies", async (req, res) => {
+  const moviedata = await getAllMovies();
+});
 app.use(express.json());
 
 app.use("/actors", actorController);

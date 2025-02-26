@@ -14,6 +14,7 @@ actorRouter.get("/actors", async (req, res) => {
     const actors = await getAllActors();
     res.status(200).json(actors);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: "Failed to fetch actors" });
   }
 });
