@@ -3,8 +3,8 @@ import actorController from "./controllers/misc/actor.controller.js";
 import bookController from "./controllers/book/book.controller.js";
 import  genreController  from "./controllers/misc/genre.controller.js";
 import  movieController  from "./controllers/movie/movie.controller.js";
-import movieRouter from "./controllers/movie/movie.controller.js";
-import { getAllMovies } from "./services/movie/movie.service.js";
+//import movieRouter from "./controllers/movie/movie.controller.js";
+
 
 //import Vue from "vue";
 //import Router from "vue";
@@ -17,7 +17,7 @@ import { getAllMovies } from "./services/movie/movie.service.js";
 
 const app = express();
 //app.use(Router);
-app.use(movieRouter);
+//app.use(movieRouter);
 /*
 export default new Router({
   mode: 'history',
@@ -70,9 +70,7 @@ export default new Router({
   ]
 });
 */
-app.get("/movies", async (req, res) => {
-  const moviedata = await getAllMovies();
-});
+
 app.use(express.json());
 
 app.use("/actors", actorController);

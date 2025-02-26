@@ -1,6 +1,9 @@
-import express from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+
+export async function getAllMovies() {
+  return await prisma.movie.findMany();
+}
 
 export async function getMovieById(id) {
   return await prisma.movie.findUnique({
@@ -8,9 +11,7 @@ export async function getMovieById(id) {
   });
 }
 
-export async function getAllMovies() {
-  return await prisma.movie.findMany();
-}
+
 
 export async function getMoviesByGenreId(genreId) {
   return await prisma.movieGenre

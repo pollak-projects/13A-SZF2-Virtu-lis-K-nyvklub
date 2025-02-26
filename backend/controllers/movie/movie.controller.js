@@ -14,6 +14,7 @@ movieRouter.get("/movies", async (req, res) => {
     const movies = await getAllMovies();
     res.status(200).json(movies);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: "Failed to fetch movies" });
   }
 });

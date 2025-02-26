@@ -1,5 +1,5 @@
-const { PrismaClient } = import("@prisma/client");
-const prisma = PrismaClient;
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 export async function getAllGenres() {
   return await prisma.genre.findMany();
