@@ -1,4 +1,7 @@
 <script setup>
+import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
+
 defineProps(['book']);
 defineEmits(['select']);
 </script>
