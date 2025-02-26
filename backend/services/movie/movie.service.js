@@ -7,6 +7,10 @@ export async function getMovieById(id) {
   });
 }
 
+export async function getAllMovies() {
+  return await prisma.movie.findMany();
+}
+
 export async function getMoviesByGenreId(genreId) {
   return await prisma.movieGenre
     .findMany({
