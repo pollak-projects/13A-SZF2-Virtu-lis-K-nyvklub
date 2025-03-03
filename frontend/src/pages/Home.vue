@@ -1,67 +1,34 @@
-<script setup>
-import { ref, onMounted } from 'vue';
-import BookCard from '../components/BookCard.vue';
-
-const books = ref([]);
-const selectedBook = ref(null);
-
-const fetchBooks = async () => {
-  try {
-    const response = await fetch('http://localhost:3000/api/books'); // Backend API hívás
-    books.value = await response.json();
-  } catch (error) {
-    console.error('Hiba a könyvek betöltésekor:', error);
-  }
-};
-
-onMounted(fetchBooks);
-</script>
-
 <template>
-  <div class="container">
-    <h1>Legújabb könyvek</h1>
-    <div class="book-list">
-      <BookCard v-for="book in books" :key="book.id" :book="book" @select="selectedBook = $event" />
-    </div>
-
-    <div v-if="selectedBook" class="book-detail">
-      <h2>{{ selectedBook.title }}</h2>
-      <img :src="selectedBook.cover" :alt="selectedBook.title" />
-      <p><strong>Szerző:</strong> {{ selectedBook.author }}</p>
-      <p><strong>Műfaj:</strong> {{ selectedBook.genre }}</p>
-      <p><strong>Kiadási év:</strong> {{ selectedBook.year }}</p>
-      <p><strong>Értékelés:</strong> {{ selectedBook.rating }} ☆</p>
-      <p><strong>Leírás:</strong> {{ selectedBook.description }}</p>
-    </div>
-  </div>
+  <header class="relative h-32 overflow-hidden">
+    <!-- Wavy Background -->
+    <svg
+      class="absolute top-0 left-0 w-full h-full"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="none"
+      viewBox="0 0 1440 120"
+    >
+      <path
+        fill="#FF6200"
+        d="M0,32L48,37.3C96,43,192,53,288,69.3C384,85,480,107,576,101.3C672,96,768,64,864,58.7C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
+      />
+      <path
+        fill="#FFB300"
+        d="M0,64L48,69.3C96,75,192,85,288,90.7C384,96,480,96,576,85.3C672,75,768,53,864,48C960,43,1056,53,1152,64C1248,75,1344,85,1392,90.7L1440,96L1440,32L1392,32C1344,32,1248,32,1152,32C1056,32,960,32,864,32C768,32,672,32,576,32C480,32,384,32,288,32C192,32,96,32,48,32L0,32Z"
+      />
+      <path
+        fill="#003087"
+        d="M0,96L48,101.3C96,107,192,117,288,112C384,107,480,85,576,80C672,75,768,85,864,90.7C960,96,1056,107,1152,101.3C1248,96,1344,85,1392,80L1440,75L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
+      />
+    </svg>
+  </header>
 </template>
 
+<script>
+export default {
+  name: "HomeHeader",
+};
+</script>
+
 <style scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
-.book-list {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.book-detail {
-  margin-top: 20px;
-  padding: 20px;
-  max-width: 600px;
-  background: white;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-.book-detail img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-}
+/* Additional custom styles if needed */
 </style>
