@@ -11,8 +11,6 @@ export async function getMovieById(id) {
   });
 }
 
-
-
 export async function getMoviesByGenreId(genreId) {
   return await prisma.movieGenre
     .findMany({
