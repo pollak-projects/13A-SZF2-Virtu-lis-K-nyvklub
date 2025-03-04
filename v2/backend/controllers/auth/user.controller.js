@@ -9,6 +9,7 @@ import {
 
 const router = express.Router();
 
+// LIST ALL EXISTING USER
 router.get("/getAll", async (req, res) => {
     try {
         const users = await GetAllUsers();

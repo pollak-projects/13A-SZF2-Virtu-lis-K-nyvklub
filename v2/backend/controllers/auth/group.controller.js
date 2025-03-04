@@ -32,6 +32,7 @@ router.delete("/delete", async (req, res) => {
     })
 })
 
+//UPDATE GROUP NAME
 router.put("update", async (req, res) => {
     const { name, newname } = req.body;
     
