@@ -1,12 +1,34 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
+import axios from 'axios';
 
 defineProps(['book']);
 defineEmits(['select']);
+
+const books = ref([]);
+
+const fetchBooks = async () => {
+  try {
+    const response = await axios.get('/getAllBooks');
+    books.value = response.data;
+  } catch (error) {
+    console.error('Failed to fetch books:', error);
+  }
+};
+
+onMounted(() => {
+  fetchBooks();
+});
 </script>
 
 <template>
+  <div>
+    <h1>Books</h1>
+    <ul>
+      <li v-for="book in books" :key="book.id">{{ book.title }}</li>
+    </ul>
+  </div>
   <div class="book-card" @click="$emit('select', book)">
     <img :src="book.cover" :alt="book.title" />
     <div class="book-info">

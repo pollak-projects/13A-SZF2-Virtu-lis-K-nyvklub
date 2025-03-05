@@ -8,7 +8,7 @@ export const transporter = nodemailer.createTransport({
         user: "",
         pass: "",
     },
-}),
+})
 
 export async function SendEmail(useremail) {
     const info = await transporter.sendMail({

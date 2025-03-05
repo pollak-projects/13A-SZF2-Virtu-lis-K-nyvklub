@@ -24,6 +24,17 @@ export async function addGroup(name) {
     })
 }
 
+export async function updateGroup(name, newname) {
+    await prisma.groups.update({
+        where: {
+            name: name
+        },
+        data: {
+            name: newname
+        }
+    })
+}
+
 export async function deleteGroup(name, newname) {
     await prisma.groups.delete({
         where: {

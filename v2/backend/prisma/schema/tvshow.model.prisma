@@ -1,14 +1,14 @@
 model TvShow {
-    id          Int        @id @default(autoincrement())
-    title       String
-    creator    Creative   @relation(fields: [creator_Id], references: [id])
-    creator_Id  Int
-    description String
-    seasons     Int
-    coverArt    String?
+  id          Int        @id @default(autoincrement())
+  title       String
+  creator     Creative   @relation(fields: [creator_Id], references: [id])
+  creator_Id  Int
+  description String
+  seasons     Int
+  coverArt    String?
 
-    tvSeasons   TvSeason[]
-    tvShowActors TvShowActor[]
-    TvGenres TvGenre[]
-    TvCharacters TvCharacter[]
+  tvSeasons   TvSeason[]
+  tvShowActors TvShowActor[]
+  TvGenres    TvGenre[]
+  TvCharacters TvCharacter[]
 }

@@ -2,12 +2,19 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function getAllMovies() {
-  return await prisma.movie.findMany();
+  return await prisma.movie.findMany({
+    include: {
+      director: true,
+    },
+  });
 }
 
 export async function getMovieById(id) {
   return await prisma.movie.findUnique({
     where: { id: parseInt(id) },
+    include: {
+      director: true,
+    },
   });
 }
 

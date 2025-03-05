@@ -1,13 +1,13 @@
 model Movie {
-    id        Int      @id @default(autoincrement())
-    title     String
-    director  Creative @relation(fields: [director_Id], references: [id])
-    director_Id Int
-    releaseYear Int
-    description String
-    coverArt  String?
+  id          Int      @id @default(autoincrement())
+  title       String
+  director    Creative @relation(fields: [director_Id], references: [id])
+  director_Id Int
+  releaseYear Int
+  description String
+  coverArt    String?
 
-    actors    MovieActor[]
-    genres    MovieGenre[]
-    characters MovieCharacter[]
+  actors      MovieActor[]
+  genres      MovieGenre[]
+  characters  MovieCharacter[]
 }

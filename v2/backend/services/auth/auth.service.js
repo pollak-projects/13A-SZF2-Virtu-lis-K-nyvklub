@@ -92,7 +92,7 @@ async function createNewToken(id, name, email, groupName) {
         data.JWTSecret,
         {
             expiresIn: data.JWTExpiration,
-            algorithm. data.JWTAlgorithm,
+            algorithm: data.JWTAlgorithm,
         }
     );
 }
@@ -222,15 +222,16 @@ export async function createForgotToken(userId) {
 }
 
 export async function passChange(oldpass, newpass, id) {
-    if (oldpass == newpass) {
+    if (oldpass !== newpass) {
         const data = await prisma.user.update({
             where: {
                 id: id,
             },
             data: {
-                password: await encrypt(oldpass),
+                password: await encrypt(newpass), 
             },
         });
+        return data;
     } else {
         return false;
     }

@@ -1,9 +1,12 @@
-import express from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function getAllBooks() {
-  return await prisma.book.findMany();
+  return await prisma.book.findMany({
+    include: {
+      author: true,
+    },
+  });
 }
 
 export async function getBookById(id) {
@@ -13,12 +16,9 @@ export async function getBookById(id) {
 }
 
 export async function getBooksByAuthorId(authorId) {
-  return await prisma.bookAuthor
-    .findMany({
-      where: { author_Id: parseInt(authorId) },
-      include: { book: true },
-    })
-    .then((bookAuthors) => bookAuthors.map((ba) => ba.book));
+  return await prisma.book.findMany({
+    where: { author_Id: parseInt(authorId) },
+  });
 }
 
 export async function createBook(data) {

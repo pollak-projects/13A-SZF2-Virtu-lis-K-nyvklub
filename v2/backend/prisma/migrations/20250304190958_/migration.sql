@@ -104,6 +104,9 @@ CREATE TABLE `Creative` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `picture` VARCHAR(191) NULL,
+    `author_book` BOOLEAN NOT NULL,
+    `director_movie` BOOLEAN NOT NULL,
+    `creator_show` BOOLEAN NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -114,6 +117,19 @@ CREATE TABLE `Genre` (
     `genre` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Group` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `read` BOOLEAN NOT NULL DEFAULT false,
+    `write` BOOLEAN NOT NULL DEFAULT false,
+    `update` BOOLEAN NOT NULL DEFAULT false,
+    `delete` BOOLEAN NOT NULL DEFAULT false,
+
+    UNIQUE INDEX `Group_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -161,6 +177,19 @@ CREATE TABLE `TvShow` (
     `seasons` INTEGER NOT NULL,
     `coverArt` VARCHAR(191) NULL,
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `User` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `groupId` INTEGER NOT NULL,
+
+    UNIQUE INDEX `User_username_key`(`username`),
+    UNIQUE INDEX `User_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -232,3 +261,6 @@ ALTER TABLE `TvSeason` ADD CONSTRAINT `TvSeason_tvShow_Id_fkey` FOREIGN KEY (`tv
 
 -- AddForeignKey
 ALTER TABLE `TvShow` ADD CONSTRAINT `TvShow_creator_Id_fkey` FOREIGN KEY (`creator_Id`) REFERENCES `Creative`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `Group`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

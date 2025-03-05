@@ -1,14 +1,20 @@
-import express from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function getAllTVShows() {
-  return await prisma.tvShow.findMany();
+  return await prisma.tvShow.findMany({
+    include: {
+      creator: true,
+    },
+  });
 }
 
 export async function getTVShowById(id) {
   return await prisma.tvShow.findUnique({
     where: { id: parseInt(id) },
+    include: {
+      creator: true,
+    },
   });
 }
 

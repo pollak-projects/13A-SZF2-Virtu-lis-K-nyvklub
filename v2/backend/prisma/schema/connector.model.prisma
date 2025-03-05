@@ -68,12 +68,12 @@ model BookGenre {
 }
 
 model BookCharacter {
-    book_Id      Int
-    character_Id Int
-    book         Book      @relation(fields: [book_Id], references: [id])
-    character    Character @relation(fields: [character_Id], references: [id])
+  book_Id      Int
+  character_Id Int
+  book         Book      @relation(fields: [book_Id], references: [id])
+  character    Character @relation(fields: [character_Id], references: [id])
 
-    @@id([book_Id, character_Id])
+  @@id([book_Id, character_Id])
 }
 
 //---------------------------------------------- EGYÉB ----------------------------------------------\\

@@ -2,7 +2,9 @@ import express from "express";
 import {
   getAllBookCharacters,
   getBookCharacterById,
-  get
+  createBookCharacter,
+  updateBookCharacter,
+  deleteBookCharacter,
 } from "../../services/book/bookCharacter.service.js";
 
 const bookCharacterRouter = express.Router();
@@ -16,10 +18,10 @@ bookCharacterRouter.get("/bookcharacters", async (req, res) => {
   }
 });
 
-bookCharacterRouter.get("/bookcharacters/:id", async (req, res) => {
+bookCharacterRouter.get("/bookcharacters/:bookId/:characterId", async (req, res) => {
   try {
-    const { id } = req.params;
-    const bookCharacter = await getBookCharacterById(id);
+    const { bookId, characterId } = req.params;
+    const bookCharacter = await getBookCharacterById(bookId, characterId);
     if (bookCharacter) {
       res.status(200).json(bookCharacter);
     } else {
@@ -32,35 +34,29 @@ bookCharacterRouter.get("/bookcharacters/:id", async (req, res) => {
 
 bookCharacterRouter.post("/bookcharacters", async (req, res) => {
   try {
-    const { name, bookId } = req.body;
-    const newBookCharacter = await createBookCharacter({
-      name,
-      bookId,
-    });
+    const data = req.body;
+    const newBookCharacter = await createBookCharacter(data);
     res.status(201).json(newBookCharacter);
   } catch (error) {
     res.status(500).json({ message: "Failed to create book character" });
   }
 });
 
-bookCharacterRouter.put("/bookcharacters/:id", async (req, res) => {
+bookCharacterRouter.put("/bookcharacters/:bookId/:characterId", async (req, res) => {
   try {
-    const { id } = req.params;
-    const { name, bookId } = req.body;
-    const updatedBookCharacter = await updateBookCharacter(
-      id,
-      { name, bookId }
-    );
+    const { bookId, characterId } = req.params;
+    const data = req.body;
+    const updatedBookCharacter = await updateBookCharacter(bookId, characterId, data);
     res.status(200).json(updatedBookCharacter);
   } catch (error) {
     res.status(500).json({ message: "Failed to update book character" });
   }
 });
 
-bookCharacterRouter.delete("/bookcharacters/:id", async (req, res) => {
+bookCharacterRouter.delete("/bookcharacters/:bookId/:characterId", async (req, res) => {
   try {
-    const { id } = req.params;
-    await deleteBookCharacter(id);
+    const { bookId, characterId } = req.params;
+    await deleteBookCharacter(bookId, characterId);
     res.status(200).json({ message: "Book character deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Failed to delete book character" });
