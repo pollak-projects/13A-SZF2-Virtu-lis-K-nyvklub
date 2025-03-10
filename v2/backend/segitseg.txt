@@ -7,7 +7,7 @@ npx prisma init (sql letrehozasa)
 	- provider = "mysql"
 
 .env
-	mysql://root@localhost:3306/projekt_neve
+	DATABASE_URL="mysql://root@localhost:3306/vizsgaremek"
 
 index.js letrehozasa (callback function)
 
