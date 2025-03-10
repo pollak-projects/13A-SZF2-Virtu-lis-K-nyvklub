@@ -8,7 +8,6 @@ import {
     register
 } from "../../services/auth/auth.service.js";
 import { SendEmail } from "../../services/auth/emailsender.js";
-import { ref } from "vue";
 
 const router = express.Router();
 
@@ -105,4 +104,20 @@ router.post("/sendEmail", async (req, res) => {
     }
 });
 
-export default router;
+router.post("/logout", (req, res) => {
+    res.clearCookie("access_token", {
+        domain: "pollakkonyvklub.info",
+        path: "/",
+    });
+    res.clearCookie("refresh_token", {
+        domain: "pollakkonyvklub.info",
+        path: "/",
+    });
+    res.clearCookie("sid", {
+        domain: "pollakkonyvklub.info",
+        path: "/",
+    });
+    res.status(200).json({ message: "Logget out" });
+})
+
+export { router as authController };
