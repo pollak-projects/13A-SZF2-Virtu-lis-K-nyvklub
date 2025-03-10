@@ -7,9 +7,38 @@ import genreController from "./controllers/misc/genre.controller.js";
 import movieController from "./controllers/movie/movie.controller.js";
 import { userController } from "./controllers/auth/user.controller.js";
 import { groupController } from "./controllers/auth/group.controller.js";
-import { createActor } from "./services/misc/actor.service.js";
+import { createActor, getAllActors } from "./services/misc/actor.service.js";
+import { name } from "ejs";
+import { getAllBooks } from "./services/book/book.service.js";
+import { getAllMovies } from "./services/movie/movie.service.js";
+import { getAllGenres } from "./services/misc/genre.service.js";
+import { GetAllUsers } from "./services/auth/user.service.js";
+
+
 
 const app = express();
+
+app.set("view engine", "ejs");
+
+app.get("/", async (req, res) => {
+const actors = await getAllActors();
+const books = await  getAllBooks();
+const movies = await  getAllMovies();
+const genres = await  getAllGenres();
+
+
+    
+
+  res.render("index",{
+actors:actors,
+books:books,
+movies:movies,
+genres:genres,
+
+
+  });
+});
+
 
 app.use(cors(corsOptions));
 app.use(corsMiddleware);
