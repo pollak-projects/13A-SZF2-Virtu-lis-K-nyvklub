@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { jwtDecode } from "jwt-decode";
-import { verifyjwt } from "../services/auth/auth.service";
-import { Groups } from "../services/auth/user.service";
+import { verifyjwt } from "../../backend/services/auth/auth.service.js";
+import { Groups } from "../../backend/services/auth/group.service.js";
 
 const prisma = new PrismaClient();
 

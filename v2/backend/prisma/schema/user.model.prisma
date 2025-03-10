@@ -5,4 +5,8 @@ model User {
   email     String   @unique
   groupId   Int
   group     Group    @relation(fields: [groupId], references: [id])
+  ForgotToken String? @unique @db.VarChar(100)
+  ForgotTokenExpiresAt DateTime?
+
+
 }
