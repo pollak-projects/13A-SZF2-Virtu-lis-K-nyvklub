@@ -4,8 +4,11 @@ import router from './router/routes.js';
 import './assets/style.css';
 import axios from 'axios';
 
+
 const app = createApp(App);
 app.use(router);
+
+
 
 axios.defaults.baseURL = 'http://localhost:3300';
 axios.defaults.withCredentials = true;

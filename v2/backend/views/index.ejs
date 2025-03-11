@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="hu-HU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin felület</title>
+</head>
+<body>
+    <h1>Admin felület</h1>
+    <h2>Új elem hozzáadása</h2>
+    <form action="/add" method="post">
+    <% books.forEach(item => { %>
+        <div>
+            <input type="text" name="cim" value="<% item.title %>">
+            <input type="text" name="leiras" value="<% item.description %>">
+            <input type="text" name="kiadasiev" value="<% item.releaseYear %>">
+            <button type="submit" method="POST">Feltöltés</button>
+             </div>
+        <% }) %>
+        </form>
+    <form action="/" method="post">
+        
+        <h2>Könyvek</h2>
+        <%books.forEach(item => {%>
+            
+            <div>
+                
+                <input type="text"  name="cim"><%=item.title%>
+                <input type="text"  name="leiras"><%=item.description%>
+                <input type="text"  name="kiadasiev"><%=item.releaseYear%>
+                <button>Feltöltés</button>
+                <%})%>
+                
+            </div>
+            <h2>Szinészek</h2>
+        <%actors.forEach(item => {%>
+            <div>
+                
+                <input type="text"  name="cim"><%=item.name%>
+                <input type="img"  name="leiras"><%=item.picture%>
+                <button>Feltöltés</button>
+                <%})%>
+                
+            </div>
+            <h2>Filmek</h2>
+        <%movies.forEach(item => {%>
+            <div>
+                
+                <input type="text"  name="cim"><%=item.title%>
+                <input type="text"  name="leiras"><%=item.releaseYear%>
+                <input type="text"  name="kiadasiev"><%=item.description%>
+                <button>Feltöltés</button>
+                <%})%>
+                
+            </div>
+            <form action="/submit" method="POST">
+                <input type="text"
+                       name="username"
+                       placeholder="Enter your name">
+                <button type="submit ">Submit</button>
+            </form>
+    </form>
+    	
+    
+
+
+</body>
+</html>
