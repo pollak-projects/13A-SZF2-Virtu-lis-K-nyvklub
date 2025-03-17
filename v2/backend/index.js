@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import { authController } from "./controllers/auth/auth.controller.js";
 import uploadRouter from "./controllers/misc/upload.controller.js";
+import { verifyUserGroups } from "./middleware/auth.middleware.js";
 
 const app = express();
 
@@ -46,7 +47,7 @@ app.use("/genres", genreController);
 app.use("/movies", movieController);
 app.use("/tvshows", tvshowController);
 app.use("/users", userController);
-app.use("/groups", groupController);
+app.use("/groups", verifyUserGroups(['ADMIN']), groupController);
 app.use("/auth", authController);
 app.use("/upload", uploadRouter);
 

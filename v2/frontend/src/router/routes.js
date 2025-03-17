@@ -4,6 +4,7 @@ import Books from '../pages/Books.vue';
 import Movies from '../pages/Movies.vue';
 import Series from '../pages/Series.vue';
 import UploadMovie from '../pages/UploadMovie.vue';
+import 
 
 const routes = [
   { path: '/', component: HomeCard },
