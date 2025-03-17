@@ -3,7 +3,7 @@ import tvEpisodeService from "../../services/tv/tvEpisode.service.js";
 
 const tvEpisodeRouter = express.Router();
 
-tvEpisodeRouter.get("/tvepisodes", async (req, res) => {
+tvEpisodeRouter.get("/GetAllTVEpisodes", async (req, res) => {
   try {
     const tvEpisodes = await tvEpisodeService.getAllTVEpisodes();
     res.status(200).json(tvEpisodes);
@@ -12,7 +12,7 @@ tvEpisodeRouter.get("/tvepisodes", async (req, res) => {
   }
 });
 
-tvEpisodeRouter.get("/tvepisodes/:id", async (req, res) => {
+tvEpisodeRouter.get("/GetTVEpisodeById/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const tvEpisode = await tvEpisodeService.getTVEpisodeById(id);
@@ -26,7 +26,7 @@ tvEpisodeRouter.get("/tvepisodes/:id", async (req, res) => {
   }
 });
 
-tvEpisodeRouter.post("/tvepisodes", async (req, res) => {
+tvEpisodeRouter.post("/CreateTVEpisode", async (req, res) => {
   try {
     const { title, seasonId } = req.body;
     const newTVEpisode = await tvEpisodeService.createTVEpisode({
@@ -39,7 +39,7 @@ tvEpisodeRouter.post("/tvepisodes", async (req, res) => {
   }
 });
 
-tvEpisodeRouter.put("/tvepisodes/:id", async (req, res) => {
+tvEpisodeRouter.put("/UpdateTVEpisode/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { title, seasonId } = req.body;
@@ -53,7 +53,7 @@ tvEpisodeRouter.put("/tvepisodes/:id", async (req, res) => {
   }
 });
 
-tvEpisodeRouter.delete("/tvepisodes/:id", async (req, res) => {
+tvEpisodeRouter.delete("/DeleteTVEpisode/:id", async (req, res) => {
   try {
     const { id } = req.params;
     await tvEpisodeService.deleteTVEpisode(id);

@@ -1,38 +1,51 @@
-import express from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export async function getAllEpisodes() {
-  return await prisma.episode.findMany();
+export async function getAllTVEpisodes() {
+  try {
+    return await prisma.tvEpisode.findMany();
+  } catch (error) {
+    throw new Error("Failed to fetch TV episodes");
+  }
 }
 
-export async function getEpisodeById(id) {
-  return await prisma.episode.findUnique({
-    where: { id: parseInt(id) },
-  });
+export async function getTVEpisodeById(id) {
+  try {
+    return await prisma.tvEpisode.findUnique({
+      where: { id: parseInt(id) },
+    });
+  } catch (error) {
+    throw new Error("Failed to fetch TV episode");
+  }
 }
 
-export async function getEpisodesBySeasonId(seasonId) {
-  return await prisma.episode.findMany({
-    where: { seasonId: parseInt(seasonId) },
-  });
+export async function createTVEpisode(data) {
+  try {
+    return await prisma.tvEpisode.create({
+      data,
+    });
+  } catch (error) {
+    throw new Error("Failed to create TV episode");
+  }
 }
 
-export async function createEpisode(data) {
-  return await prisma.episode.create({
-    data,
-  });
+export async function updateTVEpisode(id, data) {
+  try {
+    return await prisma.tvEpisode.update({
+      where: { id: parseInt(id) },
+      data,
+    });
+  } catch (error) {
+    throw new Error("Failed to update TV episode");
+  }
 }
 
-export async function updateEpisode(id, data) {
-  return await prisma.episode.update({
-    where: { id: parseInt(id) },
-    data,
-  });
-}
-
-export async function deleteEpisode(id) {
-  return await prisma.episode.delete({
-    where: { id: parseInt(id) },
-  });
+export async function deleteTVEpisode(id) {
+  try {
+    return await prisma.tvEpisode.delete({
+      where: { id: parseInt(id) },
+    });
+  } catch (error) {
+    throw new Error("Failed to delete TV episode");
+  }
 }

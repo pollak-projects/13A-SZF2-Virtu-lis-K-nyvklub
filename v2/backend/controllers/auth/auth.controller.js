@@ -3,7 +3,7 @@ import {
     verifyjwt,
     updateMainData,
     listAllTokens,
-    passwordChange,
+    passChange,
     login,
     register
 } from "../../services/auth/auth.service.js";
@@ -84,10 +84,10 @@ router.get("/listAllTokens", async (req, res) => {
     }
 });
 
-router.post("/passwordChange", async (req, res) => {
+router.post("/passChange", async (req, res) => {
     const { oldpass, newpass, id } = req.body;
     try {
-        await passwordChange(oldpass, newpass, id);
+        await passChange(oldpass, newpass, id);
         res.status(200).json({ message: "Password changed successfully" });
     } catch (error) {
         res.status(500).json({ message: "Failed to change password" });

@@ -1,32 +1,47 @@
-import express from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function getAllCreatives() {
-  return await prisma.creative.findMany();
+  return await prisma.creative.findMany({
+    include: {
+      picture: true,
+    },
+  });
 }
 
 export async function getCreativeById(id) {
   return await prisma.creative.findUnique({
     where: { id: parseInt(id) },
+    include: {
+      picture: true,
+    },
   });
 }
 
 export async function getAuthors() {
   return await prisma.creative.findMany({
     where: { author_book: true },
+    include: {
+      picture: true,
+    },
   });
 }
 
 export async function getDirectors() {
   return await prisma.creative.findMany({
     where: { director_movie: true },
+    include: {
+      picture: true,
+    },
   });
 }
 
 export async function getCreators() {
   return await prisma.creative.findMany({
     where: { creator_show: true },
+    include: {
+      picture: true,
+    },
   });
 }
 

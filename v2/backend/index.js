@@ -8,44 +8,23 @@ import tvshowController from "./controllers/tv/tvShow.controller.js";
 import movieController from "./controllers/movie/movie.controller.js";
 import { userController } from "./controllers/auth/user.controller.js";
 import { groupController } from "./controllers/auth/group.controller.js";
-import { createActor } from "./services/misc/actor.service.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import { listAllGroup } from "./services/auth/group.service.js";
-import { listAllTokens } from "./services/auth/auth.service.js";
-import { verifyUserGroups } from "./middleware/auth.middleware.js";
-import { GetAllUsers, Groups } from "./services/auth/user.service.js";
 import { authController } from "./controllers/auth/auth.controller.js";
-import { userController } from "./controllers/auth/user.controller.js";
-import { groupController } from "./controllers/auth/group.controller.js";
-
+import uploadRouter from "./controllers/misc/upload.controller.js";
 
 const app = express();
 
 app.use(cors(corsOptions));
 app.use(corsMiddleware);
-
-app.use(express.json());
-
-app.use("/actors", actorController);
-app.use("/create", createActor);
-app.use("/books", bookController);
-app.use("/genres", genreController);
-app.use("/movies", movieController);
-app.use("/users", userController);
-app.use("/groups", groupController);
-app.use("/tvshows", tvshowController);
-app.use("/user", verifyUserGroups(["ADMIN", "USER"]), userController);
-app.use("/auth", authController);
-app.use("/group", verifyUserGroups(["ADMIN"]), groupController)
-
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static("uploads"));
+
 app.use(
   session({
-    name: "asd",
-    secret: "test",
+    name: "session_id",
+    secret: "test_secret",
     resave: false,
     saveUninitialized: true,
     proxy: true,
@@ -59,13 +38,23 @@ app.use(
   })
 );
 
-app.set("view engine", "ejs")
+app.set("view engine", "ejs");
+
+app.use("/actors", actorController);
+app.use("/books", bookController);
+app.use("/genres", genreController);
+app.use("/movies", movieController);
+app.use("/tvshows", tvshowController);
+app.use("/users", userController);
+app.use("/groups", groupController);
+app.use("/auth", authController);
+app.use("/upload", uploadRouter);
 
 app.get("/", async (req, res) => {
   res.render("index", {});
 });
 
-app.get("/table", verifyUserGroups(["ADMIN"]), async (req, res) => {
+app.get("/table", async (req, res) => {
   const userData = await GetAllUsers();
   const groupsData = await Groups();
   res.render("table", {
@@ -74,14 +63,14 @@ app.get("/table", verifyUserGroups(["ADMIN"]), async (req, res) => {
   });
 });
 
-app.get("/groups", verifyUserGroups(["ADMIN"]), async (req, res) => {
+app.get("/groups", async (req, res) => {
   const groups = await listAllGroup();
   res.render("groups", {
     groups: groups,
   });
 });
 
-app.get("/token", verifyUserGroups(["ADMIN"]), async (req, res) => {
+app.get("/token", async (req, res) => {
   res.render("token", {
     tokenData: await listAllTokens(),
   });
@@ -100,5 +89,5 @@ app.get("/register", async (req, res) => {
 });
 
 app.listen(3300, () => {
-  console.log("http://localhost:3300");
+  console.log("Server is running on http://localhost:3300");
 });

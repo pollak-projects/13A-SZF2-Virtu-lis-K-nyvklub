@@ -5,7 +5,7 @@ model TvShow {
   creator_Id  Int
   description String
   seasons     Int
-  coverArt    String?
+  coverArt     String?
 
   tvSeasons   TvSeason[]
   tvShowActors TvShowActor[]

@@ -18,13 +18,6 @@ export async function getTVShowById(id) {
   });
 }
 
-export async function getTVShowsByCreatorId(creatorId) {
-  return await prisma.tvShow.findMany({
-    where: { creatorId: parseInt(creatorId) },
-    include: { tvShow: true },
-  });
-}
-
 export async function createTVShow(data) {
   return await prisma.tvShow.create({
     data,

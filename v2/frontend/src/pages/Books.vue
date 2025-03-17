@@ -1,51 +1,59 @@
 <template>
-    <div>
-      <Header />
-      <div class="home-card">
-        <div class="content">
-          <h1>Books</h1>
-          <ul>
-            <li v-for="book in books" :key="book.id">{{ book.title }} by {{ book.author.name }}</li>
-          </ul>
-        </div>
+  <div>
+    <Header />
+    <div class="home-card">
+      <div class="content">
+        <h1>Books</h1>
+        <ContentHolder :items="formattedBooks" />
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted } from 'vue';
-  import axios from 'axios';
-  import Header from '../components/Header.vue';
-  
-  const books = ref([]);
-  
-  const fetchBooks = async () => {
-    try {
-      const response = await axios.get('http://localhost:3300/books/getAllBooks');
-      console.log('Books fetched:', response.data);
-      books.value = response.data;
-    } catch (error) {
-      console.error('Failed to fetch books:', error);
-    }
-  };
-  
-  onMounted(() => {
-    fetchBooks();
-  });
-  </script>
-  
-  <style scoped>
-  .home-card {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    background: white;
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed } from 'vue';
+import axios from 'axios';
+import Header from '../components/Header.vue';
+import ContentHolder from '../components/ContentHolder.vue';
+
+const books = ref([]);
+
+const fetchBooks = async () => {
+  try {
+    const response = await axios.get('http://localhost:3300/books/getAllBooks');
+    console.log('Books fetched:', response.data);
+    books.value = response.data;
+  } catch (error) {
+    console.error('Failed to fetch books:', error);
   }
-  
-  .content {
-    padding: 20px;
-  }
-  </style>
+};
+
+const formattedBooks = computed(() =>
+  books.value.map(book => ({
+    id: book.id,
+    title: book.title,
+    creator: book.author?.name || 'Unknown', 
+    coverArt: book.coverArt || null, 
+  }))
+);
+
+onMounted(() => {
+  fetchBooks();
+});
+</script>
+
+<style scoped>
+.home-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.content {
+  padding: 20px;
+}
+</style>

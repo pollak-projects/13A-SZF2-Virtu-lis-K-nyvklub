@@ -1,38 +1,60 @@
-import express from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export async function getAllSeasons() {
-  return await prisma.season.findMany();
+export async function getAllTVSeasons() {
+  try {
+    return await prisma.tvSeason.findMany({
+      include: {
+        tvShow: true,
+        episodes: true,
+      },
+    });
+  } catch (error) {
+    throw new Error("Failed to fetch TV seasons");
+  }
 }
 
-export async function getSeasonById(id) {
-  return await prisma.season.findUnique({
-    where: { id: parseInt(id) },
-  });
+export async function getTVSeasonById(id) {
+  try {
+    return await prisma.tvSeason.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        tvShow: true,
+        episodes: true,
+      },
+    });
+  } catch (error) {
+    throw new Error("Failed to fetch TV season");
+  }
 }
 
-export async function getSeasonsByTVShowId(tvShowId) {
-  return await prisma.season.findMany({
-    where: { tvShowId: parseInt(tvShowId) },
-  });
+export async function createTVSeason(data) {
+  try {
+    return await prisma.tvSeason.create({
+      data,
+    });
+  } catch (error) {
+    throw new Error("Failed to create TV season");
+  }
 }
 
-export async function createSeason(data) {
-  return await prisma.season.create({
-    data,
-  });
+export async function updateTVSeason(id, data) {
+  try {
+    return await prisma.tvSeason.update({
+      where: { id: parseInt(id) },
+      data,
+    });
+  } catch (error) {
+    throw new Error("Failed to update TV season");
+  }
 }
 
-export async function updateSeason(id, data) {
-  return await prisma.season.update({
-    where: { id: parseInt(id) },
-    data,
-  });
-}
-
-export async function deleteSeason(id) {
-  return await prisma.season.delete({
-    where: { id: parseInt(id) },
-  });
+export async function deleteTVSeason(id) {
+  try {
+    return await prisma.tvSeason.delete({
+      where: { id: parseInt(id) },
+    });
+  } catch (error) {
+    throw new Error("Failed to delete TV season");
+  }
 }
