@@ -9,6 +9,13 @@ import {
 
 const router = express.Router();
 
+
+// REGISTER
+
+
+// LOGIN
+
+
 // LIST ALL EXISTING USER
 router.get("/getAll", async (req, res) => {
     try {
