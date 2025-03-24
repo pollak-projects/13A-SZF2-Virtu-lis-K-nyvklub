@@ -12,9 +12,9 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import { authController } from "./controllers/auth/auth.controller.js";
 import uploadRouter from "./controllers/misc/upload.controller.js";
-<<<<<<< Updated upstream
+
 import { verifyUserGroups } from "./middleware/auth.middleware.js";
-=======
+
 import { getAllBooks } from "./services/book/book.service.js";
 import { getAllActors } from "./services/misc/actor.service.js";
 import { getAllGenres } from "./services/misc/genre.service.js";
@@ -27,7 +27,6 @@ import { listAllGroup } from "./services/auth/group.service.js";
 import upload from "./middleware/upload.middleware.js";
 import { Groups } from "./services/auth/user.service.js";
 
->>>>>>> Stashed changes
 
 const app = express();
 
@@ -57,6 +56,7 @@ app.use(
 app.set("view engine", "ejs");
 
 app.use("/actors", actorController);
+
 app.use("/books", bookController);
 app.use("/genres", genreController);
 app.use("/movies", movieController);
