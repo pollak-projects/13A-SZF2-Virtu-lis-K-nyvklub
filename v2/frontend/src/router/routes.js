@@ -8,10 +8,8 @@ import UploadBook from '../pages/UploadBook.vue';
 import UploadTVShow from '../pages/UploadTVShow.vue';
 import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue';
-import HomeCard from '../pages/HomeCard.vue';
 
 const routes = [
-  
   { path: '/', component: HomeCard },
   { path: '/homecard', component: HomeCard},
   { path: '/books', component: Books },
