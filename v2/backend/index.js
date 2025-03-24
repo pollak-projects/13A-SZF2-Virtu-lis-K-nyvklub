@@ -12,6 +12,18 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import { authController } from "./controllers/auth/auth.controller.js";
 import uploadRouter from "./controllers/misc/upload.controller.js";
+import { getAllBooks } from "./services/book/book.service.js";
+import { getAllActors } from "./services/misc/actor.service.js";
+import { getAllGenres } from "./services/misc/genre.service.js";
+import { getAllMovies } from "./services/movie/movie.service.js";
+import { register } from "./services/auth/auth.service.js";
+import { GetAllUsers } from "./services/auth/user.service.js";
+import { listAllGroup } from "./services/auth/group.service.js";
+
+
+import upload from "./middleware/upload.middleware.js";
+import { Groups } from "./services/auth/user.service.js";
+
 
 import { verifyUserGroups } from "./middleware/auth.middleware.js";
 
@@ -39,7 +51,7 @@ app.use("/uploads", express.static("uploads"));
 app.use(
   session({
     name: "session_id",
-    secret: "test_secret",
+    secret: "test",
     resave: false,
     saveUninitialized: true,
     proxy: true,
@@ -52,6 +64,11 @@ app.use(
     },
   })
 );
+
+app.get("/register", async (req, res) => {
+  res.render("register");
+});
+
 
 app.set("view engine", "ejs");
 
@@ -78,6 +95,7 @@ app.get("/", async (req, res) => {
     genres: await getAllGenres(),
     movies: await getAllMovies(),
     users: await GetAllUsers(),
+    register: await register(),
     
   });
 });
@@ -115,7 +133,9 @@ app.get("/changepassword", (req, res) => {
 app.get("/register", async (req, res) => {
   res.render("register");
 });
-
+/*
 app.listen(3300, () => {
   console.log("Server is running on http://localhost:3300");
 });
+*/
+export default app;
