@@ -1,4 +1,6 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from 'url';
 import cors from "cors";
 import { corsMiddleware, corsOptions } from "./middleware/cors.middleware.js";
 import actorController from "./controllers/misc/actor.controller.js";
@@ -15,12 +17,14 @@ import uploadRouter from "./controllers/misc/upload.controller.js";
 import { verifyUserGroups } from "./middleware/auth.middleware.js";
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(cors(corsOptions));
 app.use(corsMiddleware);
 app.use(express.json());
 app.use(cookieParser());
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(
   session({
@@ -45,6 +49,7 @@ app.use("/actors", actorController);
 app.use("/books", bookController);
 app.use("/genres", genreController);
 app.use("/movies", movieController);
+app.use("/tvshows", tvshowController);
 
 app.use("/users", verifyUserGroups(["ADMIN"]), userController);
 app.use("/groups", verifyUserGroups(['ADMIN']), groupController);

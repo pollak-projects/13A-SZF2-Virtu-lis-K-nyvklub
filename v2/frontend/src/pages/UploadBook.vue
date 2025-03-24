@@ -1,0 +1,135 @@
+<template>
+    <div>
+      <Header />
+      <div class="upload-book">
+        <h1>Upload New Book</h1>
+        <form @submit.prevent="submitBook" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" v-model="book.title" required />
+          </div>
+          <div class="form-group">
+            <label for="author">Author:</label>
+            <input type="text" id="author" v-model="book.author" required />
+          </div>
+          <div class="form-group">
+            <label for="publishYear">Publish Year:</label>
+            <input type="number" id="publishYear" v-model="book.publishYear" required />
+          </div>
+          <div class="form-group">
+            <label for="isbn">ISBN:</label>
+            <input type="text" id="isbn" v-model="book.isbn" />
+          </div>
+          <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" v-model="book.description" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="coverArt">Cover Art:</label>
+            <input type="file" id="coverArt" @change="handleFileUpload" accept="image/*" required />
+          </div>
+          <button type="submit">Upload Book</button>
+        </form>
+      </div>
+    </div>
+  </template>
+  
+  <script setup>
+  import { ref } from 'vue';
+  import axios from 'axios';
+  import Header from '../components/Header.vue';
+  
+  const book = ref({
+    title: '',
+    author: '',
+    publishYear: '',
+    isbn: '',
+    description: '',
+    coverArt: null,
+  });
+  
+  const handleFileUpload = (event) => {
+    book.value.coverArt = event.target.files[0];
+  };
+  
+  const submitBook = async () => {
+    const formData = new FormData();
+    formData.append('title', book.value.title);
+    formData.append('author', book.value.author);
+    formData.append('publishYear', book.value.publishYear);
+    formData.append('isbn', book.value.isbn);
+    formData.append('description', book.value.description);
+    formData.append('coverArt', book.value.coverArt);
+  
+    try {
+      const response = await axios.post('http://localhost:3300/books/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      alert('Book uploaded successfully!');
+      console.log('Response:', response.data);
+      // Reset form
+      book.value = {
+        title: '',
+        author: '',
+        publishYear: '',
+        isbn: '',
+        description: '',
+        coverArt: null,
+      };
+    } catch (error) {
+      console.error('Error uploading book:', error);
+      alert('Failed to upload book.');
+    }
+  };
+  </script>
+  
+  <style scoped>
+  .upload-book {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background: white;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  </style>

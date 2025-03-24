@@ -15,6 +15,7 @@ import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import Header from '../components/Header.vue';
 import ContentHolder from '../components/ContentHolder.vue';
+import placeholderImage from '../assets/images/placeholder.png';
 
 const movies = ref([]);
 
@@ -32,8 +33,8 @@ const formattedMovies = computed(() =>
   movies.value.map(movie => ({
     id: movie.id,
     title: movie.title,
-    creator: movie.director?.name || 'Unknown',
-    coverArt: movie.coverArt || null,
+    creator: movie.director?.name || "Unknown",
+    coverArt: movie.coverArt ? `http://localhost:3300${movie.coverArt}` : null,
   }))
 );
 
@@ -45,7 +46,7 @@ onMounted(() => {
 <style scoped>
 .home-card {
   width: 100%;
-  max-width: 600px;
+  max-width: 1200px;
   margin: 0 auto;
   border-radius: 8px;
   overflow: hidden;

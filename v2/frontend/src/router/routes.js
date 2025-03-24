@@ -4,7 +4,8 @@ import Books from '../pages/Books.vue';
 import Movies from '../pages/Movies.vue';
 import Series from '../pages/Series.vue';
 import UploadMovie from '../pages/UploadMovie.vue';
-import 
+import UploadBook from '../pages/UploadBook.vue';
+import UploadTVShow from '../pages/UploadTVShow.vue';
 
 const routes = [
   { path: '/', component: HomeCard },
@@ -12,6 +13,8 @@ const routes = [
   { path: '/movies', component: Movies },
   { path: '/series', component: Series },
   { path: '/upload-movie', component: UploadMovie },
+  { path: '/upload-book', component: UploadBook },
+  { path: '/upload-tvshow', component: UploadTVShow },
 ];
 
 const router = createRouter({

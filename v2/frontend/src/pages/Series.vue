@@ -3,7 +3,7 @@
     <Header />
     <div class="home-card">
       <div class="content">
-        <h1>Series</h1>
+        <h1>TV Shows</h1>
         <ContentHolder :items="formattedSeries" />
       </div>
     </div>
@@ -15,37 +15,38 @@ import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import Header from '../components/Header.vue';
 import ContentHolder from '../components/ContentHolder.vue';
+import placeholderImage from '../assets/images/placeholder.png';
 
-const seriesList = ref([]);
+const tvShows = ref([]);
 
-const fetchSeries = async () => {
+const fetchTVShows = async () => {
   try {
     const response = await axios.get('http://localhost:3300/tvshows/getAllTVShows');
-    console.log('Series fetched:', response.data);
-    seriesList.value = response.data;
+    console.log('TV Shows fetched:', response.data);
+    tvShows.value = response.data;
   } catch (error) {
-    console.error('Failed to fetch series:', error);
+    console.error('Failed to fetch TV Shows:', error);
   }
 };
 
 const formattedSeries = computed(() =>
-  seriesList.value.map(series => ({
-    id: series.id,
-    title: series.title,
-    creator: series.creator?.name || 'Unknown', 
-    coverArt: series.coverArt || null, 
+  tvShows.value.map(show => ({
+    id: show.id,
+    title: show.title,
+    creator: show.creator?.name || "Unknown",
+    coverArt: show.coverArt ? `http://localhost:3300${show.coverArt}` : null,
   }))
 );
 
 onMounted(() => {
-  fetchSeries();
+  fetchTVShows();
 });
 </script>
 
 <style scoped>
 .home-card {
   width: 100%;
-  max-width: 600px;
+  max-width: 1200px;
   margin: 0 auto;
   border-radius: 8px;
   overflow: hidden;

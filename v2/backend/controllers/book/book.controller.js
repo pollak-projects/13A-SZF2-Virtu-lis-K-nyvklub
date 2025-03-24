@@ -1,13 +1,62 @@
-import express from "express";
+import express from 'express';
+import multer from 'multer';
+import { PrismaClient } from "@prisma/client";
 import {
   getAllBooks,
   getBookById,
   createBook,
   updateBook,
   deleteBook,
-} from "../../services/book/book.service.js";
+} from '../../services/book/book.service.js';
 
+const prisma = new PrismaClient();
 const bookRouter = express.Router();
+const upload = multer({ dest: 'uploads/' });
+
+bookRouter.post('/upload', upload.single('coverArt'), async (req, res) => {
+  try {
+    const { title, author, publishYear, isbn, description } = req.body;
+    const coverArt = req.file ? `/uploads/${req.file.filename}` : null;
+
+    let authorEntity;
+    try {
+      authorEntity = await prisma.creative.findFirst({
+        where: { 
+          name: author,
+          author_book: true
+        }
+      });
+      
+      if (!authorEntity) {
+        authorEntity = await prisma.creative.create({
+          data: {
+            name: author,
+            author_book: true,
+            director_movie: false,
+            creator_show: false
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error finding/creating author:', error);
+      return res.status(500).json({ message: 'Failed to process author information' });
+    }
+
+    const newBook = await createBook({
+      title,
+      author_Id: authorEntity.id,
+      releaseYear: parseInt(publishYear), 
+      isbn,
+      description,
+      coverArt,
+    });
+
+    res.status(201).json(newBook);
+  } catch (error) {
+    console.error('Error uploading book:', error);
+    res.status(500).json({ message: 'Failed to upload book' });
+  }
+});
 
 bookRouter.get("/getAllBooks", async (req, res) => {
   try {

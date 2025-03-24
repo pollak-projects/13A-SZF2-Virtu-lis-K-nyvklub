@@ -43,7 +43,12 @@ export async function createMovie(data) {
       directorId = director.id;
     } else {
       const newDirector = await prisma.creative.create({
-        data: { name: data.director, director_movie: true },
+        data: { 
+          name: data.director, 
+          director_movie: true,
+          author_book: false,
+          creator_show: false
+        },
       });
       directorId = newDirector.id;
     }

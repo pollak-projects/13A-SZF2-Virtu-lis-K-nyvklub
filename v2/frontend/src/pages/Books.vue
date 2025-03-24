@@ -15,6 +15,7 @@ import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import Header from '../components/Header.vue';
 import ContentHolder from '../components/ContentHolder.vue';
+import placeholderImage from '../assets/images/placeholder.png';
 
 const books = ref([]);
 
@@ -32,8 +33,8 @@ const formattedBooks = computed(() =>
   books.value.map(book => ({
     id: book.id,
     title: book.title,
-    creator: book.author?.name || 'Unknown', 
-    coverArt: book.coverArt || null, 
+    creator: book.author?.name || "Unknown",
+    coverArt: book.coverArt ? `http://localhost:3300${book.coverArt}` : null,
   }))
 );
 
@@ -45,7 +46,7 @@ onMounted(() => {
 <style scoped>
 .home-card {
   width: 100%;
-  max-width: 600px;
+  max-width: 1200px;
   margin: 0 auto;
   border-radius: 8px;
   overflow: hidden;
