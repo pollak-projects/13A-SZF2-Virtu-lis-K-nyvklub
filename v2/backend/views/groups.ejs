@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <%- include('partials/header', {title: "Csoportkezelés"} ) %>
+  </head>
+  <body>
+    <%- include('partials/nav') %>
+
+    <div
+      class="container-fluid h-100 d-flex justify-content-center align-items-center flex-column mt-3">
+      <h1 class="text-center mb-4">Csoportok:</h1>
+      <div class="d-grid gap-2 mb-3">
+        <button
+          type="button"
+          class="btn btn-lg btn-outline-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#letrehozas">
+          Új csoport létrehozása
+        </button>
+      </div>
+      <div class="d-grid gap-2 mb-3">
+        <button
+          type="button"
+          class="btn btn-lg btn-outline-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#torles">
+          Csoport törlése
+        </button>
+      </div>
+      <div class="d-grid gap-2 mb-3">
+        <button
+          type="button"
+          class="btn btn-lg btn-outline-info"
+          data-bs-toggle="modal"
+          data-bs-target="#modositas">
+          Csoport módosítása
+        </button>
+      </div>
+
+      <!-- Modal - Új csoport létrehozása -->
+      <div
+        class="modal fade"
+        id="letrehozas"
+        tabindex="-1"
+        aria-labelledby="letrehozasLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="letrehozasLabel">
+                Új csoport létrehozása
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <label for="csoportnev">Csoport neve:</label>
+              <input
+                type="text"
+                id="csoportnev"
+                class="form-control"
+                required/>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+                Bezárás
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick="letrehozas()">
+                Létrehozás
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal - Csoport törlése -->
+      <div
+        class="modal fade"
+        id="torles"
+        tabindex="-1"
+        aria-labelledby="torlesLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="torlesLabel">Csoport törlése</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <label for="torlendo">Melyiket szeretnéd törölni?</label>
+              <select id="torlendo" class="form-select">
+                <% groups.forEach(element => { %>
+                <option value="<%= element.neve %>"><%= element.neve %></option>
+                <% }); %>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+                Bezárás
+              </button>
+              <button type="button" class="btn btn-danger" onclick="torles()">
+                Törlés
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal - Csoport módosítása -->
+      <div
+        class="modal fade"
+        id="modositas"
+        tabindex="-1"
+        aria-labelledby="modositasLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modositasLabel">
+                Csoport módosítása
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <label for="modositando"
+                >Melyik csoportot szeretnéd módosítani?</label
+              >
+              <select id="modositando" class="form-select">
+                <% groups.forEach(element => { %>
+                <option value="<%= element.neve %>"><%= element.neve %></option>
+                <% }); %>
+              </select>
+              <br />
+              <label for="ujnev">Mi legyen az új neve?</label>
+              <input type="text" id="ujnev" class="form-control" required />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Bezárás
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick="modositas()"
+              >
+                Módosítás
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accordion for displaying groups -->
+      <div class="accordion w-50 mt-5" id="accordionFlushExample">
+        <% groups.forEach(element => { %>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#flush-collapse<%= element.neve %>"
+              aria-expanded="false"
+              aria-controls="flush-collapse<%= element.neve %>"
+            >
+              <%= element.neve %>
+            </button>
+          </h2>
+          <div
+            id="flush-collapse<%= element.neve %>"
+            class="accordion-collapse collapse"
+            data-bs-parent="#accordionFlushExample"
+          >
+            <div class="accordion-body">
+              <table class="table table-dark table-hover">
+                <thead>
+                  <tr>
+                    <th>id</th>
+                    <th>Nev</th>
+                    <th>Email</th>
+                    <th>Groupsneve</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% element.users.forEach(user => { %>
+                  <tr>
+                    <td><%= user.id %></td>
+                    <td><%= user.username %></td>
+                    <td><%= user.email %></td>
+                    <td><%= user.groupName %></td>
+                    <td>
+                      <img
+                        src="../../frontend/src/assets/images/close.png"
+                        class="iksz"
+                        onclick="bezar(this)"/>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <%- include('partials/header', {title: "Token Beállítások"} ) %>
+    <script type="text/javascript">
+      function togglePasswordVisibility(id) {
+        var inputField = document.getElementById(id);
+        inputField.type = inputField.type === "password" ? "text" : "password";
+    }
+
+      // Fetch API a token beállítások frissítéséhez
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("settingsForm")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const data = {
+              JWTSecret: document.getElementById("jwtSecret").value,
+              JWTExpiration: document.getElementById("jwtExpire").value,
+              JWTAlgorithm: document.getElementById("jwtAlgorithm").value,
+              RefreshTokenSecret:
+                document.getElementById("refreshSecret").value,
+              RefreshTokenExpiration:
+                document.getElementById("refreshExpire").value,
+              RefreshTokenAlgorithm:
+                document.getElementById("refreshAlgorithm").value,
+            };
+
+            fetch("/auth/update", {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            })
+              .then((response) => response.json())
+              .then((result) => {
+                alert(result.message); // Sikeres mentés visszajelzése
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          });
+      });
+    </script>
+  </head>
+
+  <body>
+    <%- include('partials/nav') %>
+
+    <div class="form-container">
+      <form id="settingsForm">
+        <h4 class="text-center text-light mb-4">Token Settings</h4>
+
+        <div class="mb-3">
+          <label for="jwtSecret" class="form-label">JWT Secret</label>
+          <input
+            type="password"
+            id="jwtSecret"
+            name="jwtSecret"
+            class="form-control"
+            value="<%= tokenData.JWTSecret %>"/>
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              onclick="togglePasswordVisibility('jwtSecret')"/>
+            <label class="form-check-label">Show JWT Secret</label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="jwtExpire" class="form-label">JWT Expiration (seconds)</label>
+          <input
+            type="number"
+            id="jwtExpire"
+            name="jwtExpire"
+            class="form-control"
+            value="<%= tokenData.JWTExpiration %>"/>
+        </div>
+
+        <div class="mb-3">
+          <label for="jwtAlgorithm" class="form-label">JWT Algorithm</label>
+          <input
+            type="text"
+            id="jwtAlgorithm"
+            name="jwtAlgorithm"
+            class="form-control"
+            value="<%= tokenData.JWTAlgorithm %>"/>
+        </div>
+
+        <hr/>
+
+        <div class="mb-3">
+          <label for="refreshSecret" class="form-label"
+            >Refresh Token Secret</label>
+          <input
+            type="password"
+            id="refreshSecret"
+            name="refreshSecret"
+            class="form-control"
+            value="<%= tokenData.RefreshTokenSecret %>"/>
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              onclick="togglePasswordVisibility('refreshSecret')"/>
+            <label class="form-check-label">Show Refresh Token Secret</label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="refreshExpire" class="form-label">Refresh Token Expiration (seconds)</label>
+          <input
+            type="number"
+            id="refreshExpire"
+            name="refreshExpire"
+            class="form-control"
+            value="<%= tokenData.RefreshTokenExpiration %>"/>
+        </div>
+
+        <div class="mb-3">
+          <label for="refreshAlgorithm" class="form-label">Refresh Token Algorithm</label>
+          <input
+            type="text"
+            id="refreshAlgorithm"
+            name="refreshAlgorithm"
+            class="form-control"
+            value="<%= tokenData.RefreshTokenAlgorithm %>"/>
+        </div>
+
+        <button type="submit" class="btn btn-custom mt-3">Save Settings</button>
+      </form>
+    </div>
+  </body>
+</html>
