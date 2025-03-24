@@ -6,15 +6,22 @@ import Series from '../pages/Series.vue';
 import UploadMovie from '../pages/UploadMovie.vue';
 import UploadBook from '../pages/UploadBook.vue';
 import UploadTVShow from '../pages/UploadTVShow.vue';
+import Login from '../pages/Login.vue';
+import Register from '../pages/Register.vue';
+import HomeCard from '../pages/HomeCard.vue';
 
 const routes = [
+  
   { path: '/', component: HomeCard },
+  { path: '/homecard', component: HomeCard},
   { path: '/books', component: Books },
   { path: '/movies', component: Movies },
   { path: '/series', component: Series },
   { path: '/upload-movie', component: UploadMovie },
   { path: '/upload-book', component: UploadBook },
   { path: '/upload-tvshow', component: UploadTVShow },
+  { path: '/login', component: Login},
+  { path: '/register', component: Register}
 ];
 
 const router = createRouter({

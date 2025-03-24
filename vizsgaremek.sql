@@ -1,10 +1,9 @@
-/*
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Feb 11. 09:24
+-- Létrehozás ideje: 2025. Már 18. 12:07
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
 
@@ -221,6 +220,37 @@ INSERT INTO `genre` (`id`, `genre`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `group`
+--
+
+CREATE TABLE `group` (
+  `id` int(11) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `read` tinyint(1) NOT NULL DEFAULT 0,
+  `write` tinyint(1) NOT NULL DEFAULT 0,
+  `update` tinyint(1) NOT NULL DEFAULT 0,
+  `delete` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `maindata`
+--
+
+CREATE TABLE `maindata` (
+  `id` varchar(191) NOT NULL,
+  `JWTSecret` varchar(191) NOT NULL,
+  `JWTExpiration` int(11) NOT NULL,
+  `JWTAlgorithm` varchar(191) NOT NULL,
+  `RefreshTokenSecret` varchar(191) NOT NULL,
+  `RefreshTokenExpiration` int(11) NOT NULL,
+  `RefreshTokenAlgorithm` varchar(191) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `movie`
 --
 
@@ -239,7 +269,13 @@ CREATE TABLE `movie` (
 
 INSERT INTO `movie` (`id`, `title`, `director_Id`, `releaseYear`, `description`, `coverArt`) VALUES
 (1, 'Inception', 4, 2010, 'A thief who steals corporate secrets through the use of dream-sharing technology.', NULL),
-(2, 'Jurassic Park', 5, 1993, 'A pragmatic paleontologist visiting an almost complete theme park is tasked with protecting a couple of kids after a power failure causes the park\'s cloned dinosaurs to run loose.', NULL);
+(2, 'Jurassic Park', 5, 1993, 'A pragmatic paleontologist visiting an almost complete theme park is tasked with protecting a couple of kids after a power failure causes the park\'s cloned dinosaurs to run loose.', NULL),
+(3, 'Star Wars: The Phantom Menace', 5, 1999, 'Réges régen egy messzi messzi galaxisban...', NULL),
+(4, 'szia', 5, 1850, 'adasdawda', ''),
+(5, 'ET', 5, 1976, 'Hihetetlen', '/uploads/89044df7c8a0568a2be4e040f89edca1'),
+(6, 'asfasfwfasfaf', 5, 1300, 'asdwada', '/uploads/f53ae5404b63455ff85fc73194000be4'),
+(7, 'Star Wars', 5, 123, 'asdwads', '/uploads/f177b68d18861910cb7cc38e93256c8f'),
+(8, 'asfasfawf', 5, 1999, 'adwadsdwads', '/uploads/536a924aa25af98a5fb04c49cf9944a8');
 
 -- --------------------------------------------------------
 
@@ -434,6 +470,22 @@ INSERT INTO `tvshowactor` (`tvShow_Id`, `actor_Id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `username` varchar(191) NOT NULL,
+  `password` varchar(191) NOT NULL,
+  `email` varchar(191) NOT NULL,
+  `groupId` int(11) NOT NULL,
+  `ForgotToken` varchar(100) DEFAULT NULL,
+  `ForgotTokenExpiresAt` datetime(3) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `_prisma_migrations`
 --
 
@@ -453,7 +505,8 @@ CREATE TABLE `_prisma_migrations` (
 --
 
 INSERT INTO `_prisma_migrations` (`id`, `checksum`, `finished_at`, `migration_name`, `logs`, `rolled_back_at`, `started_at`, `applied_steps_count`) VALUES
-('a8e8cf32-3f72-4d30-bcc0-10059638ec03', 'b5afac004e5943a09263fa73722e11f2def1338680c30f3ad9e9455b6b311502', '2025-02-11 07:28:56.868', '20250211072856_', NULL, NULL, '2025-02-11 07:28:56.317', 1);
+('a8e8cf32-3f72-4d30-bcc0-10059638ec03', 'b5afac004e5943a09263fa73722e11f2def1338680c30f3ad9e9455b6b311502', '2025-02-11 07:28:56.868', '20250211072856_', NULL, NULL, '2025-02-11 07:28:56.317', 1),
+('a9ad5ca5-6860-4af3-9212-52a4d28c74b4', '3f80fc6d74bd1a4420330c1a7cca660a29a7fb05200b9fe05f6793e2085e8a0f', '2025-03-17 07:37:17.666', '20250317073717_y', NULL, NULL, '2025-03-17 07:37:17.057', 1);
 
 --
 -- Indexek a kiírt táblákhoz
@@ -509,6 +562,19 @@ ALTER TABLE `creative`
 -- A tábla indexei `genre`
 --
 ALTER TABLE `genre`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- A tábla indexei `group`
+--
+ALTER TABLE `group`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `Group_name_key` (`name`);
+
+--
+-- A tábla indexei `maindata`
+--
+ALTER TABLE `maindata`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -582,6 +648,16 @@ ALTER TABLE `tvshowactor`
   ADD KEY `TvShowActor_actor_Id_fkey` (`actor_Id`);
 
 --
+-- A tábla indexei `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `User_username_key` (`username`),
+  ADD UNIQUE KEY `User_email_key` (`email`),
+  ADD UNIQUE KEY `User_ForgotToken_key` (`ForgotToken`),
+  ADD KEY `User_groupId_fkey` (`groupId`);
+
+--
 -- A tábla indexei `_prisma_migrations`
 --
 ALTER TABLE `_prisma_migrations`
@@ -622,10 +698,16 @@ ALTER TABLE `genre`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT a táblához `group`
+--
+ALTER TABLE `group`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `movie`
 --
 ALTER TABLE `movie`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT a táblához `tvepisode`
@@ -644,6 +726,12 @@ ALTER TABLE `tvseason`
 --
 ALTER TABLE `tvshow`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT a táblához `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -741,10 +829,14 @@ ALTER TABLE `tvshow`
 ALTER TABLE `tvshowactor`
   ADD CONSTRAINT `TvShowActor_actor_Id_fkey` FOREIGN KEY (`actor_Id`) REFERENCES `actor` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `TvShowActor_tvShow_Id_fkey` FOREIGN KEY (`tvShow_Id`) REFERENCES `tvshow` (`id`) ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `User_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `group` (`id`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-*/
-

@@ -14,7 +14,21 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import { authController } from "./controllers/auth/auth.controller.js";
 import uploadRouter from "./controllers/misc/upload.controller.js";
+
 import { verifyUserGroups } from "./middleware/auth.middleware.js";
+
+import { getAllBooks } from "./services/book/book.service.js";
+import { getAllActors } from "./services/misc/actor.service.js";
+import { getAllGenres } from "./services/misc/genre.service.js";
+import { getAllMovies } from "./services/movie/movie.service.js";
+
+import { GetAllUsers } from "./services/auth/user.service.js";
+import { listAllGroup } from "./services/auth/group.service.js";
+
+
+import upload from "./middleware/upload.middleware.js";
+import { Groups } from "./services/auth/user.service.js";
+
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -46,6 +60,7 @@ app.use(
 app.set("view engine", "ejs");
 
 app.use("/actors", actorController);
+
 app.use("/books", bookController);
 app.use("/genres", genreController);
 app.use("/movies", movieController);
