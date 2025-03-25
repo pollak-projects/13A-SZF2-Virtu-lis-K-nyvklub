@@ -14,15 +14,30 @@
         </div>
         <div class="form-group">
           <label for="releaseYear">Release Year:</label>
-          <input type="number" id="releaseYear" v-model="movie.releaseYear" required />
+          <input
+            type="number"
+            id="releaseYear"
+            v-model="movie.releaseYear"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="description">Description:</label>
-          <textarea id="description" v-model="movie.description" required></textarea>
+          <textarea
+            id="description"
+            v-model="movie.description"
+            required
+          ></textarea>
         </div>
         <div class="form-group">
           <label for="coverArt">Cover Art:</label>
-          <input type="file" id="coverArt" @change="handleFileUpload" accept="image/*" required />
+          <input
+            type="file"
+            id="coverArt"
+            @change="handleFileUpload"
+            accept="image/*"
+            required
+          />
         </div>
         <button type="submit">Upload Movie</button>
       </form>
@@ -31,15 +46,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import axios from 'axios';
-import Header from '../components/Header.vue';
+import { ref } from "vue";
+import axios from "axios";
+import Header from "../components/Header.vue";
 
 const movie = ref({
-  title: '',
-  director: '',
-  releaseYear: '',
-  description: '',
+  title: "",
+  director: "",
+  releaseYear: "",
+  description: "",
   coverArt: null,
 });
 
@@ -49,23 +64,27 @@ const handleFileUpload = (event) => {
 
 const submitMovie = async () => {
   const formData = new FormData();
-  formData.append('title', movie.value.title);
-  formData.append('director', movie.value.director);
-  formData.append('releaseYear', movie.value.releaseYear);
-  formData.append('description', movie.value.description);
-  formData.append('coverArt', movie.value.coverArt);
+  formData.append("title", movie.value.title);
+  formData.append("director", movie.value.director);
+  formData.append("releaseYear", movie.value.releaseYear);
+  formData.append("description", movie.value.description);
+  formData.append("coverArt", movie.value.coverArt);
 
   try {
-    const response = await axios.post('http://localhost:3300/movies/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    alert('Movie uploaded successfully!');
-    console.log('Response:', response.data);
+    const response = await axios.post(
+      "http://localhost:3300/movies/upload",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    alert("Movie uploaded successfully!");
+    console.log("Response:", response.data);
   } catch (error) {
-    console.error('Error uploading movie:', error);
-    alert('Failed to upload movie.');
+    console.error("Error uploading movie:", error);
+    alert("Failed to upload movie.");
   }
 };
 </script>

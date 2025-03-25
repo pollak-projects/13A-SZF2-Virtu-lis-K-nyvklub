@@ -1,6 +1,23 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+export async function uploadCreative(data) {
+  try {
+    return await prisma.creative.create({
+      data: {
+        name: data.name,
+        picture: data.picture,
+        author_book: data.author_book,
+        director_movie: data.director_movie,
+        creator_show: data.creator_show,
+      },
+    });
+  } catch (error) {
+    console.error("Error uploading creative:", error);
+    throw new Error("Failed to upload creative");
+  }
+}
+
 export async function getAllCreatives() {
   return await prisma.creative.findMany({
     include: {

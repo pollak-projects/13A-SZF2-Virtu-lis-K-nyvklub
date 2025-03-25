@@ -1,13 +1,36 @@
 import express from "express";
+import multer from "multer";
 import {
   getAllCreatives,
   getCreativeById,
   createCreative,
   updateCreative,
   deleteCreative,
+  uploadCreative,
 } from "../../services/misc/creative.service.js";
 
 const creativeRouter = express.Router();
+const upload = multer({ dest: "uploads/" });
+
+creativeRouter.post("/upload", upload.single("picture"), async (req, res) => {
+  try {
+    const { name, author_book, director_movie, creator_show } = req.body;
+    const picture = req.file ? `/uploads/${req.file.filename}` : null;
+
+    const newCreative = await uploadCreative({
+      name,
+      picture,
+      author_book: author_book === "true",
+      director_movie: director_movie === "true",
+      creator_show: creator_show === "true",
+    });
+
+    res.status(201).json(newCreative);
+  } catch (error) {
+    console.error("Error uploading creative:", error);
+    res.status(500).json({ message: "Failed to upload creative" });
+  }
+});
 
 creativeRouter.get("/creatives", async (req, res) => {
   try {
