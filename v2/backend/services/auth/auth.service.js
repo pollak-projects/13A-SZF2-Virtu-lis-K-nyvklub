@@ -97,19 +97,102 @@ async function createNewToken(id, name, email, groupName) {
     );
 }
 
-export async function register(username, email, password, name, groupName) {
+export async function register(username, email, password, name, groupName, verificationToken) {
+    // Check if user already exists
+    const existingUser = await prisma.user.findFirst({
+        where: {
+            OR: [
+                { username: username },
+                { email: email }
+            ]
+        }
+    });
+
+    if (existingUser) {
+        throw new Error("Felhasználó vagy email cím már foglalt");
+    }
+    
     const passEncrypted = await encrypt(password);
     
-    await prisma.user.create({
-        data: {
-            username: username,
-            email: email,
-            password: passEncrypted,
-            name: name,
-            groupName: groupName,
-        },
-    });
+    try {
+        // First find the group by name
+        let group = await prisma.group.findFirst({
+            where: { 
+                name: groupName || "USER" 
+            }
+        });
+        
+        // If group doesn't exist, use the default USER group
+        if (!group) {
+            group = await prisma.group.findFirst({
+                where: { name: "USER" }
+            });
+            
+            // If even USER group doesn't exist, create it
+            if (!group) {
+                group = await prisma.group.create({
+                    data: {
+                        name: "USER",
+                        read: true,
+                        write: false,
+                        update: false,
+                        delete: false
+                    }
+                });
+            }
+        }
+        
+        // Create user with connection to the group
+        const user = await prisma.user.create({
+            data: {
+                username: username,
+                email: email,
+                password: passEncrypted,
+                name: name || username,
+                verified: false,
+                verificationToken: verificationToken,
+                group: {
+                    connect: {
+                        id: group.id
+                    }
+                }
+            },
+        });
+        
+        return user;
+    } catch (error) {
+        console.error("Registration error:", error);
+        throw new Error("Hiba történt a regisztráció során");
+    }
 }
+
+// New function to verify email tokens
+export async function verifyEmailToken(token) {
+    // Find user by verification token
+    const user = await prisma.user.findFirst({
+        where: { verificationToken: token }
+    });
+
+    if (!user) {
+        return false;
+    }
+
+    // Update user as verified and clear verification token
+    try {
+        await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                verified: true,
+                verificationToken: null
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error("Email verification error:", error);
+        return false;
+    }
+}
+
 export async function login(username, password) {
     const user = await prisma.user.findUnique({
         where: {
@@ -123,9 +206,13 @@ export async function login(username, password) {
         return { message: "Hibás felhasználónév vagy jelszó" };
     }
 
+    if (!user.verified) {
+        return { message: "EMAIL_NOT_VERIFIED" };
+    }
+
     if (!(await bcrypt.compare(password, user.password))) {
         return { message: "Hibás felhasználónév vagy jelszó" };
-      }
+    }
 
     const data = await prisma.maindata.findFirst();
 
@@ -143,25 +230,24 @@ export async function login(username, password) {
     {
         expiresIn: data.JWTExpiration,
         algorithm: data.JWTAlgorithm,
-    }
-);
+    });
 
-const refreshToken = jwt.sign(
-    {
-        sub: user.id,
-    },
-    data.RefreshTokenSecret,
-    {
-        expiresIn: data.RefreshTokenExpiration,
-        algorithm: data.RefreshTokenAlgorithm,
-    }
-);
+    const refreshToken = jwt.sign(
+        {
+            sub: user.id,
+        },
+        data.RefreshTokenSecret,
+        {
+            expiresIn: data.RefreshTokenExpiration,
+            algorithm: data.RefreshTokenAlgorithm,
+        }
+    );
 
- return {
-    access_token: token,
-    refresh_token: refreshToken,
-    user_id: user.id,
- };
+    return {
+        access_token: token,
+        refresh_token: refreshToken,
+        user_id: user.id,
+    };
 }
 
 export async function updateMainData(

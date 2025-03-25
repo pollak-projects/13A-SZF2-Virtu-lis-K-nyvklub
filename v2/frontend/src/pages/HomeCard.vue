@@ -1,6 +1,5 @@
 <template>
   <div class="login-container">
-    <!-- Background image slideshow -->
     <div class="background-slideshow">
       <div 
         v-for="(image, index) in backgroundImages" 
@@ -14,17 +13,19 @@
           'pan-bottom-right': panDirections[index % panDirections.length] === 'bottom-right'
         }"
         :style="{ 
-      backgroundImage: `url(${image})`,
-      animationDelay: `-${(index * 6) % 60}s` 
-    }"
-  ></div>
+          backgroundImage: `url(${image})`,
+          animationDelay: `-${(index * 6) % 60}s` 
+        }"
+      ></div>
     </div>
     
-    <!-- Login form -->
     <div class="login-form-container">
+      <div class="logo-container">
+        <img src="/src/assets/images/text_logo.png" alt="Virtual Book Club" class="text-logo">
+      </div>
+      
       <div class="login-form">
         <h1>Bejelentkezés</h1>
-        
         <div class="form-group">
           <label for="username">Felhasználónév</label>
           <input type="text" id="username" v-model="username" required />
@@ -59,7 +60,6 @@ const username = ref('');
 const password = ref('');
 const errorMsg = ref('');
 
-// Background image slideshow
 const backgroundImages = [
   '/src/assets/images/home/BB.png',
   '/src/assets/images/home/BCS.png',
@@ -72,7 +72,6 @@ const backgroundImages = [
   '/src/assets/images/home/SW.png',
 ];
 
-// You can add more or fewer directions as needed
 const panDirections = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
 const currentImageIndex = ref(0);
 let slideInterval;
@@ -138,7 +137,6 @@ const handleLogin = async () => {
   background-size: cover;
   opacity: 0;
   transition: opacity 2s ease-in-out;
-  /* Apply animation to ALL images, not just active ones */
   animation-duration: 60s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
@@ -148,7 +146,6 @@ const handleLogin = async () => {
   opacity: 1;
 }
 
-/* Apply animations to all images, not just active ones */
 .background-image.pan-top-left {
   animation-name: pan-top-left;
 }
@@ -166,30 +163,47 @@ const handleLogin = async () => {
 }
 
 @keyframes pan-top-left {
-  0% { transform: scale(1.3) translate(0, 0); }
-  100% { transform: scale(1.3) translate(-12%, -8%); }
+  0% { transform: scale(1.5) translate(8%, 5%); }
+  100% { transform: scale(1.5) translate(-8%, -5%); }
 }
 
 @keyframes pan-top-right {
-  0% { transform: scale(1.3) translate(0, 0); }
-  100% { transform: scale(1.3) translate(10%, -7%); }
+  0% { transform: scale(1.5) translate(-8%, 5%); }
+  100% { transform: scale(1.5) translate(8%, -5%); }
 }
 
 @keyframes pan-bottom-left {
-  0% { transform: scale(1.3) translate(0, 0); }
-  100% { transform: scale(1.3) translate(-10%, 9%); }
+  0% { transform: scale(1.5) translate(8%, -5%); }
+  100% { transform: scale(1.5) translate(-8%, 5%); }
 }
 
 @keyframes pan-bottom-right {
-  0% { transform: scale(1.3) translate(0, 0); }
-  100% { transform: scale(1.3) translate(12%, 10%); }
+  0% { transform: scale(1.5) translate(-8%, -5%); }
+  100% { transform: scale(1.5) translate(8%, 5%); }
 }
 
 .login-form-container {
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  max-width: 400px;
+  max-width: 700px; 
   padding: 20px;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 50px;
+  width: 100%;
+}
+
+.text-logo {
+  max-width: 700px;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  margin-bottom: 20px;
 }
 
 .login-form {
@@ -197,6 +211,8 @@ const handleLogin = async () => {
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px; 
 }
 
 h1 {

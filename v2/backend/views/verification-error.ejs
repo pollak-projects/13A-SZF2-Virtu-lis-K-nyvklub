@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email megerősítés sikertelen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+        }
+        h1 {
+            color: #f44336;
+        }
+        .error-message {
+            margin: 20px 0;
+            color: #555;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hiba történt!</h1>
+        <p class="error-message"><%= message %></p>
+        <p>Kérjük, próbálja újra, vagy lépjen kapcsolatba a támogatással.</p>
+        <a href="http://localhost:5173/login" class="btn">Vissza a bejelentkezéshez</a>
+    </div>
+</body>
+</html>

@@ -7,6 +7,6 @@ model User {
   group     Group    @relation(fields: [groupId], references: [id])
   ForgotToken String? @unique @db.VarChar(100)
   ForgotTokenExpiresAt DateTime?
-
-
+  verified          Boolean @default(false)
+  verificationToken String?
 }

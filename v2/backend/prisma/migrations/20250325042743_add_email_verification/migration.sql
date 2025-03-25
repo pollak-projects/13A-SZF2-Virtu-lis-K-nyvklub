@@ -15,6 +15,7 @@ CREATE TABLE `Book` (
     `releaseYear` INTEGER NOT NULL,
     `description` VARCHAR(191) NOT NULL,
     `coverArt` VARCHAR(191) NULL,
+    `isbn` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -134,6 +135,19 @@ CREATE TABLE `Group` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `maindata` (
+    `id` VARCHAR(191) NOT NULL,
+    `JWTSecret` VARCHAR(191) NOT NULL,
+    `JWTExpiration` INTEGER NOT NULL,
+    `JWTAlgorithm` VARCHAR(191) NOT NULL,
+    `RefreshTokenSecret` VARCHAR(191) NOT NULL,
+    `RefreshTokenExpiration` INTEGER NOT NULL,
+    `RefreshTokenAlgorithm` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Movie` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(191) NOT NULL,
@@ -187,9 +201,14 @@ CREATE TABLE `User` (
     `password` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `groupId` INTEGER NOT NULL,
+    `ForgotToken` VARCHAR(100) NULL,
+    `ForgotTokenExpiresAt` DATETIME(3) NULL,
+    `verified` BOOLEAN NOT NULL DEFAULT false,
+    `verificationToken` VARCHAR(191) NULL,
 
     UNIQUE INDEX `User_username_key`(`username`),
     UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `User_ForgotToken_key`(`ForgotToken`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
