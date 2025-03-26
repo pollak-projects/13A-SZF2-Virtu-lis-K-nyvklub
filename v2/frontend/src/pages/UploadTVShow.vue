@@ -12,12 +12,17 @@
           <label for="creator">Creator:</label>
           <select id="creator" v-model="tvShow.creatorId" required>
             <option value="" disabled>Select a creator</option>
-            <option v-for="creator in creators" :key="creator.id" :value="creator.id">
+            <option
+              v-for="creator in creators"
+              :key="creator.id"
+              :value="creator.id"
+            >
               {{ creator.name }}
             </option>
           </select>
           <div v-if="creators.length === 0" class="no-creators-warning">
-            No creators available. Please add creators in the Upload Creative section first.
+            No creators available. Please add creators in the Upload Creative
+            section first.
           </div>
         </div>
         <div class="form-group">
@@ -51,7 +56,9 @@
             required
           />
         </div>
-        <button type="submit" :disabled="creators.length === 0">Upload TV Show</button>
+        <button type="submit" :disabled="creators.length === 0">
+          Upload TV Show
+        </button>
       </form>
     </div>
   </div>
@@ -75,7 +82,9 @@ const tvShow = ref({
 // Fetch creators on component mount
 onMounted(async () => {
   try {
-    const response = await axios.get("http://localhost:3300/creatives/creators");
+    const response = await axios.get(
+      "http://localhost:3300/creatives/creators"
+    );
     creators.value = response.data;
   } catch (error) {
     console.error("Error fetching creators:", error);

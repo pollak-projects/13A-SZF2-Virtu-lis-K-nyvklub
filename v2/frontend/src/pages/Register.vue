@@ -2,92 +2,102 @@
   <div class="register-container">
     <form class="register-form" @submit.prevent="register">
       <h1>Regisztráció</h1>
-      
+
       <label for="username">Felhasználónév</label>
       <input type="text" id="username" v-model="username" required />
-      
+
       <label for="email">Email</label>
       <input type="email" id="email" v-model="email" required />
-      
+
       <label for="password">Jelszó</label>
       <input type="password" id="password" v-model="password" required />
-      
+
       <label for="confirmPassword">Jelszó megerősítés</label>
-      <input type="password" id="confirmPassword" v-model="confirmPassword" required />
-      
+      <input
+        type="password"
+        id="confirmPassword"
+        v-model="confirmPassword"
+        required
+      />
+
       <div v-if="error" class="error-message">
         {{ error }}
       </div>
-      
+
       <button type="submit" :disabled="isSubmitting">
-        {{ isSubmitting ? 'Folyamatban...' : 'Regisztráció' }}
+        {{ isSubmitting ? "Folyamatban..." : "Regisztráció" }}
       </button>
-      
+
       <div class="login-link">
         Már van fiókja? <router-link to="/login">Bejelentkezés</router-link>
       </div>
     </form>
-    
-    <!-- Verification Message Modal -->
+
     <div v-if="showVerificationMessage" class="verification-modal">
       <div class="verification-content">
         <h2>Regisztráció sikeres!</h2>
-        <p>Elküldtünk egy megerősítő e-mailt a következő címre: <strong>{{ email }}</strong></p>
+        <p>
+          Elküldtünk egy megerősítő e-mailt a következő címre:
+          <strong>{{ email }}</strong>
+        </p>
         <p>Kérjük, kattintson a linkre az e-mailben a fiók aktiválásához.</p>
-        <button @click="goToLogin" class="verify-button">Tovább a bejelentkezéshez</button>
+        <button @click="goToLogin" class="verify-button">
+          Tovább a bejelentkezéshez
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
-const username = ref('');
-const email = ref('');
-const password = ref('');
-const confirmPassword = ref('');
-const error = ref('');
+const username = ref("");
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
+const error = ref("");
 const isSubmitting = ref(false);
 const showVerificationMessage = ref(false);
 
 const register = async () => {
-  error.value = '';
-  
+  error.value = "";
+
   if (password.value !== confirmPassword.value) {
-    error.value = 'A jelszavak nem egyeznek';
+    error.value = "A jelszavak nem egyeznek";
     return;
   }
 
   if (password.value.length < 8) {
-    error.value = 'A jelszónak legalább 8 karakter hosszúnak kell lennie';
+    error.value = "A jelszónak legalább 8 karakter hosszúnak kell lennie";
     return;
   }
 
   try {
     isSubmitting.value = true;
-    
-    const response = await axios.post('/auth/register', {
+
+    const response = await axios.post("/auth/register", {
       username: username.value,
       email: email.value,
-      password: password.value
+      password: password.value,
     });
-    
+
     // Show verification message instead of alert
     showVerificationMessage.value = true;
-    
+
     // Reset form
-    username.value = '';
-    email.value = '';
-    password.value = '';
-    confirmPassword.value = '';
-    
+    username.value = "";
+    email.value = "";
+    password.value = "";
+    confirmPassword.value = "";
   } catch (err) {
-    error.value = err.response?.data?.message || 'A regisztráció sikertelen. Kérjük próbálja újra.';
-    console.error('Registration error:', err);
+    error.value =
+      err.response?.data?.message ||
+      "A regisztráció sikertelen. Kérjük próbálja újra.";
+    console.error("Registration error:", err);
   } finally {
     isSubmitting.value = false;
   }
@@ -95,7 +105,7 @@ const register = async () => {
 
 const goToLogin = () => {
   showVerificationMessage.value = false;
-  router.push('/login');
+  router.push("/login");
 };
 </script>
 
@@ -143,7 +153,7 @@ input {
 button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 4px;

@@ -1,5 +1,5 @@
-import express from 'express';
-import multer from 'multer';
+import express from "express";
+import multer from "multer";
 import { PrismaClient } from "@prisma/client";
 import {
   getAllBooks,
@@ -7,21 +7,21 @@ import {
   createBook,
   updateBook,
   deleteBook,
-} from '../../services/book/book.service.js';
+} from "../../services/book/book.service.js";
 
 const prisma = new PrismaClient();
 const bookRouter = express.Router();
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: "uploads/book/" });
 
-bookRouter.post('/upload', upload.single('coverArt'), async (req, res) => {
+bookRouter.post("/upload", upload.single("coverArt"), async (req, res) => {
   try {
     const { title, authorId, publishYear, isbn, description } = req.body;
-    const coverArt = req.file ? `/uploads/${req.file.filename}` : null;
+    const coverArt = req.file ? `/uploads/book/${req.file.filename}` : null;
 
     const newBook = await createBook({
       title,
-      author_Id: parseInt(authorId), // Use author_Id from the dropdown selection
-      releaseYear: parseInt(publishYear), 
+      author_Id: parseInt(authorId),
+      releaseYear: parseInt(publishYear),
       isbn,
       description,
       coverArt,
@@ -29,8 +29,8 @@ bookRouter.post('/upload', upload.single('coverArt'), async (req, res) => {
 
     res.status(201).json(newBook);
   } catch (error) {
-    console.error('Error uploading book:', error);
-    res.status(500).json({ message: 'Failed to upload book' });
+    console.error("Error uploading book:", error);
+    res.status(500).json({ message: "Failed to upload book" });
   }
 });
 

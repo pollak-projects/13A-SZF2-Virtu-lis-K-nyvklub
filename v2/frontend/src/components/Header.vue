@@ -3,57 +3,65 @@
     <div class="mobile-menu-toggle" @click="toggleSidebar">
       <img src="../assets/images/menu.png" alt="Menu" class="mobile-logo" />
     </div>
-    
+
     <div class="header-buttons left desktop-only">
       <router-link to="/books"><button>KÖNYVEK</button></router-link>
       <router-link to="/movies"><button>FILMEK</button></router-link>
       <router-link to="/series"><button>SOROZATOK</button></router-link>
     </div>
-    
+
     <img src="../assets/images/header.svg" alt="Header" class="header-image" />
     <img src="../assets/images/logo.png" alt="Logo" class="logo" />
-    
+
     <div class="header-buttons right desktop-only">
       <button>CSOPORTOK</button>
       <button>PROFIL</button>
       <router-link to="/about-us"><button>RÓLUNK</button></router-link>
     </div>
 
-    <div class="sidebar" :class="{ 'open': isSidebarOpen }">
+    <div class="sidebar" :class="{ open: isSidebarOpen }">
       <div class="sidebar-header">
         <img src="../assets/images/menu.png" alt="Logo" class="sidebar-logo" />
         <button class="close-button" @click="toggleSidebar">×</button>
       </div>
       <div class="sidebar-content">
-        <router-link to="/books" @click="toggleSidebar"><button>KÖNYVEK</button></router-link>
-        <router-link to="/movies" @click="toggleSidebar"><button>FILMEK</button></router-link>
-        <router-link to="/series" @click="toggleSidebar"><button>SOROZATOK</button></router-link>
+        <router-link to="/books" @click="toggleSidebar"
+          ><button>KÖNYVEK</button></router-link
+        >
+        <router-link to="/movies" @click="toggleSidebar"
+          ><button>FILMEK</button></router-link
+        >
+        <router-link to="/series" @click="toggleSidebar"
+          ><button>SOROZATOK</button></router-link
+        >
         <button>CSOPORTOK</button>
         <button>PROFIL</button>
-        <router-link to="/about-us" @click="toggleSidebar"><button>RÓLUNK</button></router-link>
+        <router-link to="/about-us" @click="toggleSidebar"
+          ><button>RÓLUNK</button></router-link
+        >
       </div>
     </div>
-    
-    <div 
-      class="sidebar-overlay" 
-      :class="{ 'active': isSidebarOpen }" 
+
+    <div
+      class="sidebar-overlay"
+      :class="{ active: isSidebarOpen }"
       @click="toggleSidebar"
     ></div>
   </header>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 
 const isSidebarOpen = ref(false);
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
-  
+
   if (isSidebarOpen.value) {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   } else {
-    document.body.style.overflow = '';
+    document.body.style.overflow = "";
   }
 };
 </script>
@@ -61,16 +69,16 @@ const toggleSidebar = () => {
 <style scoped>
 .header {
   position: relative;
-  width: 100%;
+  width: 100%; /* Changed from 100vw to 100% */
   height: 200px;
 }
 
 .header-image {
   position: absolute;
-  top: -30px; 
-  left: -20px; 
-  width: calc(100% + 40px);
-  height: calc(100% + 40px); 
+  top: -30px;
+  left: -20px;
+  width: calc(100% + 40px); /* Changed from 100vw to 100% */
+  height: calc(100% + 40px);
   object-fit: cover;
   z-index: 1;
 }
@@ -90,7 +98,7 @@ const toggleSidebar = () => {
   top: 21%;
   transform: translateY(-50%);
   display: flex;
-  gap: 40px; 
+  gap: 40px;
   z-index: 2;
 }
 
@@ -104,9 +112,9 @@ const toggleSidebar = () => {
 }
 
 .header-buttons button {
-  font-family: 'Simple Print', sans-serif;
+  font-family: "Simple Print", sans-serif;
   font-weight: bold;
-  font-size: 24px; 
+  font-size: 24px;
   color: white;
   background: none;
   border: none;
@@ -171,7 +179,7 @@ const toggleSidebar = () => {
 }
 
 .sidebar-content button {
-  font-family: 'Simple Print', sans-serif;
+  font-family: "Simple Print", sans-serif;
   font-weight: bold;
   font-size: 20px;
   color: #333;
@@ -206,11 +214,11 @@ const toggleSidebar = () => {
   .desktop-only {
     display: none;
   }
-  
+
   .mobile-menu-toggle {
     display: block;
   }
-  
+
   .header {
     height: 150px;
   }

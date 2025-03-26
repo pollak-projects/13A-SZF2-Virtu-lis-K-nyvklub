@@ -12,12 +12,17 @@
           <label for="director">Director:</label>
           <select id="director" v-model="movie.directorId" required>
             <option value="" disabled>Select a director</option>
-            <option v-for="director in directors" :key="director.id" :value="director.id">
+            <option
+              v-for="director in directors"
+              :key="director.id"
+              :value="director.id"
+            >
               {{ director.name }}
             </option>
           </select>
           <div v-if="directors.length === 0" class="no-directors-warning">
-            No directors available. Please add directors in the Upload Creative section first.
+            No directors available. Please add directors in the Upload Creative
+            section first.
           </div>
         </div>
         <div class="form-group">
@@ -47,7 +52,9 @@
             required
           />
         </div>
-        <button type="submit" :disabled="directors.length === 0">Upload Movie</button>
+        <button type="submit" :disabled="directors.length === 0">
+          Upload Movie
+        </button>
       </form>
     </div>
   </div>
@@ -70,7 +77,9 @@ const movie = ref({
 // Fetch directors on component mount
 onMounted(async () => {
   try {
-    const response = await axios.get("http://localhost:3300/creatives/directors");
+    const response = await axios.get(
+      "http://localhost:3300/creatives/directors"
+    );
     directors.value = response.data;
   } catch (error) {
     console.error("Error fetching directors:", error);

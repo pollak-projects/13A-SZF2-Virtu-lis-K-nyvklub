@@ -12,12 +12,17 @@
           <label for="author">Author:</label>
           <select id="author" v-model="book.authorId" required>
             <option value="" disabled>Select an author</option>
-            <option v-for="author in authors" :key="author.id" :value="author.id">
+            <option
+              v-for="author in authors"
+              :key="author.id"
+              :value="author.id"
+            >
               {{ author.name }}
             </option>
           </select>
           <div v-if="authors.length === 0" class="no-authors-warning">
-            No authors available. Please add authors in the Upload Creative section first.
+            No authors available. Please add authors in the Upload Creative
+            section first.
           </div>
         </div>
         <div class="form-group">
@@ -51,7 +56,9 @@
             required
           />
         </div>
-        <button type="submit" :disabled="authors.length === 0">Upload Book</button>
+        <button type="submit" :disabled="authors.length === 0">
+          Upload Book
+        </button>
       </form>
     </div>
   </div>

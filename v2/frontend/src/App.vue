@@ -1,25 +1,26 @@
 <script setup>
-import { RouterView } from 'vue-router';
+import { RouterView } from "vue-router";
 </script>
 
 <template>
   <div id="app">
-    <RouterView>
-      
-    </RouterView>
+    <RouterView> </RouterView>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
 
 <style>
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
   width: 100%;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 #app {

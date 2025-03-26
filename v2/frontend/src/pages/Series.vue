@@ -1,36 +1,40 @@
 <template>
-  <div>
-    <Header />
-    <div class="home-card">
-      <div class="content">
-        <h1>TV Shows</h1>
-        <ContentHolder :items="formattedSeries" />
+  <GradientBackground>
+    <div class="page-container">
+      <Header />
+      <div class="home-card">
+        <div class="content">
+          <h1>TV Shows</h1>
+          <ContentHolder :items="formattedSeries" />
+        </div>
       </div>
     </div>
-  </div>
+  </GradientBackground>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
-import Header from '../components/Header.vue';
-import ContentHolder from '../components/ContentHolder.vue';
-import placeholderImage from '../assets/images/placeholder.png';
+import { ref, onMounted, computed } from "vue";
+import axios from "axios";
+import Header from "../components/Header.vue";
+import ContentHolder from "../components/ContentHolder.vue";
+import GradientBackground from "../components/GradientBackground.vue";
 
 const tvShows = ref([]);
 
 const fetchTVShows = async () => {
   try {
-    const response = await axios.get('http://localhost:3300/tvshows/getAllTVShows');
-    console.log('TV Shows fetched:', response.data);
+    const response = await axios.get(
+      "http://localhost:3300/tvshows/getAllTVShows"
+    );
+    console.log("TV Shows fetched:", response.data);
     tvShows.value = response.data;
   } catch (error) {
-    console.error('Failed to fetch TV Shows:', error);
+    console.error("Failed to fetch TV Shows:", error);
   }
 };
 
 const formattedSeries = computed(() =>
-  tvShows.value.map(show => ({
+  tvShows.value.map((show) => ({
     id: show.id,
     title: show.title,
     creator: show.creator?.name || "Unknown",
@@ -44,10 +48,18 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.page-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .home-card {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 20px auto;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);

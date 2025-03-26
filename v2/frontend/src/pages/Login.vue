@@ -6,20 +6,25 @@
       <input type="text" id="username" v-model="username" />
 
       <label for="password">Jelszó</label>
-      <input :type="isPasswordVisible ? 'text' : 'password'" id="password" v-model="password"/>
-      
+      <input
+        :type="isPasswordVisible ? 'text' : 'password'"
+        id="password"
+        v-model="password"
+      />
+
       <button type="submit">Bejelentkezés</button>
       <div class="register-link">
-        Nincs még fiókja? <router-link to="/register">Regisztráljon</router-link>
+        Nincs még fiókja?
+        <router-link to="/register">Regisztráljon</router-link>
       </div>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
 const username = ref("");
@@ -29,16 +34,17 @@ const isPasswordVisible = ref(false);
 
 const handleLogin = async () => {
   try {
-    const response = await axios.post('/auth/login', {
+    const response = await axios.post("/auth/login", {
       username: username.value,
-      password: password.value
+      password: password.value,
     });
-    
-    localStorage.setItem('token', response.data.token);
-    localStorage.setItem('user', JSON.stringify(response.data.user));
+
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
     router.push("/homecard");
   } catch (error) {
-    errorMsg.value = error.response?.data?.message || "Sikertelen bejelentkezés";
+    errorMsg.value =
+      error.response?.data?.message || "Sikertelen bejelentkezés";
     console.error(error);
   }
 };
@@ -82,7 +88,7 @@ input {
 button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 4px;

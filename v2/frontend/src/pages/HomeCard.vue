@@ -1,49 +1,58 @@
 <template>
   <div class="login-container">
     <div class="background-slideshow">
-      <div 
-        v-for="(image, index) in backgroundImages" 
+      <div
+        v-for="(image, index) in backgroundImages"
         :key="index"
         class="background-image"
-        :class="{ 
-          'active': currentImageIndex === index,
-          'pan-top-left': panDirections[index % panDirections.length] === 'top-left',
-          'pan-top-right': panDirections[index % panDirections.length] === 'top-right',
-          'pan-bottom-left': panDirections[index % panDirections.length] === 'bottom-left',
-          'pan-bottom-right': panDirections[index % panDirections.length] === 'bottom-right'
+        :class="{
+          active: currentImageIndex === index,
+          'pan-top-left':
+            panDirections[index % panDirections.length] === 'top-left',
+          'pan-top-right':
+            panDirections[index % panDirections.length] === 'top-right',
+          'pan-bottom-left':
+            panDirections[index % panDirections.length] === 'bottom-left',
+          'pan-bottom-right':
+            panDirections[index % panDirections.length] === 'bottom-right',
         }"
-        :style="{ 
+        :style="{
           backgroundImage: `url(${image})`,
-          animationDelay: `-${(index * 6) % 60}s` 
+          animationDelay: `-${(index * 6) % 60}s`,
         }"
       ></div>
     </div>
-    
+
     <div class="login-form-container">
       <div class="logo-container">
-        <img src="/src/assets/images/text_logo.png" alt="Virtual Book Club" class="text-logo">
+        <img
+          src="/src/assets/images/text_logo.png"
+          alt="Pollák Könyvklub"
+          class="text-logo"
+        />
       </div>
-      
+
       <div class="login-form">
         <h1>Bejelentkezés</h1>
         <div class="form-group">
           <label for="username">Felhasználónév</label>
           <input type="text" id="username" v-model="username" required />
         </div>
-        
+
         <div class="form-group">
           <label for="password">Jelszó</label>
           <input type="password" id="password" v-model="password" required />
         </div>
-        
+
         <div v-if="errorMsg" class="error-message">
           {{ errorMsg }}
         </div>
-        
+
         <button @click="handleLogin" type="button">Bejelentkezés</button>
-        
+
         <div class="register-link">
-          Nincs még fiókja? <router-link to="/register">Regisztráljon itt</router-link>
+          Nincs még fiókja?
+          <router-link to="/register">Regisztráljon itt</router-link>
         </div>
       </div>
     </div>
@@ -51,33 +60,34 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { ref, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
-const username = ref('');
-const password = ref('');
-const errorMsg = ref('');
+const username = ref("");
+const password = ref("");
+const errorMsg = ref("");
 
 const backgroundImages = [
-  '/src/assets/images/home/BB.png',
-  '/src/assets/images/home/BCS.png',
-  '/src/assets/images/home/CSM.png',
-  '/src/assets/images/home/GOT.png',
-  '/src/assets/images/home/HP.png',
-  '/src/assets/images/home/INDY.png',
-  '/src/assets/images/home/JJBA.png',
-  '/src/assets/images/home/M&M.png',
-  '/src/assets/images/home/SW.png',
+  "/src/assets/images/home/BB.png",
+  "/src/assets/images/home/BCS.png",
+  "/src/assets/images/home/CSM.png",
+  "/src/assets/images/home/GOT.png",
+  "/src/assets/images/home/HP.png",
+  "/src/assets/images/home/INDY.png",
+  "/src/assets/images/home/JJBA.png",
+  "/src/assets/images/home/M&M.png",
+  "/src/assets/images/home/SW.png",
 ];
 
-const panDirections = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+const panDirections = ["top-left", "top-right", "bottom-left", "bottom-right"];
 const currentImageIndex = ref(0);
 let slideInterval;
 
 const changeBackgroundImage = () => {
-  currentImageIndex.value = (currentImageIndex.value + 1) % backgroundImages.length;
+  currentImageIndex.value =
+    (currentImageIndex.value + 1) % backgroundImages.length;
 };
 
 onMounted(() => {
@@ -90,16 +100,17 @@ onUnmounted(() => {
 
 const handleLogin = async () => {
   try {
-    const response = await axios.post('/auth/login', {
+    const response = await axios.post("/auth/login", {
       username: username.value,
-      password: password.value
+      password: password.value,
     });
-    
-    localStorage.setItem('token', response.data.token);
-    localStorage.setItem('user', JSON.stringify(response.data.user));
+
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
     router.push("/books");
   } catch (error) {
-    errorMsg.value = error.response?.data?.message || "Sikertelen bejelentkezés";
+    errorMsg.value =
+      error.response?.data?.message || "Sikertelen bejelentkezés";
     console.error(error);
   }
 };
@@ -163,23 +174,39 @@ const handleLogin = async () => {
 }
 
 @keyframes pan-top-left {
-  0% { transform: scale(1.5) translate(8%, 5%); }
-  100% { transform: scale(1.5) translate(-8%, -5%); }
+  0% {
+    transform: scale(1.5) translate(8%, 5%);
+  }
+  100% {
+    transform: scale(1.5) translate(-8%, -5%);
+  }
 }
 
 @keyframes pan-top-right {
-  0% { transform: scale(1.5) translate(-8%, 5%); }
-  100% { transform: scale(1.5) translate(8%, -5%); }
+  0% {
+    transform: scale(1.5) translate(-8%, 5%);
+  }
+  100% {
+    transform: scale(1.5) translate(8%, -5%);
+  }
 }
 
 @keyframes pan-bottom-left {
-  0% { transform: scale(1.5) translate(8%, -5%); }
-  100% { transform: scale(1.5) translate(-8%, 5%); }
+  0% {
+    transform: scale(1.5) translate(8%, -5%);
+  }
+  100% {
+    transform: scale(1.5) translate(-8%, 5%);
+  }
 }
 
 @keyframes pan-bottom-right {
-  0% { transform: scale(1.5) translate(-8%, -5%); }
-  100% { transform: scale(1.5) translate(8%, 5%); }
+  0% {
+    transform: scale(1.5) translate(-8%, -5%);
+  }
+  100% {
+    transform: scale(1.5) translate(8%, 5%);
+  }
 }
 
 .login-form-container {
@@ -188,7 +215,7 @@ const handleLogin = async () => {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 700px; 
+  max-width: 700px;
   padding: 20px;
 }
 
@@ -212,7 +239,7 @@ const handleLogin = async () => {
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 400px; 
+  max-width: 400px;
 }
 
 h1 {
@@ -243,7 +270,7 @@ input {
 }
 
 input:focus {
-  border-color: #4CAF50;
+  border-color: #4caf50;
   outline: none;
 }
 
@@ -256,7 +283,7 @@ input:focus {
 button {
   width: 100%;
   padding: 12px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 4px;
@@ -276,7 +303,7 @@ button:hover {
 }
 
 .register-link a {
-  color: #4CAF50;
+  color: #4caf50;
   text-decoration: underline;
 }
 </style>
