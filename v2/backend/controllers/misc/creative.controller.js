@@ -8,7 +8,9 @@ import {
   deleteCreative,
   uploadCreative,
 } from "../../services/misc/creative.service.js";
+import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
 const creativeRouter = express.Router();
 const upload = multer({ dest: "uploads/" });
 
@@ -85,5 +87,43 @@ creativeRouter.delete("/creatives/:id", async (req, res) => {
     res.status(500).json({ message: "Failed to delete creative" });
   }
 });
+
+  //--------------------------------------------------------------------------------DROPDOWN ROUTES--------------------------------------------------------------------------------//
+creativeRouter.get("/authors", async (req, res) => {                                                                                                                               //
+  try {                                                                                                                                                                            //
+    const authors = await prisma.creative.findMany({                                                                                                                               // 
+      where: { author_book: true }                                                                                                                                                 //
+    });                                                                                                                                                                            //
+    res.status(200).json(authors);                                                                                                                                                 //
+  } catch (error) {                                                                                                                                                                //
+    console.error("Error fetching authors:", error);                                                                                                                               //
+    res.status(500).json({ message: "Failed to fetch authors" });                                                                                                                  //
+  }                                                                                                                                                                                //
+});                                                                                                                                                                                //
+  //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+creativeRouter.get("/directors", async (req, res) => {                                                                                                                             //
+  try {                                                                                                                                                                            //
+    const directors = await prisma.creative.findMany({                                                                                                                             //
+      where: { director_movie: true }                                                                                                                                              //
+    });                                                                                                                                                                            //
+    res.status(200).json(directors);                                                                                                                                               //
+  } catch (error) {                                                                                                                                                                //
+    console.error("Error fetching directors:", error);                                                                                                                             //
+    res.status(500).json({ message: "Failed to fetch directors" });                                                                                                                //
+  }                                                                                                                                                                                //
+});                                                                                                                                                                                //
+  //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+  creativeRouter.get("/creators", async (req, res) => {
+    try {
+      const creators = await prisma.creative.findMany({
+        where: { creator_show: true }
+      });
+      res.status(200).json(creators);
+    } catch (error) {
+      console.error("Error fetching creators:", error);
+      res.status(500).json({ message: "Failed to fetch creators" });
+    }
+  });                                                                                                                                                                               //                                                                                                                                                                              //
+  //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 export default creativeRouter;

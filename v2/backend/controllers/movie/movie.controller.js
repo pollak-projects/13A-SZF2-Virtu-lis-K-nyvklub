@@ -38,12 +38,12 @@ movieRouter.get('/getMovieById/:id', async (req, res) => {
 
 movieRouter.post('/upload', upload.single('coverArt'), async (req, res) => {
   try {
-    const { title, director, releaseYear, description } = req.body;
+    const { title, directorId, releaseYear, description } = req.body;
     const coverArt = req.file ? `/uploads/${req.file.filename}` : null;
 
     const newMovie = await createMovie({
       title,
-      director,
+      director_Id: parseInt(directorId),
       releaseYear: parseInt(releaseYear),
       description,
       coverArt,

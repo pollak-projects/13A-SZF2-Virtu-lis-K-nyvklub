@@ -10,7 +10,15 @@
         </div>
         <div class="form-group">
           <label for="author">Author:</label>
-          <input type="text" id="author" v-model="book.author" required />
+          <select id="author" v-model="book.authorId" required>
+            <option value="" disabled>Select an author</option>
+            <option v-for="author in authors" :key="author.id" :value="author.id">
+              {{ author.name }}
+            </option>
+          </select>
+          <div v-if="authors.length === 0" class="no-authors-warning">
+            No authors available. Please add authors in the Upload Creative section first.
+          </div>
         </div>
         <div class="form-group">
           <label for="publishYear">Publish Year:</label>
@@ -43,24 +51,35 @@
             required
           />
         </div>
-        <button type="submit">Upload Book</button>
+        <button type="submit" :disabled="authors.length === 0">Upload Book</button>
       </form>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import Header from "../components/Header.vue";
 
+const authors = ref([]);
 const book = ref({
   title: "",
-  author: "",
+  authorId: "",
   publishYear: "",
   isbn: "",
   description: "",
   coverArt: null,
+});
+
+onMounted(async () => {
+  try {
+    const response = await axios.get("http://localhost:3300/creatives/authors");
+    authors.value = response.data;
+  } catch (error) {
+    console.error("Error fetching authors:", error);
+    alert("Failed to load authors list.");
+  }
 });
 
 const handleFileUpload = (event) => {
@@ -70,7 +89,7 @@ const handleFileUpload = (event) => {
 const submitBook = async () => {
   const formData = new FormData();
   formData.append("title", book.value.title);
-  formData.append("author", book.value.author);
+  formData.append("authorId", book.value.authorId);
   formData.append("publishYear", book.value.publishYear);
   formData.append("isbn", book.value.isbn);
   formData.append("description", book.value.description);
@@ -90,7 +109,7 @@ const submitBook = async () => {
     console.log("Response:", response.data);
     book.value = {
       title: "",
-      author: "",
+      authorId: "",
       publishYear: "",
       isbn: "",
       description: "",
@@ -129,11 +148,18 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.no-authors-warning {
+  color: #dc3545;
+  margin-top: 5px;
+  font-size: 0.9rem;
 }
 
 button {
@@ -147,7 +173,12 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+button:hover:not([disabled]) {
   background-color: #0056b3;
 }
 </style>

@@ -10,7 +10,15 @@
         </div>
         <div class="form-group">
           <label for="creator">Creator:</label>
-          <input type="text" id="creator" v-model="tvShow.creator" required />
+          <select id="creator" v-model="tvShow.creatorId" required>
+            <option value="" disabled>Select a creator</option>
+            <option v-for="creator in creators" :key="creator.id" :value="creator.id">
+              {{ creator.name }}
+            </option>
+          </select>
+          <div v-if="creators.length === 0" class="no-creators-warning">
+            No creators available. Please add creators in the Upload Creative section first.
+          </div>
         </div>
         <div class="form-group">
           <label for="releaseYear">Release Year:</label>
@@ -43,24 +51,36 @@
             required
           />
         </div>
-        <button type="submit">Upload TV Show</button>
+        <button type="submit" :disabled="creators.length === 0">Upload TV Show</button>
       </form>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import Header from "../components/Header.vue";
 
+const creators = ref([]);
 const tvShow = ref({
   title: "",
-  creator: "",
+  creatorId: "",
   releaseYear: "",
   seasons: "",
   description: "",
   coverArt: null,
+});
+
+// Fetch creators on component mount
+onMounted(async () => {
+  try {
+    const response = await axios.get("http://localhost:3300/creatives/creators");
+    creators.value = response.data;
+  } catch (error) {
+    console.error("Error fetching creators:", error);
+    alert("Failed to load creators list.");
+  }
 });
 
 const handleFileUpload = (event) => {
@@ -70,7 +90,7 @@ const handleFileUpload = (event) => {
 const submitTVShow = async () => {
   const formData = new FormData();
   formData.append("title", tvShow.value.title);
-  formData.append("creator", tvShow.value.creator);
+  formData.append("creatorId", tvShow.value.creatorId); // Now sending creatorId instead of creator name
   formData.append("releaseYear", tvShow.value.releaseYear);
   formData.append("seasons", tvShow.value.seasons);
   formData.append("description", tvShow.value.description);
@@ -91,7 +111,7 @@ const submitTVShow = async () => {
     // Reset form
     tvShow.value = {
       title: "",
-      creator: "",
+      creatorId: "",
       releaseYear: "",
       seasons: "",
       description: "",
@@ -130,11 +150,18 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.no-creators-warning {
+  color: #dc3545;
+  margin-top: 5px;
+  font-size: 0.9rem;
 }
 
 button {
@@ -148,7 +175,12 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+button:hover:not([disabled]) {
   background-color: #0056b3;
 }
 </style>

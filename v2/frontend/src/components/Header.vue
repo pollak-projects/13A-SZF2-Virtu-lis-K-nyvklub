@@ -16,7 +16,7 @@
     <div class="header-buttons right desktop-only">
       <button>CSOPORTOK</button>
       <button>PROFIL</button>
-      <button>RÓLUNK</button>
+      <router-link to="/about-us"><button>RÓLUNK</button></router-link>
     </div>
 
     <div class="sidebar" :class="{ 'open': isSidebarOpen }">
@@ -30,7 +30,7 @@
         <router-link to="/series" @click="toggleSidebar"><button>SOROZATOK</button></router-link>
         <button>CSOPORTOK</button>
         <button>PROFIL</button>
-        <button>RÓLUNK</button>
+        <router-link to="/about-us" @click="toggleSidebar"><button>RÓLUNK</button></router-link>
       </div>
     </div>
     

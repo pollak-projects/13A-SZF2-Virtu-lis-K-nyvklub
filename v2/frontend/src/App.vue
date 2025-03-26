@@ -13,3 +13,18 @@ import { RouterView } from 'vue-router';
 <style scoped>
 
 </style>
+
+<style>
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+#app {
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+}
+</style>

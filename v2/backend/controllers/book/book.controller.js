@@ -15,36 +15,12 @@ const upload = multer({ dest: 'uploads/' });
 
 bookRouter.post('/upload', upload.single('coverArt'), async (req, res) => {
   try {
-    const { title, author, publishYear, isbn, description } = req.body;
+    const { title, authorId, publishYear, isbn, description } = req.body;
     const coverArt = req.file ? `/uploads/${req.file.filename}` : null;
-
-    let authorEntity;
-    try {
-      authorEntity = await prisma.creative.findFirst({
-        where: { 
-          name: author,
-          author_book: true
-        }
-      });
-      
-      if (!authorEntity) {
-        authorEntity = await prisma.creative.create({
-          data: {
-            name: author,
-            author_book: true,
-            director_movie: false,
-            creator_show: false
-          }
-        });
-      }
-    } catch (error) {
-      console.error('Error finding/creating author:', error);
-      return res.status(500).json({ message: 'Failed to process author information' });
-    }
 
     const newBook = await createBook({
       title,
-      author_Id: authorEntity.id,
+      author_Id: parseInt(authorId), // Use author_Id from the dropdown selection
       releaseYear: parseInt(publishYear), 
       isbn,
       description,
