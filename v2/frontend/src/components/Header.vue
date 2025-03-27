@@ -1,52 +1,54 @@
 <template>
-  <header class="header">
-    <div class="mobile-menu-toggle" @click="toggleSidebar">
-      <img src="../assets/images/menu.png" alt="Menu" class="mobile-logo" />
-    </div>
-
-    <div class="header-buttons left desktop-only">
-      <router-link to="/books"><button>KÖNYVEK</button></router-link>
-      <router-link to="/movies"><button>FILMEK</button></router-link>
-      <router-link to="/series"><button>SOROZATOK</button></router-link>
-    </div>
-
-    <img src="../assets/images/header.svg" alt="Header" class="header-image" />
-    <img src="../assets/images/logo.png" alt="Logo" class="logo" />
-
-    <div class="header-buttons right desktop-only">
-      <button>CSOPORTOK</button>
-      <button>PROFIL</button>
-      <router-link to="/about-us"><button>RÓLUNK</button></router-link>
-    </div>
-
-    <div class="sidebar" :class="{ open: isSidebarOpen }">
-      <div class="sidebar-header">
-        <img src="../assets/images/menu.png" alt="Logo" class="sidebar-logo" />
-        <button class="close-button" @click="toggleSidebar">×</button>
+  <header class="header-container">
+    <div class="header">
+      <div class="mobile-menu-toggle" @click="toggleSidebar">
+        <img src="../assets/images/menu.png" alt="Menu" class="mobile-logo" />
       </div>
-      <div class="sidebar-content">
-        <router-link to="/books" @click="toggleSidebar"
-          ><button>KÖNYVEK</button></router-link
-        >
-        <router-link to="/movies" @click="toggleSidebar"
-          ><button>FILMEK</button></router-link
-        >
-        <router-link to="/series" @click="toggleSidebar"
-          ><button>SOROZATOK</button></router-link
-        >
+
+      <div class="header-buttons left desktop-only">
+        <router-link to="/books"><button>KÖNYVEK</button></router-link>
+        <router-link to="/movies"><button>FILMEK</button></router-link>
+        <router-link to="/series"><button>SOROZATOK</button></router-link>
+      </div>
+
+      <img src="../assets/images/header.png" alt="Header" class="header-image" />
+      <img src="../assets/images/logo.png" alt="Logo" class="logo" />
+
+      <div class="header-buttons right desktop-only">
         <button>CSOPORTOK</button>
         <button>PROFIL</button>
-        <router-link to="/about-us" @click="toggleSidebar"
-          ><button>RÓLUNK</button></router-link
-        >
+        <router-link to="/about-us"><button>RÓLUNK</button></router-link>
       </div>
-    </div>
 
-    <div
-      class="sidebar-overlay"
-      :class="{ active: isSidebarOpen }"
-      @click="toggleSidebar"
-    ></div>
+      <div class="sidebar" :class="{ open: isSidebarOpen }">
+        <div class="sidebar-header">
+          <img src="../assets/images/menu.png" alt="Logo" class="sidebar-logo" />
+          <button class="close-button" @click="toggleSidebar">×</button>
+        </div>
+        <div class="sidebar-content">
+          <router-link to="/books" @click="toggleSidebar"
+            ><button>KÖNYVEK</button></router-link
+          >
+          <router-link to="/movies" @click="toggleSidebar"
+            ><button>FILMEK</button></router-link
+          >
+          <router-link to="/series" @click="toggleSidebar"
+            ><button>SOROZATOK</button></router-link
+          >
+          <button>CSOPORTOK</button>
+          <button>PROFIL</button>
+          <router-link to="/about-us" @click="toggleSidebar"
+            ><button>RÓLUNK</button></router-link
+          >
+        </div>
+      </div>
+
+      <div
+        class="sidebar-overlay"
+        :class="{ active: isSidebarOpen }"
+        @click="toggleSidebar"
+      ></div>
+    </div>
   </header>
 </template>
 
@@ -67,9 +69,16 @@ const toggleSidebar = () => {
 </script>
 
 <style scoped>
+.header-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .header {
   position: relative;
-  width: 100%; /* Changed from 100vw to 100% */
+  width: 100%;
+  max-width: 1920px; /* Limit width to 1080p */
   height: 200px;
 }
 

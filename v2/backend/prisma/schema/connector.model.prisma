@@ -27,6 +27,20 @@ model MovieCharacter {
     @@id([character_Id, movie_Id])
 }
 
+model UserMovieRating {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  movieId   Int
+  rating    Int      // Store rating from 1-5
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId]) // Ensure a user can only rate a movie once
+}
+
 //---------------------------------------------- SOROZATOK ----------------------------------------------\\
 
 model TvShowActor {
@@ -56,6 +70,20 @@ model TvCharacter {
     @@id([tvShow_Id, character_Id])
 }
 
+model UserTVShowRating {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  tvShowId  Int
+  rating    Int      // Store rating from 1-5
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tvShow TvShow @relation(fields: [tvShowId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tvShowId]) // Ensure a user can only rate a TV show once
+}
+
 //---------------------------------------------- KÖNYVEK ----------------------------------------------\\
 
 model BookGenre {
@@ -74,6 +102,20 @@ model BookCharacter {
   character    Character @relation(fields: [character_Id], references: [id])
 
   @@id([book_Id, character_Id])
+}
+
+model UserBookRating {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bookId    Int
+  rating    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, bookId])
 }
 
 //---------------------------------------------- EGYÉB ----------------------------------------------\\

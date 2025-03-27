@@ -36,6 +36,7 @@ const formattedBooks = computed(() =>
     title: book.title,
     creator: book.author?.name || "Unknown",
     coverArt: book.coverArt ? `http://localhost:3300${book.coverArt}` : null,
+    type: 'books' // Add this line!
   }))
 );
 

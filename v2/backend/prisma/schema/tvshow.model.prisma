@@ -11,4 +11,5 @@ model TvShow {
   tvShowActors TvShowActor[]
   TvGenres    TvGenre[]
   TvCharacters TvCharacter[]
+  userRatings UserTVShowRating[]
 }

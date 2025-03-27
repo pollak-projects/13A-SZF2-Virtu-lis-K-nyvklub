@@ -10,4 +10,5 @@ model Book {
 
     genres      BookGenre[]
     characters  BookCharacter[]
+    userRatings UserBookRating[]
 }

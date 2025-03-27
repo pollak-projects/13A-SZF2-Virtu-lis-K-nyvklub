@@ -9,4 +9,15 @@ model User {
   ForgotTokenExpiresAt DateTime?
   verified          Boolean @default(false)
   verificationToken String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastLogin DateTime?
+
+  name      String?
+  avatar    String?
+  bio       String?
+
+  bookRatings   UserBookRating[]
+  movieRatings  UserMovieRating[]
+  tvShowRatings UserTVShowRating[]
 }

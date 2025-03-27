@@ -39,6 +39,7 @@ const formattedSeries = computed(() =>
     title: show.title,
     creator: show.creator?.name || "Unknown",
     coverArt: show.coverArt ? `http://localhost:3300${show.coverArt}` : null,
+    type: 'series' // Add this line!
   }))
 );
 
@@ -59,7 +60,7 @@ onMounted(() => {
 .home-card {
   width: 100%;
   max-width: 1200px;
-  margin: 20px auto;
+  margin: 20px auto;  
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);

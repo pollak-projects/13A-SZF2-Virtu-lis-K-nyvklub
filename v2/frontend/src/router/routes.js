@@ -7,7 +7,6 @@ import UploadMovie from "../pages/UploadMovie.vue";
 import UploadBook from "../pages/UploadBook.vue";
 import UploadTVShow from "../pages/UploadTVShow.vue";
 import Login from "../pages/Login.vue";
-import Register from "../pages/Register.vue";
 import UploadCreative from "../pages/UploadCreative.vue";
 import AboutUs from "../pages/AboutUs.vue";
 
@@ -22,8 +21,16 @@ const routes = [
   { path: "/upload-tvshow", component: UploadTVShow },
   { path: "/upload-creative", component: UploadCreative },
   { path: "/login", component: Login },
-  { path: "/register", component: Register },
-  { path: "/about-us", component: AboutUs }, 
+  { path: "/about-us", component: AboutUs },
+  {
+    path: '/:type/:id',
+    name: 'MediaDetail',
+    component: () => import('../pages/MediaDetail.vue'),
+    props: true,
+    meta: {
+      requiresAuth: true
+    }
+  }
 ];
 
 const router = createRouter({

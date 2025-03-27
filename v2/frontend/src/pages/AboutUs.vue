@@ -1,6 +1,6 @@
 <template>
   <GradientBackground>
-    <div>
+    <div class="about-page-container">
       <Header />
       <div class="home-card">
         <div class="content">
@@ -100,6 +100,33 @@ import GradientBackground from "../components/GradientBackground.vue";
 </script>
 
 <style scoped>
+.about-page-container {
+  width: 100%;
+  position: relative;
+  padding-top: 200px; /* Space for header */
+}
+
+/* Override header styles for this page */
+:deep(.header) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+  overflow: visible;
+}
+
+:deep(.header-image) {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  width: 100%; 
+  height: auto;
+  min-height: 240px;
+  object-fit: cover;
+}
+
 .home-card {
   width: 100%;
   max-width: 1200px;
@@ -108,6 +135,8 @@ import GradientBackground from "../components/GradientBackground.vue";
   overflow: hidden;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   background: white;
+  position: relative;
+  z-index: 5;
 }
 
 .content {

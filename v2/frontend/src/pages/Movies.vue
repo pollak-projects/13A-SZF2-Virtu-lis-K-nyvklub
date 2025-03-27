@@ -39,6 +39,7 @@ const formattedMovies = computed(() =>
     title: movie.title,
     creator: movie.director?.name || "Unknown",
     coverArt: movie.coverArt ? `http://localhost:3300${movie.coverArt}` : null,
+    type: 'movies' // Add this line!
   }))
 );
 

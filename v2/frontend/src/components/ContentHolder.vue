@@ -1,6 +1,6 @@
 <template>
   <div class="content-holder">
-    <div class="item" v-for="item in items" :key="item.id">
+    <router-link :to="`/${item.type}/${item.id}`" class="item" v-for="item in items" :key="item.id">
       <img 
         :src="item.coverArt || placeholderImage" 
         alt="Cover Art" 
@@ -8,7 +8,7 @@
       />
       <h3 class="title">{{ item.title }}</h3>
       <p class="creator">{{ item.creator }}</p>
-    </div>
+    </router-link>
   </div>
 </template>
 

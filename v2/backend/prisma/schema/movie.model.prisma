@@ -10,4 +10,5 @@ model Movie {
   actors      MovieActor[]
   genres      MovieGenre[]
   characters  MovieCharacter[]
+  userRatings UserMovieRating[]
 }
