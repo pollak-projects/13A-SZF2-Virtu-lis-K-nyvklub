@@ -16,7 +16,7 @@
 
       <div class="header-buttons right desktop-only">
         <button>CSOPORTOK</button>
-        <button>PROFIL</button>
+        <router-link to="/profile"><button>PROFIL</button></router-link>
         <router-link to="/about-us"><button>RÓLUNK</button></router-link>
       </div>
 
@@ -36,7 +36,7 @@
             ><button>SOROZATOK</button></router-link
           >
           <button>CSOPORTOK</button>
-          <button>PROFIL</button>
+          <router-link to="/profile" @click="toggleSidebar"><button>PROFIL</button></router-link>
           <router-link to="/about-us" @click="toggleSidebar"
             ><button>RÓLUNK</button></router-link
           >

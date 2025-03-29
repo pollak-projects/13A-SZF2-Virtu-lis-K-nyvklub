@@ -67,19 +67,19 @@ INSERT INTO genre (genre, description) VALUES
 
 -- Insert actor placeholders for potential TV show connections
 INSERT INTO actor (name, picture) VALUES
-('Bryan Cranston', NULL),
-('Aaron Paul', NULL),
-('Peter Dinklage', NULL),
-('Emilia Clarke', NULL),
-('Sarah Paulson', NULL),
-('Joel McHale', NULL),
-('Phoebe Waller-Bridge', NULL),
-('Ellen Pompeo', NULL),
-('Michaela Coel', NULL),
-('Mike Judge', NULL),
-('Donald Glover', NULL),
-('James Gandolfini', NULL),
-('Idris Elba', NULL);
+('Bryan Cranston', '/uploads/actor/bryan_cranston.png'),
+('Aaron Paul', '/uploads/actor/aaron_paul.png'),
+('Peter Dinklage', '/uploads/actor/peter_dinklage.png'),
+('Emilia Clarke', '/uploads/actor/emilia_clarke.png'),
+('Sarah Paulson', '/uploads/actor/sarah_paulson.png'),
+('Joel McHale', '/uploads/actor/joel_mchale.png'),
+('Phoebe Waller-Bridge', '/uploads/actor/phoebe_waller-bridge.png'),
+('Ellen Pompeo', '/uploads/actor/ellen_pompeo.png'),
+('Michaela Coel', '/uploads/actor/michaela_coel.png'),
+('Mike Judge', '/uploads/actor/mike_judge.png'),
+('Donald Glover', '/uploads/actor/donald_glover.png'),
+('James Gandolfini', '/uploads/actor/james_gandolfini.png'),
+('Idris Elba', '/uploads/actor/idris_elba.png');
 
 -- Insert character placeholders for books and TV shows
 INSERT INTO `character` (name) VALUES
@@ -301,32 +301,32 @@ INSERT INTO movie (title, director_Id, releaseYear, description, coverArt) VALUE
 
 -- Insert movie actors
 INSERT INTO actor (name, picture) VALUES
-('Leonardo DiCaprio', NULL),
-('Joseph Gordon-Levitt', NULL),
-('Marion Cotillard', NULL),
-('Corinne Marchand', NULL),
-('Robert De Niro', NULL),
-('Ray Liotta', NULL),
-('Joe Pesci', NULL),
-('Sándor Csányi', NULL),
-('Zoltán Mucsi', NULL),
-('Klaus Maria Brandauer', NULL),
-('Anthony Perkins', NULL),
-('Janet Leigh', NULL),
-('Toshiro Mifune', NULL),
-('Mark Hamill', NULL),
-('Harrison Ford', NULL),
-('Carrie Fisher', NULL),
-('Marlon Brando', NULL),
-('Al Pacino', NULL),
-('James Caan', NULL),
-('Jeremy Renner', NULL),
-('Jack Nicholson', NULL),
-('Shelley Duvall', NULL),
-('James Stewart', NULL),
-('Kim Novak', NULL),
-('János Derzsi', NULL),
-('Erika Bók', NULL);
+('Leonardo DiCaprio', '/uploads/actor/leonardo_dicaprio.png'),
+('Joseph Gordon-Levitt', '/uploads/actor/joseph_gordon-levitt.png'),
+('Marion Cotillard', '/uploads/actor/marion_cotillard.png'),
+('Corinne Marchand', '/uploads/actor/corinne_marchand.png'),
+('Robert De Niro', '/uploads/actor/robert_de_niro.png'),
+('Ray Liotta', '/uploads/actor/ray_liotta.png'),
+('Joe Pesci', '/uploads/actor/joe_pesci.png'),
+('Sándor Csányi', '/uploads/actor/sandor_csanyi.png'),
+('Zoltán Mucsi', '/uploads/actor/zoltan_mucsi.png'),
+('Klaus Maria Brandauer', '/uploads/actor/klaus_maria_brandauer.png'),
+('Anthony Perkins', '/uploads/actor/anthony_perkins.png'),
+('Janet Leigh', '/uploads/actor/janet_leigh.png'),
+('Toshiro Mifune', '/uploads/actor/toshiro_mifune.png'),
+('Mark Hamill', '/uploads/actor/mark_hamill.png'),
+('Harrison Ford', '/uploads/actor/harrison_ford.png'),
+('Carrie Fisher', '/uploads/actor/carrie_fisher.png'),
+('Marlon Brando', '/uploads/actor/marlon_brando.png'),
+('Al Pacino', '/uploads/actor/al_pacino.png'),
+('James Caan', '/uploads/actor/james_caan.png'),
+('Jeremy Renner', '/uploads/actor/jeremy_renner.png'),
+('Jack Nicholson', '/uploads/actor/jack_nicholson.png'),
+('Shelley Duvall', '/uploads/actor/shelley_duvall.png'),
+('James Stewart', '/uploads/actor/james_stewart.png'),
+('Kim Novak', '/uploads/actor/kim_novak.png'),
+('János Derzsi', '/uploads/actor/janos_derzsi.png'),
+('Erika Bók', '/uploads/actor/erika_bok.png');
 
 -- Create movie-actor relationships
 INSERT INTO movieactor (movie_Id, actor_Id) VALUES
@@ -439,5 +439,21 @@ INSERT INTO user (username, password, email, groupId, verified, createdAt, updat
  1, 
  NOW(), 
  NOW());
+
+ INSERT INTO maindata (
+    JWTAlgorithm, 
+    JWTExpiration, 
+    JWTSecret, 
+    RefreshTokenAlgorithm, 
+    RefreshTokenSecret, 
+    RefreshTokenExpiration
+) VALUES (
+    'HS256', 
+    '86400', 
+    'your-jwt-secret-key-here', 
+    'HS256', 
+    'your-refresh-token-secret-key-here', 
+    '604800'
+);
 
 COMMIT;

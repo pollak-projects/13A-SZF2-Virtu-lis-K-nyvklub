@@ -4,7 +4,7 @@ import router from './router/routes';
 import './style.css';
 import './assets/theme.css';
 import axios from 'axios';
-
+import './auth.js';
 
 const app = createApp(App);
 app.use(router);

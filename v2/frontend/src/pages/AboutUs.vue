@@ -47,8 +47,7 @@
               <div class="feature">
                 <h3>👥 Közösség</h3>
                 <p>
-                  Csatlakozz csoportokhoz, beszélgess más rajongókkal és ossz
-                  meg véleményeket.
+                  Tudd meg, hogy a Pollák többi diákja mit gondol kedvenc alkotásaidról. Ismerkedj meg hasonló ízlésű diáktársaiddal, és építs barátságokat a művészet iránti közös szereteteken!
                 </p>
               </div>
             </div>

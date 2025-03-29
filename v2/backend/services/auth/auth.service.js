@@ -6,6 +6,8 @@ import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
+//---------------------------------------------- TOKEN MANAGEMENT ----------------------------------------------\\
+
 export async function verifyjwt(access_token, refresh_token) {
     const data = await prisma.maindata.findFirst();
 
@@ -30,7 +32,7 @@ export async function verifyjwt(access_token, refresh_token) {
                     console.log(tokenWithIgnore);
                     console.log(ref);
 
-                    if (ref.sub === tokenWithIgnore.sub) {
+                    if (ref && tokenWithIgnore && ref.sub === tokenWithIgnore.sub) {
                         resolve(
                             createNewToken(
                                 tokenWithIgnore.sub,
@@ -42,7 +44,7 @@ export async function verifyjwt(access_token, refresh_token) {
                     } else {
                         reject("Error while refreshing the token");
                     }
-                } else if (err) reject("Error while refreshing the token", err);
+                } else if (err) reject("Error while refreshing the token");
             }
         );
     });
@@ -97,8 +99,66 @@ async function createNewToken(id, name, email, groupName) {
     );
 }
 
+export async function createForgotToken(userId) {
+    const token = crypto.randomBytes(50).toString("hex");
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 1);
+
+    try {
+        await prisma.user.update({
+            where: { id: userId },
+            data: {
+                ForgotToken: token,
+                ForgotTokenExpiresAt: expiresAt,
+            },
+        });
+        return token;
+    } catch (err) {
+        return err;
+    }
+}
+
+export async function updateMainData(
+    JWTAlgorithm,
+    JWTExpiration,
+    JWTSecret,
+    RefreshTokenAlgorithm,
+    RefreshTokenSecret,
+    RefreshTokenExpiration
+) {
+    try {
+        await prisma.maindata.update({
+            where: {
+                id: "5a97ea0a-a19f-11ef-95f3-0a0027000007"
+            },
+            data: {
+                JWTAlgorithm: JWTAlgorithm,
+                JWTExpiration: Number(JWTExpiration),
+                JWTSecret: JWTSecret,
+                RefreshTokenAlgorithm: RefreshTokenAlgorithm,
+                RefreshTokenExpiration: Number(RefreshTokenExpiration),
+                RefreshTokenSecret: RefreshTokenSecret,
+            },
+        });
+        return "Az adat sikeresen frissítve";
+    }   catch (err) {
+        return err;
+    }
+}
+
+export async function listAllTokens() {
+    const data = await prisma.maindata.findUnique({
+        where: {
+            id: "5a97ea0a-a19f-11ef-95f3-0a0027000007",
+        },
+    });
+
+    return data;
+}
+
+//---------------------------------------------- USER REGISTRATION ----------------------------------------------\\
+
 export async function register(username, email, password, name, groupName, verificationToken) {
-    // Check if user already exists
     const existingUser = await prisma.user.findFirst({
         where: {
             OR: [
@@ -115,20 +175,15 @@ export async function register(username, email, password, name, groupName, verif
     const passEncrypted = await encrypt(password);
     
     try {
-        // First find the group by name
         let group = await prisma.group.findFirst({
             where: { 
                 name: groupName || "USER" 
             }
         });
-        
-        // If group doesn't exist, use the default USER group
         if (!group) {
             group = await prisma.group.findFirst({
                 where: { name: "USER" }
             });
-            
-            // If even USER group doesn't exist, create it
             if (!group) {
                 group = await prisma.group.create({
                     data: {
@@ -142,7 +197,9 @@ export async function register(username, email, password, name, groupName, verif
             }
         }
         
-        // Create user with connection to the group
+        const profilePics = ['pfp1.jpg', 'pfp2.jpg', 'pfp3.jpg'];
+        const randomProfilePic = `/uploads/profile/${profilePics[Math.floor(Math.random() * profilePics.length)]}`;
+        
         const user = await prisma.user.create({
             data: {
                 username: username,
@@ -151,6 +208,7 @@ export async function register(username, email, password, name, groupName, verif
                 name: name || username,
                 verified: false,
                 verificationToken: verificationToken,
+                avatar: randomProfilePic,
                 group: {
                     connect: {
                         id: group.id
@@ -166,9 +224,7 @@ export async function register(username, email, password, name, groupName, verif
     }
 }
 
-// New function to verify email tokens
 export async function verifyEmailToken(token) {
-    // Find user by verification token
     const user = await prisma.user.findFirst({
         where: { verificationToken: token }
     });
@@ -177,7 +233,6 @@ export async function verifyEmailToken(token) {
         return false;
     }
 
-    // Update user as verified and clear verification token
     try {
         await prisma.user.update({
             where: { id: user.id },
@@ -192,6 +247,8 @@ export async function verifyEmailToken(token) {
         return false;
     }
 }
+
+//---------------------------------------------- USER AUTHENTICATION ----------------------------------------------\\
 
 export async function login(username, password) {
     const user = await prisma.user.findUnique({
@@ -250,62 +307,7 @@ export async function login(username, password) {
     };
 }
 
-export async function updateMainData(
-    JWTAlgorithm,
-    JWTExpiration,
-    JWTSecret,
-    RefreshTokenAlgorithm,
-    RefreshTokenSecret,
-    RefreshTokenExpiration
-) {
-    try {
-        await prisma.maindata.update({
-            where: {
-                id: "5a97ea0a-a19f-11ef-95f3-0a0027000007"
-            },
-            data: {
-                JWTAlgorithm: JWTAlgorithm,
-                JWTExpiration: Number(JWTExpiration),
-                JWTSecret: JWTSecret,
-                RefreshTokenAlgorithm: RefreshTokenAlgorithm,
-                RefreshTokenExpiration: Number(RefreshTokenExpiration),
-                RefreshTokenSecret: RefreshTokenSecret,
-            },
-        });
-        return "Az adat sikeresen frissítve";
-    }   catch (err) {
-        return err;
-    }
-}
-
-export async function listAllTokens() {
-    const data = await prisma.maindata.findUnique({
-        where: {
-            id: "5a97ea0a-a19f-11ef-95f3-0a0027000007",
-        },
-    });
-
-    return data;
-}
-
-export async function createForgotToken(userId) {
-    const token = crypto.randomBytes(50).toString("hex");
-    const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 1);
-
-    try {
-        await prisma.user.update({
-            where: { id: userId },
-            data: {
-                ForgotToken: token,
-                ForgotTokenExpiresAt: expiresAt,
-            },
-        });
-        return token;
-    } catch (err) {
-        return err;
-    }
-}
+//---------------------------------------------- USER MANAGEMENT ----------------------------------------------\\
 
 export async function passChange(oldpass, newpass, id) {
     if (oldpass !== newpass) {

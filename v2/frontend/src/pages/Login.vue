@@ -51,7 +51,7 @@ const handleLogin = async () => {
       localStorage.setItem("token", response.data.access_token);
       localStorage.setItem("refresh_token", response.data.refresh_token);
       localStorage.setItem("user_id", response.data.user_id);
-      
+    
       router.push("/books");
     } else {
       errorMsg.value = "Érvénytelen bejelentkezési adatok";
@@ -59,12 +59,9 @@ const handleLogin = async () => {
   } catch (error) {
     if (error.response) {
       errorMsg.value = error.response.data.message || "Sikertelen bejelentkezés";
-    } else if (error.request) {
-      errorMsg.value = "A szerver nem válaszol. Kérjük, próbálja újra később.";
     } else {
-      errorMsg.value = "Hiba történt a bejelentkezési kérés során";
+      errorMsg.value = "Hálózati hiba történt";
     }
-    console.error(error);
   }
 };
 </script>

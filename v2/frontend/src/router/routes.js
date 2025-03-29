@@ -6,10 +6,17 @@ import Series from "../pages/Series.vue";
 import UploadMovie from "../pages/UploadMovie.vue";
 import UploadBook from "../pages/UploadBook.vue";
 import UploadTVShow from "../pages/UploadTVShow.vue";
-import Login from "../pages/Login.vue";
 import UploadCreative from "../pages/UploadCreative.vue";
 import AboutUs from "../pages/AboutUs.vue";
-import Register from "../pages/Register.vue";
+
+const redirectIfAuthenticated = (to, from, next) => {
+  const isAuthenticated = localStorage.getItem('token');
+  if (isAuthenticated) {
+    next('/books');
+  } else {
+    next();
+  }
+};
 
 const routes = [
   { path: "/", component: HomeCard },
@@ -21,9 +28,20 @@ const routes = [
   { path: "/upload-book", component: UploadBook },
   { path: "/upload-tvshow", component: UploadTVShow },
   { path: "/upload-creative", component: UploadCreative },
-  { path: "/login", component: Login },
-  { path: "/register", component: Register },
   { path: "/about-us", component: AboutUs },
+  
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../pages/Login.vue'),
+    beforeEnter: redirectIfAuthenticated
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('../pages/Register.vue'),                                                             
+    beforeEnter: redirectIfAuthenticated
+  },
   {
     path: '/:type/:id',
     name: 'MediaDetail',
@@ -32,7 +50,15 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  { 
+    path: "/profile", 
+    component: () => import('../pages/Profile.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
+  
 ];
 
 const router = createRouter({
@@ -40,18 +66,16 @@ const router = createRouter({
   routes,
 });
 
-
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth) {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      next('/login');
-    } else {
-      next();
-    }
-  } else {
-    next();
+  const publicPages = ['/', '/login', '/register', '/forgot-password', '/reset-password', '/verify-email'];
+  const authRequired = !publicPages.includes(to.path);
+  const token = localStorage.getItem('token');
+
+  if (authRequired && !token) {
+    return next('/login');
   }
+
+  next();
 });
 
 export default router;

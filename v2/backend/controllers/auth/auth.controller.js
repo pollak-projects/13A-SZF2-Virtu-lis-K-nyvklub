@@ -33,7 +33,6 @@ router.get("/verify", async (req, res) => {
                     sameSite: "none",
                     secure: true,
                     httpOnly: false,
-                    domain: "pollakkonyklub.info",
                     path: "/",
                 });
                 res.status(200).json({ message: "Refreshed" });
@@ -111,21 +110,24 @@ router.post("/login", async (req, res) => {
     const { username, password } = req.body;
     try {
         const tokens = await login(username, password);
-        res.cookie("access_token", tokens.token, {
+        
+        if (tokens.message) {
+            return res.status(401).json({ message: tokens.message });
+        }
+        
+        res.cookie("access_token", tokens.access_token, {
             maxAge: 24 * 60 * 60 * 1000,
-            sameSite: "none",
-            secure: true,
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production", 
             httpOnly: false,
-            domain: "pollakkonyklub.info",
             path: "/",
         });
         
         res.cookie("refresh_token", tokens.refresh_token, {
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-            sameSite: "none",
-            secure: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000, 
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
             httpOnly: false,
-            domain: "pollakkonyklub.info",
             path: "/",
         });
         
@@ -136,16 +138,6 @@ router.post("/login", async (req, res) => {
         } else {
             res.status(401).json({ message: "Helytelen felhasználónév vagy jelszó" });
         }
-    }
-});
-
-router.post("/login", async (req, res) => {
-    const { username, password } = req.body;
-    try {
-        const tokens = await login(username, password);
-        res.status(200).json(tokens);
-    } catch (error) {
-        res.status(401).json({ message: "Invalid credentials" });
     }
 });
 
@@ -190,15 +182,12 @@ router.post("/sendEmail", async (req, res) => {
 
 router.post("/logout", (req, res) => {
     res.clearCookie("access_token", {
-        domain: "pollakkonyvklub.info",
         path: "/",
     });
     res.clearCookie("refresh_token", {
-        domain: "pollakkonyvklub.info",
         path: "/",
     });
     res.clearCookie("sid", {
-        domain: "pollakkonyvklub.info",
         path: "/",
     });
     res.status(200).json({ message: "Logget out" });

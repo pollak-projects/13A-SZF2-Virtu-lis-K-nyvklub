@@ -3,14 +3,12 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
-
-// ========================== Middleware ==========================
+import session from "express-session";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import session from "express-session";
 import { corsMiddleware, corsOptions } from "./middleware/cors.middleware.js";
 import { verifyUserGroups } from "./middleware/auth.middleware.js";
-import upload from "./middleware/upload.middleware.js";
+import { requireAuth } from "./middleware/requireAuth.middleware.js";
 
 // ========================== Controllers ==========================
 import actorController from "./controllers/misc/actor.controller.js";
@@ -37,12 +35,12 @@ dotenv.config();
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 // ========================== Middleware Usage ==========================
 app.use(cors(corsOptions));
 app.use(corsMiddleware);
 app.use(express.json());
 app.use(cookieParser());
+app.use(requireAuth()); 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(
@@ -54,9 +52,9 @@ app.use(
     proxy: true,
     cookie: {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production', 
       maxAge: 24 * 60 * 60 * 1000,
-      domain: "pollakkonyvklub.info",
+      ...(process.env.NODE_ENV === 'production' && { domain: "pollakkonyvklub.info" }),
       sameSite: "none",
     },
   })
