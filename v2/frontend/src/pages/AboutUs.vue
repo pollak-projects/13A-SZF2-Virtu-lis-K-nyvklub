@@ -39,8 +39,8 @@
               <div class="feature">
                 <h3>📺 Sorozatok</h3>
                 <p>
-                  Fedezd fel a legjobb TV-sorozatokat és kövesd nyomon az
-                  epizódokat.
+                  Fedezd fel a legjobb TV-sorozatokat és oszd meg véleményed
+                  másokkal.
                 </p>
               </div>
 
@@ -86,6 +86,9 @@
               Sok szeretettel a 2025-ös 13. osztálytól! | Pollák Virtuális
               Könyvklub
             </p>
+            <p class="extra-thanks">
+              Extra köszönet Bagi László tanárúrnak!
+            </p>
           </div>
         </div>
       </div>
@@ -103,15 +106,20 @@ import GradientBackground from "../components/GradientBackground.vue";
 .about-page-container {
   width: 100%;
   position: relative;
-  padding-top: 200px; /* Space for header */
+  padding-top: 200px; 
 }
 
-/* Override header styles for this page */
+:deep(.header-container) {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 :deep(.header) {
   position: absolute;
   top: 0;
-  left: 0;
   width: 100%;
+  max-width: 1920px;
   height: auto;
   min-height: 200px;
   overflow: visible;
@@ -121,7 +129,7 @@ import GradientBackground from "../components/GradientBackground.vue";
   position: absolute;
   top: -30px;
   left: 0;
-  width: 100%; 
+  width: 100%;
   height: auto;
   min-height: 240px;
   object-fit: cover;
@@ -194,6 +202,13 @@ a {
   text-align: center;
   margin-top: 40px;
   font-size: 0.9em;
+  color: #777;
+}
+
+.extra-thanks {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.6em;
   color: #777;
 }
 </style>

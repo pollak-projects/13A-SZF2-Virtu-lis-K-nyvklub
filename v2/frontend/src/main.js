@@ -1,13 +1,13 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router/routes.js';
-import './assets/style.css';
+import router from './router/routes';
+import './style.css';
+import './assets/theme.css';
 import axios from 'axios';
 
 
 const app = createApp(App);
 app.use(router);
-
 
 
 axios.defaults.baseURL = 'http://localhost:3300';

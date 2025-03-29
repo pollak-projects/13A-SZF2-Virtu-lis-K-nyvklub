@@ -37,7 +37,7 @@ export async function getTVShowById(id) {
         include: { episodes: true },
       },
       tvShowActors: { include: { actor: true } },
-      TvChars: { include: { character: true } },
+      TvCharacters: { include: { character: true } },
       TvGenres: { include: { genre: true } },
     },
   });

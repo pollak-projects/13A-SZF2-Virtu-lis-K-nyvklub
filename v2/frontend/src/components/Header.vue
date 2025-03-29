@@ -73,6 +73,11 @@ const toggleSidebar = () => {
   width: 100%;
   display: flex;
   justify-content: center;
+  position: absolute; /* Change from fixed to absolute */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
 }
 
 .header {
@@ -80,13 +85,14 @@ const toggleSidebar = () => {
   width: 100%;
   max-width: 1920px; /* Limit width to 1080p */
   height: 200px;
+  overflow: hidden;
 }
 
 .header-image {
   position: absolute;
   top: -30px;
-  left: -20px;
-  width: calc(100% + 40px); /* Changed from 100vw to 100% */
+  left: 0;
+  width: 100%;
   height: calc(100% + 40px);
   object-fit: cover;
   z-index: 1;

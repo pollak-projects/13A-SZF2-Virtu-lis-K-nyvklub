@@ -1,0 +1,99 @@
+/* Main Color Palette */
+:root {
+  /* Primary Colors */
+  --primary-blue: #00767F;
+  --primary-orange: #FA5E00;
+  --primary-yellow: #FFA915;
+  
+  /* Tints and Shades */
+  --blue-light: #00969F;
+  --blue-dark: #005A61;
+  --orange-light: #FF7E33;
+  --orange-dark: #D94F00;
+  --yellow-light: #FFB945;
+  --yellow-dark: #E69400;
+  
+  /* Neutral Colors */
+  --text-dark: #333333;
+  --text-medium: #555555;
+  --text-light: #777777;
+  --background-light: #FFFFFF;
+  --background-medium: #F5F5F5;
+  --background-dark: #EEEEEE;
+  
+  /* Font Families */
+  --font-primary: "Simple Print", sans-serif;
+}
+
+/* Global Font Declarations */
+@font-face {
+  font-family: "Simple Print";
+  src: url("/src/assets/fonts/simple-print_regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Simple Print";
+  src: url("/src/assets/fonts/simple-print_bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Apply Base Styles */
+body {
+  font-family: var(--font-primary);
+  color: var(--text-dark);
+  background-color: var(--background-light);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary);
+  font-weight: bold;
+  color: var(--primary-blue);
+}
+
+a {
+  color: var(--primary-blue);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--primary-orange);
+}
+
+button, .btn {
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-family: var(--font-primary);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover, .btn:hover {
+  background-color: var(--blue-light);
+}
+
+.btn-secondary {
+  background-color: var(--primary-orange);
+}
+
+.btn-secondary:hover {
+  background-color: var(--orange-light);
+}
+
+.btn-tertiary {
+  background-color: var(--primary-yellow);
+}
+
+.btn-tertiary:hover {
+  background-color: var(--yellow-light);
+}

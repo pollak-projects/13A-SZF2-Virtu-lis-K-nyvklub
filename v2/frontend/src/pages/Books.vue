@@ -48,10 +48,10 @@ onMounted(() => {
 <style scoped>
 .page-container {
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
+  padding-top: 200px;
+  min-height: 100vh;
+  z-index: 1;
 }
 
 .home-card {
@@ -62,9 +62,64 @@ onMounted(() => {
   overflow: hidden;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   background: white;
+  z-index: 2;
 }
 
 .content {
   padding: 20px;
+  width: 100%;
+}
+
+h1 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+:deep(.content-holder) {
+  width: 100%;
+  margin: 0 auto;
+}
+
+:deep(.item) {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.2s;
+}
+
+:deep(.item:hover) {
+  transform: scale(1.02);
+}
+
+:deep(.cover-art) {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+:deep(.header-container) {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+:deep(.header) {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  max-width: 1920px;
+  height: auto;
+  min-height: 200px;
+  overflow: visible;
+}
+
+:deep(.header-image) {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  width: 100%;
+  height: auto;
+  min-height: 240px;
+  object-fit: cover;
 }
 </style>

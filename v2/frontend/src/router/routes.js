@@ -9,6 +9,7 @@ import UploadTVShow from "../pages/UploadTVShow.vue";
 import Login from "../pages/Login.vue";
 import UploadCreative from "../pages/UploadCreative.vue";
 import AboutUs from "../pages/AboutUs.vue";
+import Register from "../pages/Register.vue";
 
 const routes = [
   { path: "/", component: HomeCard },
@@ -21,6 +22,7 @@ const routes = [
   { path: "/upload-tvshow", component: UploadTVShow },
   { path: "/upload-creative", component: UploadCreative },
   { path: "/login", component: Login },
+  { path: "/register", component: Register },
   { path: "/about-us", component: AboutUs },
   {
     path: '/:type/:id',
@@ -36,6 +38,20 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      next('/login');
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
