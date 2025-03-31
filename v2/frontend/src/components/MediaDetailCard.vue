@@ -53,20 +53,23 @@
         </div>
         
         <!-- Cast for movies and TV shows -->
-        <div v-if="(isMovie || isTVShow) && getActors().length > 0" class="cast">
+        <div v-if="(isMovie || isTVShow)" class="cast">
           <h3>Szereplők</h3>
           <div class="cast-list">
             <div 
-              v-for="actor in getActors()" 
-              :key="actor.id" 
+              v-for="ca in characterActors" 
+              :key="ca.character?.id + '-' + (ca.actor?.id || 'unknown')" 
               class="actor"
             >
               <img 
-                :src="actor.picture || defaultActorImage" 
-                :alt="actor.name" 
+                :src="ca.actor ? getActorImageUrl(ca.actor.picture) : '/src/assets/images/placeholder.png'" 
+                :alt="ca.actor?.name || 'Unknown'" 
                 class="actor-image" 
               />
-              <span class="actor-name">{{ actor.name }}</span>
+              <div class="actor-details">
+                <p class="character-name">{{ ca.character?.name || 'Ismeretlen' }}</p>
+                <p class="actor-name">{{ ca.actor?.name || 'Ismeretlen színész' }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -97,7 +100,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
+import axios from 'axios';
 import defaultCoverImage from '../assets/images/placeholder.png';
 import defaultActorImage from '../assets/images/placeholder.png';
 
@@ -160,6 +164,48 @@ const getActors = () => {
   }
   return [];
 };
+
+const characterActors = ref([]);
+
+const fetchCharacterActors = async () => {
+  if (!props.item || !props.item.id) return;
+  
+  try {
+    let endpoint = '';
+    if (isMovie.value) {
+      endpoint = `http://localhost:3300/characteractors/movie/${props.item.id}/characters`;
+    } else if (isTVShow.value) {
+      endpoint = `http://localhost:3300/characteractors/tvshow/${props.item.id}/characters`;
+    } else {
+      return;
+    }
+    
+    console.log("Fetching from:", endpoint);
+    const response = await axios.get(endpoint);
+    console.log("API response:", response.data);
+    
+    // Don't filter out characters without actors!
+    characterActors.value = response.data;
+  } catch (error) {
+    console.error(`Error fetching characters for ${props.type}:`, error);
+    characterActors.value = [];
+  }
+};
+
+// Add this function to properly format image URLs
+const getActorImageUrl = (picturePath) => {
+  if (!picturePath) return '/src/assets/images/placeholder.png';
+  
+  if (picturePath.startsWith('http')) {
+    return picturePath;
+  }
+  
+  // Make sure the backend URL is correct for your setup
+  return `http://localhost:3300${picturePath}`;
+};
+
+onMounted(fetchCharacterActors);
+watch(() => props.item, fetchCharacterActors);
 </script>
 
 <style scoped>
@@ -279,13 +325,15 @@ const getActors = () => {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
+  justify-content: flex-start;
 }
 
 .actor {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100px;
+  width: 120px;
+  margin-bottom: 15px;
 }
 
 .actor-image {
@@ -293,12 +341,31 @@ const getActors = () => {
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  border: 2px solid #f0f0f0;
+}
+
+.actor-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+.character-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
 }
 
 .actor-name {
   font-size: 14px;
-  text-align: center;
+  color: #00767F;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .season {

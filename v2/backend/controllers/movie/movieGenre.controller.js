@@ -1,8 +1,11 @@
+// ========================== Core Modules ==========================
 import express from "express";
 import movieGenreService from "../../services/movie/movieGenre.service.js";
 
+// ========================== Router Setup ==========================
 const movieGenreRouter = express.Router();
 
+// ========================== GET Routes ==========================
 movieGenreRouter.get("/moviegenres", async (req, res) => {
   try {
     const movieGenres = await movieGenreService.getAllMovieGenres();
@@ -26,6 +29,7 @@ movieGenreRouter.get("/moviegenres/:id", async (req, res) => {
   }
 });
 
+// ========================== POST Routes ==========================
 movieGenreRouter.post("/moviegenres", async (req, res) => {
   try {
     const { name } = req.body;
@@ -36,6 +40,7 @@ movieGenreRouter.post("/moviegenres", async (req, res) => {
   }
 });
 
+// ========================== PUT Routes ==========================
 movieGenreRouter.put("/moviegenres/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -49,6 +54,7 @@ movieGenreRouter.put("/moviegenres/:id", async (req, res) => {
   }
 });
 
+// ========================== DELETE Routes ==========================
 movieGenreRouter.delete("/moviegenres/:id", async (req, res) => {
   try {
     const { id } = req.params;

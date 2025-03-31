@@ -1,6 +1,8 @@
+// ========================== Core Modules ==========================
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+// ========================== GET Functions ==========================
 export async function getAllMovies() {
   try {
     return await prisma.movie.findMany({
@@ -31,6 +33,7 @@ export async function getMovieById(id) {
   }
 }
 
+// ========================== CREATE Functions ==========================
 export async function createMovie(data) {
   try {
     const director = await prisma.creative.findFirst({
@@ -70,6 +73,7 @@ export async function createMovie(data) {
   }
 }
 
+// ========================== UPDATE Functions ==========================
 export async function updateMovie(id, data) {
   try {
     return await prisma.movie.update({
@@ -82,6 +86,7 @@ export async function updateMovie(id, data) {
   }
 }
 
+// ========================== DELETE Functions ==========================
 export async function deleteMovie(id) {
   try {
     return await prisma.movie.delete({

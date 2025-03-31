@@ -3,7 +3,7 @@ model TvShow {
   title       String
   creator     Creative   @relation(fields: [creator_Id], references: [id])
   creator_Id  Int
-  description String
+  description String @db.Text
   seasons     Int
   coverArt     String?
 

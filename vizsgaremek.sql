@@ -429,6 +429,119 @@ INSERT INTO moviegenre (movie_Id, genre_Id) VALUES
 ((SELECT id FROM movie WHERE title = 'The Turin Horse'), (SELECT id FROM genre WHERE genre = 'Művészfilm')),
 ((SELECT id FROM movie WHERE title = 'The Turin Horse'), (SELECT id FROM genre WHERE genre = 'Dráma'));
 
+INSERT INTO characteractor (character_Id, actor_Id) VALUES
+-- Inception
+((SELECT id FROM `character` WHERE name = 'Dom Cobb'), 
+ (SELECT id FROM actor WHERE name = 'Leonardo DiCaprio')),
+
+-- Cléo from 5 to 7
+((SELECT id FROM `character` WHERE name = 'Cléo'), 
+ (SELECT id FROM actor WHERE name = 'Corinne Marchand')),
+
+-- Goodfellas
+((SELECT id FROM `character` WHERE name = 'Henry Hill'), 
+ (SELECT id FROM actor WHERE name = 'Ray Liotta')),
+((SELECT id FROM `character` WHERE name = 'Tommy DeVito'), 
+ (SELECT id FROM actor WHERE name = 'Joe Pesci')),
+
+-- Kontroll
+((SELECT id FROM `character` WHERE name = 'Bulcsú'), 
+ (SELECT id FROM actor WHERE name = 'Sándor Csányi')),
+
+-- Mephisto
+((SELECT id FROM `character` WHERE name = 'Hendrik Höfgen'), 
+ (SELECT id FROM actor WHERE name = 'Klaus Maria Brandauer')),
+
+-- Psycho
+((SELECT id FROM `character` WHERE name = 'Norman Bates'), 
+ (SELECT id FROM actor WHERE name = 'Anthony Perkins')),
+((SELECT id FROM `character` WHERE name = 'Marion Crane'), 
+ (SELECT id FROM actor WHERE name = 'Janet Leigh')),
+
+-- Seven Samurai
+((SELECT id FROM `character` WHERE name = 'Kambei Shimada'), 
+ (SELECT id FROM actor WHERE name = 'Toshiro Mifune')),
+
+-- Star Wars
+((SELECT id FROM `character` WHERE name = 'Luke Skywalker'), 
+ (SELECT id FROM actor WHERE name = 'Mark Hamill')),
+((SELECT id FROM `character` WHERE name = 'Han Solo'), 
+ (SELECT id FROM actor WHERE name = 'Harrison Ford')),
+((SELECT id FROM `character` WHERE name = 'Princess Leia'), 
+ (SELECT id FROM actor WHERE name = 'Carrie Fisher')),
+
+-- Taxi Driver
+((SELECT id FROM `character` WHERE name = 'Travis Bickle'), 
+ (SELECT id FROM actor WHERE name = 'Robert De Niro')),
+
+-- The Godfather
+((SELECT id FROM `character` WHERE name = 'Vito Corleone'), 
+ (SELECT id FROM actor WHERE name = 'Marlon Brando')),
+((SELECT id FROM `character` WHERE name = 'Michael Corleone'), 
+ (SELECT id FROM actor WHERE name = 'Al Pacino')),
+((SELECT id FROM `character` WHERE name = 'Sonny Corleone'), 
+ (SELECT id FROM actor WHERE name = 'James Caan')),
+
+-- The Hurt Locker
+((SELECT id FROM `character` WHERE name = 'William James'), 
+ (SELECT id FROM actor WHERE name = 'Jeremy Renner')),
+
+-- The Shining
+((SELECT id FROM `character` WHERE name = 'Jack Torrance'), 
+ (SELECT id FROM actor WHERE name = 'Jack Nicholson')),
+((SELECT id FROM `character` WHERE name = 'Wendy Torrance'), 
+ (SELECT id FROM actor WHERE name = 'Shelley Duvall')),
+
+-- Vertigo
+((SELECT id FROM `character` WHERE name = 'Scottie Ferguson'), 
+ (SELECT id FROM actor WHERE name = 'James Stewart')),
+((SELECT id FROM `character` WHERE name = 'Madeleine Elster'), 
+ (SELECT id FROM actor WHERE name = 'Kim Novak')),
+
+-- The Turin Horse
+((SELECT id FROM `character` WHERE name = 'Ohlsdorfer'), 
+ (SELECT id FROM actor WHERE name = 'János Derzsi')),
+((SELECT id FROM `character` WHERE name = 'Ohlsdorfer lánya'), 
+ (SELECT id FROM actor WHERE name = 'Erika Bók'));
+
+-- Insert Character-Actor relationships for TV Shows
+INSERT INTO characteractor (character_Id, actor_Id) VALUES
+-- Breaking Bad
+((SELECT id FROM `character` WHERE name = 'Walter White'), 
+ (SELECT id FROM actor WHERE name = 'Bryan Cranston')),
+
+-- Better Call Saul - In the prequel, Bob Odenkirk plays Saul Goodman
+((SELECT id FROM `character` WHERE name = 'Saul Goodman'), 
+ (SELECT id FROM actor WHERE name = 'Aaron Paul')),
+
+-- Community
+((SELECT id FROM `character` WHERE name = 'Jeff Winger'), 
+ (SELECT id FROM actor WHERE name = 'Joel McHale')),
+
+-- Fleabag
+((SELECT id FROM `character` WHERE name = 'Fleabag'), 
+ (SELECT id FROM actor WHERE name = 'Phoebe Waller-Bridge')),
+
+-- Grey's Anatomy
+((SELECT id FROM `character` WHERE name = 'Meredith Grey'), 
+ (SELECT id FROM actor WHERE name = 'Ellen Pompeo')),
+
+-- I May Destroy You
+((SELECT id FROM `character` WHERE name = 'Arabella'), 
+ (SELECT id FROM actor WHERE name = 'Michaela Coel')),
+
+-- King of the Hill
+((SELECT id FROM `character` WHERE name = 'Hank Hill'), 
+ (SELECT id FROM actor WHERE name = 'Mike Judge')),
+
+-- The Sopranos
+((SELECT id FROM `character` WHERE name = 'Tony Soprano'), 
+ (SELECT id FROM actor WHERE name = 'James Gandolfini')),
+
+-- The Wire
+((SELECT id FROM `character` WHERE name = 'Omar Little'), 
+ (SELECT id FROM actor WHERE name = 'Idris Elba'));
+
 INSERT INTO `group` (name, `read`, `write`, `update`, `delete`) VALUES
 ('ADMIN', 1, 1, 1, 1),
 ('USER', 1, 0, 0, 0);
@@ -450,9 +563,9 @@ INSERT INTO user (username, password, email, groupId, verified, createdAt, updat
 ) VALUES (
     'HS256', 
     '86400', 
-    'your-jwt-secret-key-here', 
+    'AlXCJ7sQXmlnzAVBpvRzAV59y9YL1jsM', 
     'HS256', 
-    'your-refresh-token-secret-key-here', 
+    'CcY9L4VhE2knXmh88oszQkgmdyh9TXs6', 
     '604800'
 );
 

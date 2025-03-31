@@ -175,32 +175,32 @@ onUnmounted(() => {
 }
 
 .logo-container {
-  margin-bottom: 60px; /* Increased from 40px */
+  margin-bottom: 60px;
   text-align: center;
 }
 
 .text-logo {
   width: 100%;
-  max-width: 700px; /* Increased from 500px */
+  max-width: 700px;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
 }
 
 .buttons-row {
   display: flex;
   flex-direction: row;
-  gap: 40px; /* Increased from 20px */
+  gap: 40px;
   justify-content: center;
 }
 
 .login-button, .register-button {
   font-family: "Simple Print", sans-serif;
   font-weight: bold;
-  width: 250px; /* Increased from 180px */
-  padding: 24px; /* Increased from 16px */
+  width: 250px;
+  padding: 24px;
   border: none;
-  border-radius: 12px; /* Increased from 8px */
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 24px; /* Increased from 18px */
+  font-size: 24px;
   color: white;
   transition: transform 0.2s, box-shadow 0.2s;
   text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
@@ -208,11 +208,11 @@ onUnmounted(() => {
 }
 
 .login-button {
-  background-color: #FFA915; /* Yellow from MainColors.txt */
+  background-color: #FFA915;
 }
 
 .register-button {
-  background-color: #FA5E00; /* Orange from MainColors.txt */
+  background-color: #FA5E00;
 }
 
 .login-button:hover, .register-button:hover {

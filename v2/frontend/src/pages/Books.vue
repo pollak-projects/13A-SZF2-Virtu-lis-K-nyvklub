@@ -4,7 +4,7 @@
       <Header />
       <div class="home-card">
         <div class="content">
-          <h1>Books</h1>
+            <h1>Könyvek</h1>
           <ContentHolder :items="formattedBooks" />
         </div>
       </div>
@@ -36,7 +36,7 @@ const formattedBooks = computed(() =>
     title: book.title,
     creator: book.author?.name || "Unknown",
     coverArt: book.coverArt ? `http://localhost:3300${book.coverArt}` : null,
-    type: 'books' // Add this line!
+    type: 'books'
   }))
 );
 
@@ -85,10 +85,6 @@ h1 {
   flex-direction: column;
   height: 100%;
   transition: transform 0.2s;
-}
-
-:deep(.item:hover) {
-  transform: scale(1.02);
 }
 
 :deep(.cover-art) {

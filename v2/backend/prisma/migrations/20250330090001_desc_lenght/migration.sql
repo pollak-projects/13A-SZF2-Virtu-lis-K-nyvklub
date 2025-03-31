@@ -13,7 +13,7 @@ CREATE TABLE `Book` (
     `title` VARCHAR(191) NOT NULL,
     `author_Id` INTEGER NOT NULL,
     `releaseYear` INTEGER NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+    `description` TEXT NOT NULL,
     `coverArt` VARCHAR(191) NULL,
     `isbn` VARCHAR(191) NULL,
 
@@ -155,7 +155,7 @@ CREATE TABLE `Creative` (
 CREATE TABLE `Genre` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `genre` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+    `description` TEXT NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -192,7 +192,7 @@ CREATE TABLE `Movie` (
     `title` VARCHAR(191) NOT NULL,
     `director_Id` INTEGER NOT NULL,
     `releaseYear` INTEGER NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+    `description` TEXT NOT NULL,
     `coverArt` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
@@ -226,7 +226,7 @@ CREATE TABLE `TvShow` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(191) NOT NULL,
     `creator_Id` INTEGER NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+    `description` TEXT NOT NULL,
     `seasons` INTEGER NOT NULL,
     `coverArt` VARCHAR(191) NULL,
 

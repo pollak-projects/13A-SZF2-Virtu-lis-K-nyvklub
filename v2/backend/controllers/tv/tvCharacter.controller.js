@@ -1,8 +1,11 @@
+// ========================== Core Modules ==========================
 import express from "express";
 import tvCharacterService from "../../services/tv/tvCharacter.service.js";
 
+// ========================== Router Setup ==========================
 const tvCharacterRouter = express.Router();
 
+// ========================== GET Routes ==========================
 tvCharacterRouter.get("/tvcharacters", async (req, res) => {
   try {
     const tvCharacters = await tvCharacterService.getAllTVCharacters();
@@ -26,6 +29,7 @@ tvCharacterRouter.get("/tvcharacters/:id", async (req, res) => {
   }
 });
 
+// ========================== POST Routes ==========================
 tvCharacterRouter.post("/tvcharacters", async (req, res) => {
   try {
     const { name, tvShowId } = req.body;
@@ -39,6 +43,7 @@ tvCharacterRouter.post("/tvcharacters", async (req, res) => {
   }
 });
 
+// ========================== PUT Routes ==========================
 tvCharacterRouter.put("/tvcharacters/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -53,6 +58,7 @@ tvCharacterRouter.put("/tvcharacters/:id", async (req, res) => {
   }
 });
 
+// ========================== DELETE Routes ==========================
 tvCharacterRouter.delete("/tvcharacters/:id", async (req, res) => {
   try {
     const { id } = req.params;

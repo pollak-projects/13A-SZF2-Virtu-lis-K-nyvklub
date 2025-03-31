@@ -1,3 +1,4 @@
+// ========================== Core Modules ==========================
 import { PrismaClient } from "@prisma/client";
 import crypto, { verify } from "crypto";
 import { encrypt } from "../../lib/hash.js";
@@ -6,7 +7,7 @@ import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
-//---------------------------------------------- TOKEN MANAGEMENT ----------------------------------------------\\
+// ========================== Token Kezelés ==========================
 
 export async function verifyjwt(access_token, refresh_token) {
     const data = await prisma.maindata.findFirst();
@@ -19,11 +20,14 @@ export async function verifyjwt(access_token, refresh_token) {
                 algorithm: data.JWTAlgorithm,
             },
             async (err, decoded) => {
-                console.error(err);
+                if (err) {
+                    console.error(err);
+                }
 
                 if (decoded) resolve("OK");
 
                 if (err && err.message === "jwt expired") {
+                    // Ha lejárt a token, megpróbáljuk frissíteni a refresh tokennel
                     const ref = await verifyRefreshToken(refresh_token);
                     const tokenWithIgnore = await verifyWithIgnoreExpiration(
                         access_token
@@ -68,6 +72,7 @@ async function verifyWithIgnoreExpiration(token) {
     const data = await prisma.maindata.findFirst();
     let ret;
     try {
+        // Ellenőrzi a tokent, figyelmen kívül hagyva a lejárati időt
         ret = jwt.verify(token, data.JWTSecret, {
             algorithm: data.JWTAlgorithm,
             ignoreExpiration: true,
@@ -156,7 +161,7 @@ export async function listAllTokens() {
     return data;
 }
 
-//---------------------------------------------- USER REGISTRATION ----------------------------------------------\\
+// ========================== Felhasználói Regisztráció ==========================
 
 export async function register(username, email, password, name, groupName, verificationToken) {
     const existingUser = await prisma.user.findFirst({
@@ -181,10 +186,12 @@ export async function register(username, email, password, name, groupName, verif
             }
         });
         if (!group) {
+            // Ha nem létezik a megadott csoport, alapértelmezett USER csoportot használunk
             group = await prisma.group.findFirst({
                 where: { name: "USER" }
             });
             if (!group) {
+                // Ha USER csoport sem létezik, létrehozzuk
                 group = await prisma.group.create({
                     data: {
                         name: "USER",
@@ -197,6 +204,7 @@ export async function register(username, email, password, name, groupName, verif
             }
         }
         
+        // Véletlenszerű profilkép választása
         const profilePics = ['pfp1.jpg', 'pfp2.jpg', 'pfp3.jpg'];
         const randomProfilePic = `/uploads/profile/${profilePics[Math.floor(Math.random() * profilePics.length)]}`;
         
@@ -248,7 +256,7 @@ export async function verifyEmailToken(token) {
     }
 }
 
-//---------------------------------------------- USER AUTHENTICATION ----------------------------------------------\\
+// ========================== Felhasználói Bejelentkezés ==========================
 
 export async function login(username, password) {
     const user = await prisma.user.findUnique({
@@ -264,9 +272,10 @@ export async function login(username, password) {
     }
 
     if (!user.verified) {
-        return { message: "EMAIL_NOT_VERIFIED" };
+        return { message: "Az email cím nincs megerősítve" };
     }
 
+    // Jelszó ellenőrzése bcrypt segítségével
     if (!(await bcrypt.compare(password, user.password))) {
         return { message: "Hibás felhasználónév vagy jelszó" };
     }
@@ -277,6 +286,7 @@ export async function login(username, password) {
         return { message: "Hiba történt a bejelentkezéskor" };
     }
 
+    // JWT token és refresh token generálása
     const token = jwt.sign({
         sub: user.id,
         name: user.name,
@@ -307,7 +317,7 @@ export async function login(username, password) {
     };
 }
 
-//---------------------------------------------- USER MANAGEMENT ----------------------------------------------\\
+// ========================== Felhasználói Adatkezelés ==========================
 
 export async function passChange(oldpass, newpass, id) {
     if (oldpass !== newpass) {

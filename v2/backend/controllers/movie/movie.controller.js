@@ -1,3 +1,4 @@
+// ========================== Core Modules ==========================
 import express from "express";
 import multer from "multer";
 import {
@@ -8,9 +9,11 @@ import {
   deleteMovie,
 } from "../../services/movie/movie.service.js";
 
+// ========================== Router Setup ==========================
 const movieRouter = express.Router();
 const upload = multer({ dest: "uploads/movie/" });
 
+// ========================== GET Routes ==========================
 movieRouter.get("/getAllMovies", async (req, res) => {
   try {
     const movies = await getAllMovies();
@@ -36,6 +39,7 @@ movieRouter.get("/getMovieById/:id", async (req, res) => {
   }
 });
 
+// ========================== POST Routes ==========================
 movieRouter.post("/upload", upload.single("coverArt"), async (req, res) => {
   try {
     const { title, directorId, releaseYear, description } = req.body;
@@ -56,6 +60,7 @@ movieRouter.post("/upload", upload.single("coverArt"), async (req, res) => {
   }
 });
 
+// ========================== PUT Routes ==========================
 movieRouter.put("/updateMovie/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -68,6 +73,7 @@ movieRouter.put("/updateMovie/:id", async (req, res) => {
   }
 });
 
+// ========================== DELETE Routes ==========================
 movieRouter.delete("/deleteMovie/:id", async (req, res) => {
   try {
     const { id } = req.params;

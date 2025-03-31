@@ -1,7 +1,7 @@
 model Genre {
     id    Int    @id @default(autoincrement())
     genre String
-    description String
+    description String @db.Text
     
     movies MovieGenre[]
     books BookGenre[]

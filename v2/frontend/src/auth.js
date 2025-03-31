@@ -15,7 +15,6 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => response,
   async error => {
-    // Only retry once and only for 401 errors from regular endpoints (not auth endpoints)
     const originalRequest = error.config;
     
     if (error.response && 
@@ -27,7 +26,7 @@ axios.interceptors.response.use(
       
       try {
         const response = await axios.get('/auth/verify', {
-          _retry: true // Mark this request to prevent retrying it if it fails
+          _retry: true
         });
         
         if (response.data.message === "Refreshed") {
@@ -42,7 +41,6 @@ axios.interceptors.response.use(
           }
           return axios(originalRequest);
         } else {
-          // Even with a successful response but no token refresh, log user out
           localStorage.removeItem('token');
           localStorage.removeItem('refresh_token');
           localStorage.removeItem('user_id');
@@ -50,16 +48,14 @@ axios.interceptors.response.use(
           return Promise.reject(error);
         }
       } catch (refreshError) {
-        // On any error in the refresh process, log user out
         localStorage.removeItem('token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('user_id');
         router.push('/login');
-        return Promise.reject(error); // Reject with the original error
+        return Promise.reject(error); 
       }
     }
     
-    // For all other errors, just pass them through
     return Promise.reject(error);
   }
 );

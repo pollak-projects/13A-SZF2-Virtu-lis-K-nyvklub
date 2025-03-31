@@ -7,6 +7,7 @@ import UploadMovie from "../pages/UploadMovie.vue";
 import UploadBook from "../pages/UploadBook.vue";
 import UploadTVShow from "../pages/UploadTVShow.vue";
 import UploadCreative from "../pages/UploadCreative.vue";
+import UploadActor from "../pages/UploadActor.vue";
 import AboutUs from "../pages/AboutUs.vue";
 
 const redirectIfAuthenticated = (to, from, next) => {
@@ -27,7 +28,9 @@ const routes = [
   { path: "/upload-movie", component: UploadMovie },
   { path: "/upload-book", component: UploadBook },
   { path: "/upload-tvshow", component: UploadTVShow },
+  { path: "/upload-series", redirect: "/upload-tvshow" },
   { path: "/upload-creative", component: UploadCreative },
+  { path: "/upload-actor", component: UploadActor },
   { path: "/about-us", component: AboutUs },
   
   {

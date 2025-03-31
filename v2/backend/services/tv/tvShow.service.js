@@ -1,5 +1,8 @@
+// ========================== Core Modules ==========================
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+
+// ========================== TV Show Services ==========================
 
 export async function getAllTVShows() {
   try {
@@ -14,7 +17,7 @@ export async function getAllTVShows() {
         tvShowActors: {
           include: { actor: true },
         },
-        TvCharacters: { // Corrected field name
+        TvCharacters: { 
           include: { character: true },
         },
         TvGenres: {

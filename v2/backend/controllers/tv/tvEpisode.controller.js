@@ -1,8 +1,11 @@
+// ========================== Core Modules ==========================
 import express from "express";
 import tvEpisodeService from "../../services/tv/tvEpisode.service.js";
 
+// ========================== Router Setup ==========================
 const tvEpisodeRouter = express.Router();
 
+// ========================== GET Routes ==========================
 tvEpisodeRouter.get("/GetAllTVEpisodes", async (req, res) => {
   try {
     const tvEpisodes = await tvEpisodeService.getAllTVEpisodes();
@@ -26,6 +29,7 @@ tvEpisodeRouter.get("/GetTVEpisodeById/:id", async (req, res) => {
   }
 });
 
+// ========================== POST Routes ==========================
 tvEpisodeRouter.post("/CreateTVEpisode", async (req, res) => {
   try {
     const { title, seasonId } = req.body;
@@ -39,6 +43,7 @@ tvEpisodeRouter.post("/CreateTVEpisode", async (req, res) => {
   }
 });
 
+// ========================== PUT Routes ==========================
 tvEpisodeRouter.put("/UpdateTVEpisode/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -53,6 +58,7 @@ tvEpisodeRouter.put("/UpdateTVEpisode/:id", async (req, res) => {
   }
 });
 
+// ========================== DELETE Routes ==========================
 tvEpisodeRouter.delete("/DeleteTVEpisode/:id", async (req, res) => {
   try {
     const { id } = req.params;
