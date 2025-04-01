@@ -9,6 +9,8 @@ import {
 
 const router = express.Router();
 
+
+// Felhasználók lekérése
 router.get("/getAll", async (req, res) => {
     try {
         const users = await GetAllUsers();
@@ -18,6 +20,7 @@ router.get("/getAll", async (req, res) => {
     }
 });
 
+// Jelszó-visszaállítás
 router.get("/forgot-password", async (req, res) => {
     const { id } = req.body;
     try {
@@ -28,6 +31,7 @@ router.get("/forgot-password", async (req, res) => {
     }
 });
 
+// Felhasználói adatok frissítése
 router.put("/update", async (req, res) => {
     const { id, username, email, groupId } = req.body;
     try {
@@ -38,7 +42,8 @@ router.put("/update", async (req, res) => {
     }
 });
 
-router.delete("delete", async (req, res) => {
+// Felhasználó törlése  
+router.delete("/delete", async (req, res) => {
     const { id } = req.body;
     try {
         const user = await userDelete(id);
@@ -48,15 +53,18 @@ router.delete("delete", async (req, res) => {
     }
 });
 
+// Felhasználói csoportok lekérése
 router.get("/getGroups", async (req, res) => {
     try {
         const groups = await Groups();
         res.status(200).json(groups);
     }   catch (error) {
-        res.status(400).json(error,message);
+        res.status(400).json({ message: error.message });
     }
 });
 
+
+// Felhasználó lekérése ID alapján
 router.get("/getById/:id", async (req, res) => {
   try {
     const { id } = req.params;

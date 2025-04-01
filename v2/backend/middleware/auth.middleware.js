@@ -29,7 +29,6 @@ export function verifyUserGroups(groups = []) {
             sameSite: "none",
             secure: true,
             httpsOnly: false,
-            domain: "pollak.konyklub",
             path: "/",
           });
         }

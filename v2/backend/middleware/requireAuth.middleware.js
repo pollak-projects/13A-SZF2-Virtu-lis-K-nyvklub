@@ -37,7 +37,6 @@ export function requireAuth() {
           sameSite: "none",
           secure: true,
           httpOnly: false,
-          domain: "pollakkonyklub.info",
           path: "/",
         });
       }
