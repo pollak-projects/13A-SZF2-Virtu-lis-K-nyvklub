@@ -1,10 +1,14 @@
+// ========================== Core Modules ==========================
 import express from "express";
 import multer from "multer";
 import { PrismaClient } from "@prisma/client";
 import upload from "../../middleware/upload.middleware.js";
 
+// ========================== Router Setup ==========================
 const uploadRouter = express.Router();
+const prisma = new PrismaClient();
 
+// ========================== POST Routes ==========================
 uploadRouter.post("/upload", upload.single("file"), async (req, res) => {
   try {
     const { entityId, entityType } = req.body;
@@ -37,3 +41,5 @@ uploadRouter.post("/upload", upload.single("file"), async (req, res) => {
 });
 
 export default uploadRouter;
+
+// Majd kód frissítésre majd később

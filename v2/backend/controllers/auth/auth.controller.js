@@ -1,3 +1,4 @@
+// ========================== Core Modules ==========================
 import express from "express";
 import {
     verifyjwt,
@@ -11,9 +12,12 @@ import {
 import { SendEmail, SendVerificationEmail } from "../../services/auth/emailsender.js";
 import * as crypto from "crypto";
 
+// ========================== Router Setup ==========================
 const router = express.Router();
 
+// ========================== GET Routes ==========================
 router.get("/verify", async (req, res) => {
+    // Token kinyerése cookie-ból vagy headerből
     const access_token = req.cookies.access_token
         ? req.cookies.access_token
         : req.headers.authorization.split(" ")[1];
@@ -28,6 +32,7 @@ router.get("/verify", async (req, res) => {
             if (data == "OK") {
                 res.status(200).json({ message: "OK" });
             } else {
+                // Ha a token frissült, új cookie beállítása
                 res.cookie("access_token", data, {
                     maxAge: 24 * 60 * 60 * 1000,
                     sameSite: "none",
@@ -39,6 +44,7 @@ router.get("/verify", async (req, res) => {
             }
         })
         .catch((err) => {
+            // Érvénytelen token esetén cookie-k törlése
             res.clearCookie("access_token");
             res.clearCookie("refresh_token");
             res.status(403).json({ message: err });
@@ -46,30 +52,9 @@ router.get("/verify", async (req, res) => {
     }
 });
 
-router.post("/register", async (req, res) => {
-    const { username, email, password, name, groupName } = req.body;
-    try {
-        // Generate verification token
-        const verificationToken = crypto.randomBytes(32).toString('hex');
-        
-        // Register user with verification token
-        await register(username, email, password, name, groupName, verificationToken);
-        
-        // Generate verification URL
-        const verificationUrl = `http://localhost:3300/auth/verify-email?token=${verificationToken}`;
-        
-        // Send verification email
-        await SendVerificationEmail(email, username, verificationUrl);
-        
-        res.status(201).json({ message: "Regisztráció sikeres. Kérjük, ellenőrizze e-mailjét a fiók aktiválásához." });
-    } catch (error) {
-        console.error("Registration error:", error);
-        res.status(500).json({ message: "Hiba történt a regisztráció során" });
-    }
-});
-
 router.get("/test-email", async (req, res) => {
     try {
+        // Teszt email küldése
         await SendVerificationEmail(
             "your-test-email@example.com", 
             "TestUser", 
@@ -82,7 +67,6 @@ router.get("/test-email", async (req, res) => {
     }
 });
 
-// New endpoint for email verification
 router.get("/verify-email", async (req, res) => {
     try {
         const { token } = req.query;
@@ -91,18 +75,51 @@ router.get("/verify-email", async (req, res) => {
             return res.render("verification-error", { message: "Érvénytelen vagy hiányzó megerősítő token" });
         }
         
-        // Verify the token and activate user account
+        // Token ellenőrzése és felhasználói fiók aktiválása
         const verified = await verifyEmailToken(token);
         
         if (!verified) {
             return res.render("verification-error", { message: "Érvénytelen vagy lejárt megerősítő link" });
         }
         
-        // Render success template
+        // Sikeres ellenőrzés esetén átirányítás
         return res.render("verification-success", { redirectUrl: "http://localhost:5173/login" });
     } catch (error) {
         console.error("Email verification error:", error);
         return res.render("verification-error", { message: "Hiba történt az e-mail megerősítése során" });
+    }
+});
+
+router.get("/listAllTokens", async (req, res) => {
+    try {
+        // Összes token lekérdezése
+        const tokens = await listAllTokens();
+        res.status(200).json(tokens);
+    } catch (error) {
+        res.status(500).json({ message: "Failed to list all tokens" });
+    }
+});
+
+// ========================== POST Routes ==========================
+router.post("/register", async (req, res) => {
+    const { username, email, password, name, groupName } = req.body;
+    try {
+        // Ellenőrző token generálása
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        
+        // Felhasználó regisztrálása a verifikációs tokennel
+        await register(username, email, password, name, groupName, verificationToken);
+        
+        // Verifikációs URL generálása
+        const verificationUrl = `http://localhost:3300/auth/verify-email?token=${verificationToken}`;
+        
+        // Megerősítő email küldése
+        await SendVerificationEmail(email, username, verificationUrl);
+        
+        res.status(201).json({ message: "Regisztráció sikeres. Kérjük, ellenőrizze e-mailjét a fiók aktiválásához." });
+    } catch (error) {
+        console.error("Registration error:", error);
+        res.status(500).json({ message: "Hiba történt a regisztráció során" });
     }
 });
 
@@ -115,6 +132,7 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({ message: tokens.message });
         }
         
+        // Access token beállítása cookie-ként
         res.cookie("access_token", tokens.access_token, {
             maxAge: 24 * 60 * 60 * 1000,
             sameSite: "lax",
@@ -123,6 +141,7 @@ router.post("/login", async (req, res) => {
             path: "/",
         });
         
+        // Refresh token beállítása cookie-ként
         res.cookie("refresh_token", tokens.refresh_token, {
             maxAge: 7 * 24 * 60 * 60 * 1000, 
             sameSite: "lax",
@@ -141,28 +160,10 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.put("/updateMainData", async (req, res) => {
-    const { JWTAlgorithm, JWTExpiration, JWTSecret, RefreshTokenAlgorithm, RefreshTokenSecret, RefreshTokenExpiration } = req.body;
-    try {
-        await updateMainData(JWTAlgorithm, JWTExpiration, JWTSecret, RefreshTokenAlgorithm, RefreshTokenSecret, RefreshTokenExpiration);
-        res.status(200).json({ message: "Main data updated successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Failed to update main data" });
-    }
-});
-
-router.get("/listAllTokens", async (req, res) => {
-    try {
-        const tokens = await listAllTokens();
-        res.status(200).json(tokens);
-    } catch (error) {
-        res.status(500).json({ message: "Failed to list all tokens" });
-    }
-});
-
 router.post("/passChange", async (req, res) => {
     const { oldpass, newpass, id } = req.body;
     try {
+        // Jelszó módosítása
         await passChange(oldpass, newpass, id);
         res.status(200).json({ message: "Password changed successfully" });
     } catch (error) {
@@ -173,6 +174,7 @@ router.post("/passChange", async (req, res) => {
 router.post("/sendEmail", async (req, res) => {
     const { useremail } = req.body;
     try {
+        // Email küldése a felhasználónak
         await SendEmail(useremail);
         res.status(200).json({ message: "Email sent successfully" });
     } catch (error) {
@@ -181,6 +183,7 @@ router.post("/sendEmail", async (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
+    // Összes hitelesítéssel kapcsolatos cookie törlése
     res.clearCookie("access_token", {
         path: "/",
     });
@@ -191,6 +194,18 @@ router.post("/logout", (req, res) => {
         path: "/",
     });
     res.status(200).json({ message: "Logget out" });
-})
+});
+
+// ========================== PUT Routes ==========================
+router.put("/updateMainData", async (req, res) => {
+    const { JWTAlgorithm, JWTExpiration, JWTSecret, RefreshTokenAlgorithm, RefreshTokenSecret, RefreshTokenExpiration } = req.body;
+    try {
+        // JWT konfigurációs adatok frissítése
+        await updateMainData(JWTAlgorithm, JWTExpiration, JWTSecret, RefreshTokenAlgorithm, RefreshTokenSecret, RefreshTokenExpiration);
+        res.status(200).json({ message: "Main data updated successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to update main data" });
+    }
+});
 
 export { router as authController };

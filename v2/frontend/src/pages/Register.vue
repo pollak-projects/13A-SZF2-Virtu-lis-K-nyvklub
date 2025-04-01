@@ -45,7 +45,7 @@
       </button>
       
       <div class="login-link-container">
-        Már regisztrált? <router-link to="/login">Jelentkezzen be</router-link>
+        Már regisztráltál? <router-link to="/login">Jelentkezzen be</router-link>
       </div>
     </form>
   </AuthLayout>

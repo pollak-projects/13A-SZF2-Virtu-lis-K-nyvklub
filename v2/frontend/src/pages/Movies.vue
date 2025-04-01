@@ -4,7 +4,7 @@
       <Header />
       <div class="home-card">
         <div class="content">
-          <h1>Movies</h1>
+            <h1>Filmek</h1>
           <ContentHolder :items="formattedMovies" />
         </div>
       </div>

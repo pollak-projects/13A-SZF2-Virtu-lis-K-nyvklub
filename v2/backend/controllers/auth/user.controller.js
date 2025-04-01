@@ -9,14 +9,6 @@ import {
 
 const router = express.Router();
 
-
-// REGISTER
-
-
-// LOGIN
-
-
-// LIST ALL EXISTING USER
 router.get("/getAll", async (req, res) => {
     try {
         const users = await GetAllUsers();
@@ -26,8 +18,6 @@ router.get("/getAll", async (req, res) => {
     }
 });
 
-
-// PASSWORD RESET
 router.get("/forgot-password", async (req, res) => {
     const { id } = req.body;
     try {
@@ -38,7 +28,6 @@ router.get("/forgot-password", async (req, res) => {
     }
 });
 
-// EMAIL, NAME CHANGE
 router.put("/update", async (req, res) => {
     const { id, username, email, groupId } = req.body;
     try {
@@ -49,7 +38,6 @@ router.put("/update", async (req, res) => {
     }
 });
 
-// ACCOUNT DELETE
 router.delete("delete", async (req, res) => {
     const { id } = req.body;
     try {
@@ -69,5 +57,42 @@ router.get("/getGroups", async (req, res) => {
     }
 });
 
+router.get("/getById/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const tokenUserId = req.user?.id;
+    
+    if (parseInt(id) !== tokenUserId && req.user?.group?.name !== 'ADMIN') {
+      return res.status(403).json({ message: "You can only view your own profile" });
+    }
+    
+    const user = await prisma.user.findUnique({
+      where: { id: parseInt(id) },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        name: true,
+        avatar: true,
+        bio: true,
+        createdAt: true,
+        bookReviews: true,
+        movieReviews: true,
+        tvShowReviews: true,
+        group: true
+      }
+    });
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    res.status(500).json({ message: "Failed to fetch user profile" });
+  }
+});
 
 export { router as userController };

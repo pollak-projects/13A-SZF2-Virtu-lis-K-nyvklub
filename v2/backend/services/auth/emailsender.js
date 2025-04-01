@@ -1,10 +1,8 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
-// Load environment variables
 dotenv.config();
 
-// Create a shared transporter
 export const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
@@ -43,27 +41,30 @@ export async function SendEmail(useremail) {
 
 export async function SendVerificationEmail(email, username, verificationUrl) {
     try {
-        // Use the shared transporter - no need to create a new one
+        const SERVER_URL = process.env.SERVER_URL || "http://pollakkonyvklub.info";
+        
         const info = await transporter.sendMail({
-            from: `"Virtuális Könyvklub" <${process.env.EMAIL_USER}>`,
+            from: `"Pollák Könyvklub Csapata" <${process.env.EMAIL_USER}>`,
             to: email,
-            subject: 'Email megerősítés - Virtuális Könyvklub',
+            subject: 'Email megerősítés - Pollák Könyvklub',
             html: `
-                <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; width: 100%; max-width: 600px;margin: 0 auto;background-color: #ffffff;padding: 20px;border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);">
-                    <div style="text-align: center; margin-bottom: 20px; color: #333;">
-                        <h2 style="color: #000000;">Email megerősítés</h2>
-                        <p>Üdvözöljük a Virtuális Könyvklubban, ${username}!</p>
-                        <p>Köszönjük, hogy regisztrált az oldalunkon. Kérjük, erősítse meg e-mail címét az alábbi gombra kattintva:</p>
-                        <p><a href="${verificationUrl}" style="background-color: #45a049; display: inline-block; padding: 15px 30px;background-color: #4CAF50; color: #ffffff; text-decoration: none; border-radius: 5px; font-weight: bold;">E-mail megerősítése</a></p>
-                        <p>Ha ez a gomb nem működik, másolja be ezt a linket a böngészőjébe:</p>
-                        <p>${verificationUrl}</p>
-                        <p>Ez a link 24 óráig érvényes.</p>
-                    </div>
-                    <div style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">
-                        <p>Üdvözlettel,</p>
-                        <p>Virtuális Könyvklub csapata</p>
-                    </div>
+            <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; width: 100%; max-width: 600px;margin: 0 auto;background-color: #ffffff;padding: 20px;border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);">
+                <div style="text-align: center; margin-bottom: 20px;">
+                <img src="${SERVER_URL}/uploads/email/text_logo.png" alt="Pollák Könyvklub" style="max-width: 200px;">
                 </div>
+                <div style="text-align: center; margin-bottom: 20px; color: #333;">
+                <h2 style="color: #000000;">Email megerősítés</h2>
+                <p>Kedves ${username},</p>
+                <p>Kérjük, erősítsd meg az email címedet az alábbi gombra kattintva:</p>
+                <p><a href="${verificationUrl}" style="background-color: #FFA915; display: inline-block; padding: 15px 30px; color: #ffffff; text-decoration: none; border-radius: 5px; font-weight: bold;">Email megerősítése</a></p>
+                <p>Ha nem te regisztráltál, kérjük, hagyd figyelmen kívül ezt az üzenetet.</p>
+                </div>
+                <div style="text-align: center; border-top: 2px solid #FFA915; padding-top: 15px; font-size: 12px; color: #777; margin-top: 20px;">
+                <p>Üdvözlettel,</p>
+                <p>Pollák Könyvklub Csapata</p>
+                <img src="${SERVER_URL}/uploads/email/tiny_logo.png" alt="Logo" style="width: 40px; margin-top: 10px;">
+                </div>
+            </div>
             `,
         });
         

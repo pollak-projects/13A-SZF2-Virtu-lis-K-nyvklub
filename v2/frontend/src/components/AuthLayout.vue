@@ -74,7 +74,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Add font-face declarations for the Simple Print fonts */
 @font-face {
   font-family: "Simple Print";
   src: url("/src/assets/fonts/simple-print_regular.ttf") format("truetype");
@@ -89,7 +88,6 @@ onUnmounted(() => {
   font-style: normal;
 }
 
-/* Apply the font to the container */
 .login-container {
   font-family: "Simple Print", sans-serif;
   position: fixed;

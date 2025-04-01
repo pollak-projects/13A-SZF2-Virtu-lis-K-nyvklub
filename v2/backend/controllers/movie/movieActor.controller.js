@@ -1,8 +1,11 @@
+// ========================== Core Modules ==========================
 import express from "express";
 import movieActorService from "../../services/movie/movieActor.service.js";
 
+// ========================== Router Setup ==========================
 const movieActorRouter = express.Router();
 
+// ========================== GET Routes ==========================
 movieActorRouter.get("/movieactors", async (req, res) => {
   try {
     const movieActors = await movieActorService.getAllMovieActors();
@@ -26,6 +29,7 @@ movieActorRouter.get("/movieactors/:id", async (req, res) => {
   }
 });
 
+// ========================== POST Routes ==========================
 movieActorRouter.post("/movieactors", async (req, res) => {
   try {
     const { name, movieId } = req.body;
@@ -39,6 +43,7 @@ movieActorRouter.post("/movieactors", async (req, res) => {
   }
 });
 
+// ========================== PUT Routes ==========================
 movieActorRouter.put("/movieactors/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -53,6 +58,7 @@ movieActorRouter.put("/movieactors/:id", async (req, res) => {
   }
 });
 
+// ========================== DELETE Routes ==========================
 movieActorRouter.delete("/movieactors/:id", async (req, res) => {
   try {
     const { id } = req.params;

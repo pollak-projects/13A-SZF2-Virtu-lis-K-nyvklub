@@ -1,3 +1,4 @@
+// ========================== Core Modules ==========================
 import express from "express";
 import {
   getAllGenres,
@@ -7,8 +8,10 @@ import {
   deleteGenre,
 } from "../../services/misc/genre.service.js";
 
+// ========================== Router Setup ==========================
 const genreRouter = express.Router();
 
+// ========================== GET Routes ==========================
 genreRouter.get("/genres", async (req, res) => {
   try {
     const genres = await getAllGenres();
@@ -32,6 +35,7 @@ genreRouter.get("/genres/:id", async (req, res) => {
   }
 });
 
+// ========================== POST Routes ==========================
 genreRouter.post("/genres", async (req, res) => {
   try {
     const data = req.body;
@@ -42,6 +46,7 @@ genreRouter.post("/genres", async (req, res) => {
   }
 });
 
+// ========================== PUT Routes ==========================
 genreRouter.put("/genres/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -53,6 +58,7 @@ genreRouter.put("/genres/:id", async (req, res) => {
   }
 });
 
+// ========================== DELETE Routes ==========================
 genreRouter.delete("/genres/:id", async (req, res) => {
   try {
     const { id } = req.params;

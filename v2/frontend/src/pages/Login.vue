@@ -18,7 +18,7 @@
     <button @click="handleLogin" type="button">Bejelentkezés</button>
 
     <div class="register-link">
-      Nincs még fiókja?
+      Nincs még fiókod?
       <router-link to="/register">Regisztráljon itt</router-link>
     </div>
   </AuthLayout>

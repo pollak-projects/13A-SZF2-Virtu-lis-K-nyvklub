@@ -9,12 +9,12 @@
           <div class="about-section">
             <h2>Üdvözlünk a Virtuális Könyvklubban!</h2>
             <p>
-              Üdvözlünk a Pollák Virtuális Könyvklubban! A könyvklub László
+              Üdvözlünk a Pollák Könyvklubban! A könyvklub László
               Csongor, Görbe Rinaldó és Zsigó Dávid közös vizsgaremek projektje.
               A célkitűzésünk az, hogy egy érdekes, interaktív módot ajánljunk
               felhasználóinknak a könyvek, filmek és sorozatok értékelésére,
               kibeszélésére, illetve új mesterművek felfedezésére! Sok
-              szeretettel várunk a Pollák Virtuális Könyvklubban, és reméljük,
+              szeretettel várunk a Pollák Könyvklubban, és reméljük,
               hogy jól érzed magad az itt eltöltött idő alatt!
             </p>
 

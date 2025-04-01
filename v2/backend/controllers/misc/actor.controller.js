@@ -1,3 +1,4 @@
+// ========================== Core Modules ==========================
 import express from "express";
 import {
   getAllActors,
@@ -7,8 +8,10 @@ import {
   deleteActor,
 } from "../../services/misc/actor.service.js";
 
+// ========================== Router Setup ==========================
 const actorRouter = express.Router();
 
+// ========================== GET Routes ==========================
 actorRouter.get("/actors", async (req, res) => {
   try {
     const actors = await getAllActors();
@@ -33,6 +36,7 @@ actorRouter.get("/actors/:id", async (req, res) => {
   }
 });
 
+// ========================== POST Routes ==========================
 actorRouter.post("/actors", async (req, res) => {
   try {
     const data = req.body;
@@ -43,6 +47,7 @@ actorRouter.post("/actors", async (req, res) => {
   }
 });
 
+// ========================== PUT Routes ==========================
 actorRouter.put("/actors/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -54,6 +59,7 @@ actorRouter.put("/actors/:id", async (req, res) => {
   }
 });
 
+// ========================== DELETE Routes ==========================
 actorRouter.delete("/actors/:id", async (req, res) => {
   try {
     const { id } = req.params;

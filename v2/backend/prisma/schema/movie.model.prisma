@@ -4,7 +4,7 @@ model Movie {
   director    Creative @relation(fields: [director_Id], references: [id])
   director_Id Int
   releaseYear Int
-  description String
+  description String @db.Text
   coverArt    String?
 
   actors      MovieActor[]

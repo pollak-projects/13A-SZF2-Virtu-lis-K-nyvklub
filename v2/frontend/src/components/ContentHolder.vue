@@ -55,6 +55,10 @@ defineProps({
   padding: 10px;
 }
 
+.item:hover {
+  transform: scale(1.02);
+}
+
 .cover-art {
   width: 100%;
   height: 250px;

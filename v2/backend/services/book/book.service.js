@@ -1,11 +1,13 @@
+// ========================== Core Modules ==========================
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+// ========================== Services ==========================
 export async function getAllBooks() {
   try {
     return await prisma.book.findMany({
       include: {
-        author: true,
+        author: true, // Az összes könyv lekérése, szerzői adatokkal együtt
       },
     });
   } catch (error) {
@@ -19,7 +21,7 @@ export async function getBookById(id) {
     return await prisma.book.findUnique({
       where: { id: parseInt(id) },
       include: {
-        author: true,
+        author: true, // Egy adott könyv lekérése azonosító alapján, szerzői adatokkal együtt
       },
     });
   } catch (error) {
@@ -31,7 +33,7 @@ export async function getBookById(id) {
 export async function getBooksByAuthorId(authorId) {
   try {
     return await prisma.book.findMany({
-      where: { author_Id: parseInt(authorId) },
+      where: { author_Id: parseInt(authorId) }, // Egy adott szerző könyveinek lekérése
     });
   } catch (error) {
     console.error(`Error fetching books by author ID ${authorId}:`, error);
@@ -42,7 +44,7 @@ export async function getBooksByAuthorId(authorId) {
 export async function createBook(data) {
   try {
     return await prisma.book.create({
-      data,
+      data, // Új könyv létrehozása az adatbázisban
     });
   } catch (error) {
     console.error("Error creating book:", error);
@@ -54,7 +56,7 @@ export async function updateBook(id, data) {
   try {
     return await prisma.book.update({
       where: { id: parseInt(id) },
-      data,
+      data, // Egy meglévő könyv frissítése azonosító alapján
     });
   } catch (error) {
     console.error(`Error updating book with ID ${id}:`, error);
@@ -65,7 +67,7 @@ export async function updateBook(id, data) {
 export async function deleteBook(id) {
   try {
     return await prisma.book.delete({
-      where: { id: parseInt(id) },
+      where: { id: parseInt(id) }, // Egy könyv törlése azonosító alapján
     });
   } catch (error) {
     console.error(`Error deleting book with ID ${id}:`, error);

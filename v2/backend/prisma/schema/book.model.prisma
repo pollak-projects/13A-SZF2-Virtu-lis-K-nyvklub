@@ -4,7 +4,7 @@ model Book {
     author      Creative       @relation(fields: [author_Id], references: [id])
     author_Id   Int
     releaseYear Int
-    description String
+    description String @db.Text
     coverArt    String?
     isbn        String?  
 
