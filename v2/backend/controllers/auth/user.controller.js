@@ -1,3 +1,4 @@
+// ========================== Import ==========================
 import express from 'express';
 import {
     forgotPassword,
@@ -9,6 +10,8 @@ import {
 
 const router = express.Router();
 
+
+// ========================== GET-ek ==========================
 
 // Felhasználók lekérése
 router.get("/getAll", async (req, res) => {
@@ -28,28 +31,6 @@ router.get("/forgot-password", async (req, res) => {
         res.status(200).json(user);
     }   catch (error) {
         res.status(400).json({ message: error.message });
-    }
-});
-
-// Felhasználói adatok frissítése
-router.put("/update", async (req, res) => {
-    const { id, username, email, groupId } = req.body;
-    try {
-        const user = await userUpdate(id, username, email, groupId);
-        res.status(200).json(user);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-});
-
-// Felhasználó törlése  
-router.delete("/delete", async (req, res) => {
-    const { id } = req.body;
-    try {
-        const user = await userDelete(id);
-        res.status(200).json(user);
-    }   catch (error) {
-        res.status(400).json(error.message);
     }
 });
 
@@ -102,5 +83,33 @@ router.get("/getById/:id", async (req, res) => {
     res.status(500).json({ message: "Failed to fetch user profile" });
   }
 });
+
+// ========================== PUT ==========================
+
+// Felhasználói adatok frissítése
+router.put("/update", async (req, res) => {
+    const { id, username, email, groupId } = req.body;
+    try {
+        const user = await userUpdate(id, username, email, groupId);
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
+// ========================== DELETE ==========================
+
+// Felhasználó törlése  
+router.delete("/delete", async (req, res) => {
+    const { id } = req.body;
+    try {
+        const user = await userDelete(id);
+        res.status(200).json(user);
+    }   catch (error) {
+        res.status(400).json(error.message);
+    }
+});
+
+
 
 export { router as userController };

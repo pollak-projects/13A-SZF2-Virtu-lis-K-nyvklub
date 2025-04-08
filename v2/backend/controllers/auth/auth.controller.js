@@ -1,4 +1,4 @@
-// ========================== Core Modules ==========================
+// ========================== Importok ==========================
 import express from "express";
 import {
     verifyjwt,
@@ -12,10 +12,10 @@ import {
 import { SendEmail, SendVerificationEmail } from "../../services/auth/emailsender.js";
 import * as crypto from "crypto";
 
-// ========================== Router Setup ==========================
+// ========================== Router beállítása ==========================
 const router = express.Router();
 
-// ========================== GET Routes ==========================
+// ========================== GET-ek ==========================
 router.get("/verify", async (req, res) => {
     // Token kinyerése cookie-ból vagy headerből
     const access_token = req.cookies.access_token
@@ -100,7 +100,7 @@ router.get("/listAllTokens", async (req, res) => {
     }
 });
 
-// ========================== POST Routes ==========================
+// ========================== POST-ok ==========================
 router.post("/register", async (req, res) => {
     const { username, email, password, name, groupName } = req.body;
     try {
@@ -196,7 +196,7 @@ router.post("/logout", (req, res) => {
     res.status(200).json({ message: "Logget out" });
 });
 
-// ========================== PUT Routes ==========================
+// ========================== PUT-ok ==========================
 router.put("/updateMainData", async (req, res) => {
     const { JWTAlgorithm, JWTExpiration, JWTSecret, RefreshTokenAlgorithm, RefreshTokenSecret, RefreshTokenExpiration } = req.body;
     try {

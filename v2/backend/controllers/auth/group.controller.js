@@ -1,11 +1,11 @@
-// ========================== Core Modules ==========================
+// ========================== Import ==========================
 import express from 'express';
 import { listAllGroup, addGroup, deleteGroup, updateGroup } from '../../services/auth/group.service.js';
 
-// ========================== Router Setup ==========================
+// ========================== Router beállítás ==========================
 const router = express.Router();
 
-// ========================== GET Routes ==========================
+// ========================== GET-ek ==========================
 router.get("/getAll", async (req, res) => {
     try {
         // Összes csoport lekérdezése az adatbázisból
@@ -17,7 +17,7 @@ router.get("/getAll", async (req, res) => {
     }
 });
 
-// ========================== POST Routes ==========================
+// ========================== POST-ok ==========================
 router.post("/add", async (req, res) => {
     try {
         const { name } = req.body;
@@ -31,7 +31,7 @@ router.post("/add", async (req, res) => {
     }
 });
 
-// ========================== DELETE Routes ==========================
+// ========================== DELETE-ek ==========================
 router.delete("/delete", async (req, res) => {
     try {
         const { name } = req.body;
@@ -45,7 +45,7 @@ router.delete("/delete", async (req, res) => {
     }
 });
 
-// ========================== PUT Routes ==========================
+// ========================== PUT-ok ==========================
 router.put("/update", async (req, res) => {
     try {
         const { name, newname } = req.body;

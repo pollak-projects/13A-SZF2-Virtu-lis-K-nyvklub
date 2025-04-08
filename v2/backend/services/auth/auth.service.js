@@ -1,4 +1,4 @@
-// ========================== Core Modules ==========================
+// ========================== Import ==========================
 import { PrismaClient } from "@prisma/client";
 import crypto, { verify } from "crypto";
 import { encrypt } from "../../lib/hash.js";
