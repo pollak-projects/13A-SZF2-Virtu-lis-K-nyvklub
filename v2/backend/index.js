@@ -21,7 +21,7 @@ import { groupController } from "./controllers/auth/group.controller.js";
 import { authController } from "./controllers/auth/auth.controller.js";
 import creativeRouter from "./controllers/misc/creative.controller.js";
 import uploadRouter from "./controllers/misc/upload.controller.js";
-import characteractorRouter from './controllers/misc/characteractor.controller.js';
+import characteractorRouter from "./controllers/misc/characteractor.controller.js";
 
 // ========================== Services ==========================
 import { getAllBooks } from "./services/book/book.service.js";
@@ -41,7 +41,7 @@ app.use(cors(corsOptions));
 app.use(corsMiddleware);
 app.use(express.json());
 app.use(cookieParser());
-app.use(requireAuth()); 
+app.use(requireAuth());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(
@@ -53,9 +53,11 @@ app.use(
     proxy: true,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', 
+      secure: process.env.NODE_ENV === "production",
       maxAge: 24 * 60 * 60 * 1000,
-      ...(process.env.NODE_ENV === 'production' && { domain: "pollakkonyvklub.info" }),
+      ...(process.env.NODE_ENV === "production" && {
+        domain: "pollakkonyvklub.info",
+      }),
       sameSite: "none",
     },
   })
@@ -73,7 +75,7 @@ app.use("/movies", movieController);
 app.use("/tvshows", tvshowController);
 app.use("/creatives", creativeRouter);
 app.use("/auth", authController);
-app.use('/', characteractorRouter);
+app.use("/", characteractorRouter);
 app.use("/profile", requireAuth(), userController);
 app.use("/upload", verifyUserGroups(["ADMIN"]), uploadRouter);
 
@@ -126,9 +128,14 @@ app.get("/register", async (req, res) => {
   res.render("register");
 });
 
-app._router.stack.forEach(function(r){
-  if (r.route && r.route.path){
-    console.log("Route:", r.route.path, "Methods:", Object.keys(r.route.methods));
+app._router.stack.forEach(function (r) {
+  if (r.route && r.route.path) {
+    console.log(
+      "Route:",
+      r.route.path,
+      "Methods:",
+      Object.keys(r.route.methods)
+    );
   }
 });
 
