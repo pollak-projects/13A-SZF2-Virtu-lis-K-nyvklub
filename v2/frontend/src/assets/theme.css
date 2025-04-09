@@ -27,7 +27,7 @@
 
 /* Global Font Declarations */
 @font-face {
-  font-family: "Simple Print";
+  font-family: "Arial";
   src: url("/src/assets/fonts/simple-print_regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;

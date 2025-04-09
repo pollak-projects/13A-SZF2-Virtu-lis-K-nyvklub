@@ -75,21 +75,21 @@ onUnmounted(() => {
 
 <style scoped>
 @font-face {
-  font-family: "Simple Print";
-  src: url("/src/assets/fonts/simple-print_regular.ttf") format("truetype");
+  font-family: "The-Best";
+  src: url("/src/assets/fonts/The-Best.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Simple Print";
-  src: url("/src/assets/fonts/simple-print_bold.ttf") format("truetype");
+  font-family: "The-Best";
+  src: url("/src/assets/fonts/The-Best.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
 }
 
 .login-container {
-  font-family: "Simple Print", sans-serif;
+  font-family: sans-serif;
   position: fixed;
   top: 0;
   left: 0;
@@ -242,7 +242,7 @@ onUnmounted(() => {
 }
 
 :deep(input) {
-  font-family: "Simple Print", sans-serif;
+  font-family: sans-serif;
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
