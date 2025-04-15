@@ -31,14 +31,17 @@ model UserMovieRating {
   id        Int      @id @default(autoincrement())
   userId    Int
   movieId   Int
-  rating    Int      // Store rating from 1-5
+  rating    Int
+  title    String
+  favorite Boolean @default(false)
+  content String @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, movieId]) // Ensure a user can only rate a movie once
+  @@unique([userId, movieId])
 }
 
 //---------------------------------------------- SOROZATOK ----------------------------------------------\\
@@ -74,14 +77,17 @@ model UserTVShowRating {
   id        Int      @id @default(autoincrement())
   userId    Int
   tvShowId  Int
-  rating    Int      // Store rating from 1-5
+  rating    Int 
+  title    String
+  favorite Boolean @default(false)
+  content String @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   tvShow TvShow @relation(fields: [tvShowId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, tvShowId]) // Ensure a user can only rate a TV show once
+  @@unique([userId, tvShowId])
 }
 
 //---------------------------------------------- KÖNYVEK ----------------------------------------------\\
@@ -109,6 +115,9 @@ model UserBookRating {
   userId    Int
   bookId    Int
   rating    Int
+  title    String
+  favorite Boolean @default(false)
+  content String @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

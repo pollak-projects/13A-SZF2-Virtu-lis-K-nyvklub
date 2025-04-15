@@ -547,7 +547,7 @@ INSERT INTO `group` (name, `read`, `write`, `update`, `delete`) VALUES
 ('USER', 1, 0, 0, 0);
 
 INSERT INTO user (username, password, email, groupId, verified, createdAt, updatedAt) VALUES
-('admin', '$2a$10$Gl4QGQjnZ0o1KsRB/T/XvO5xkLO.LnQwHUfY4GsdXwEm/LnhpzNdm', 'admin@pollakkonyvklub.info', 
+('Admin', '8KwEBO1JDFJynzvJEmiOguareumLS1NbrWFAxBqbPmI9JlvRZPD8C', 'pollak.bookclub@gmail.com', 
  (SELECT id FROM `group` WHERE name = 'ADMIN'), 
  1, 
  NOW(), 

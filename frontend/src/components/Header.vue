@@ -15,7 +15,7 @@
       <img src="../assets/images/logo.png" alt="Logo" class="logo" />
 
       <div class="header-buttons right desktop-only">
-        <button>CSOPORTOK</button>
+        <router-link to="/search"><button>KERESÉS</button></router-link>
         <router-link to="/profile"><button>PROFIL</button></router-link>
         <router-link to="/about-us"><button>RÓLUNK</button></router-link>
       </div>
@@ -35,10 +35,9 @@
           <router-link to="/series" @click="toggleSidebar"
             ><button>SOROZATOK</button></router-link
           >
-          <button>CSOPORTOK</button>
+          <router-link to="/search" @click="toggleSidebar"><button>KERESÉS</button></router-link>
           <router-link to="/profile" @click="toggleSidebar"><button>PROFIL</button></router-link>
-          <router-link to="/about-us" @click="toggleSidebar"
-            ><button>RÓLUNK</button></router-link
+          <router-link to="/about-us" @click="toggleSidebar"><button>RÓLUNK</button></router-link
           >
         </div>
       </div>

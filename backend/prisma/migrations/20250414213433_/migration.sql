@@ -58,6 +58,9 @@ CREATE TABLE `UserMovieRating` (
     `userId` INTEGER NOT NULL,
     `movieId` INTEGER NOT NULL,
     `rating` INTEGER NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `favorite` BOOLEAN NOT NULL DEFAULT false,
+    `content` TEXT NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -95,6 +98,9 @@ CREATE TABLE `UserTVShowRating` (
     `userId` INTEGER NOT NULL,
     `tvShowId` INTEGER NOT NULL,
     `rating` INTEGER NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `favorite` BOOLEAN NOT NULL DEFAULT false,
+    `content` TEXT NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -124,6 +130,9 @@ CREATE TABLE `UserBookRating` (
     `userId` INTEGER NOT NULL,
     `bookId` INTEGER NOT NULL,
     `rating` INTEGER NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `favorite` BOOLEAN NOT NULL DEFAULT false,
+    `content` TEXT NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 

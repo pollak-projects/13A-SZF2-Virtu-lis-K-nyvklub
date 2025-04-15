@@ -10,6 +10,10 @@ import { corsMiddleware, corsOptions } from "./middleware/cors.middleware.js";
 import { verifyUserGroups } from "./middleware/auth.middleware.js";
 import { requireAuth } from "./middleware/requireAuth.middleware.js";
 
+// Get __dirname equivalent in ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // ========================== Controllers ==========================
 import actorController from "./controllers/misc/actor.controller.js";
 import bookController from "./controllers/book/book.controller.js";
@@ -22,6 +26,9 @@ import { authController } from "./controllers/auth/auth.controller.js";
 import creativeRouter from "./controllers/misc/creative.controller.js";
 import uploadRouter from "./controllers/misc/upload.controller.js";
 import characteractorRouter from "./controllers/misc/characteractor.controller.js";
+import ratingsController from "./controllers/ratings/ratings.controller.js";
+import reviewsController from "./controllers/reviews/reviews.controller.js";
+import favoritesController from "./controllers/favorites/favorites.controller.js";
 
 // ========================== Services ==========================
 import { getAllBooks } from "./services/book/book.service.js";
@@ -34,8 +41,6 @@ import { listAllGroup } from "./services/auth/group.service.js";
 // ========================== Configuration ==========================
 dotenv.config();
 const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 // ========================== Middleware Usage ==========================
 app.use(cors(corsOptions));
 app.use(corsMiddleware);
@@ -78,6 +83,10 @@ app.use("/auth", authController);
 app.use("/", characteractorRouter);
 app.use("/profile", requireAuth(), userController);
 app.use("/upload", verifyUserGroups(["ADMIN"]), uploadRouter);
+app.use("/public", requireAuth(), userController);
+app.use("/ratings", requireAuth(), ratingsController);
+app.use("/reviews", requireAuth(), reviewsController);
+app.use("/favorites", requireAuth(), favoritesController);
 
 // Admin Routes
 app.use("/users", verifyUserGroups(["ADMIN"]), userController);

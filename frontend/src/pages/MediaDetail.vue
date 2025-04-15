@@ -13,6 +13,14 @@
           :item="selectedItem" 
           :type="mediaType" 
         />
+        <MediaRating 
+          v-if="isAuthenticated" 
+          :type="mediaType" 
+          :itemId="mediaId" 
+        />
+        <div v-else class="login-prompt">
+          <p>A értékeléshez <router-link to="/login">jelentkezz be</router-link></p>
+        </div>
       </div>
     </div>
   </GradientBackground>
@@ -25,6 +33,7 @@ import axios from 'axios';
 import Header from '../components/Header.vue';
 import MediaDetailCard from '../components/MediaDetailCard.vue';
 import GradientBackground from '../components/GradientBackground.vue';
+import MediaRating from '../components/MediaRating.vue';
 
 const route = useRoute();
 const selectedItem = ref({});
@@ -34,6 +43,11 @@ const error = ref('');
 // Get media type and ID from route params
 const mediaType = computed(() => route.params.type);
 const mediaId = computed(() => route.params.id);
+
+// Add this computed property
+const isAuthenticated = computed(() => {
+  return !!localStorage.getItem('token');
+});
 
 // Fetch the media item data based on type and ID
 const fetchMediaItem = async () => {
@@ -149,5 +163,24 @@ onMounted(() => {
 
 .error {
   color: #f44336;
+}
+
+/* Add this to your existing styles */
+.login-prompt {
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+}
+
+.login-prompt a {
+  color: #00767F;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-prompt a:hover {
+  text-decoration: underline;
 }
 </style>

@@ -11,6 +11,39 @@ import {
 } from "../../services/auth/auth.service.js";
 import { SendEmail, SendVerificationEmail } from "../../services/auth/emailsender.js";
 import * as crypto from "crypto";
+import jwt from "jsonwebtoken";
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs"; // Add this import
+import multer from "multer";
+import path from "path";
+const prisma = new PrismaClient();
+
+// Setup multer for avatar uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(process.cwd(), 'uploads/profile'));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    cb(null, 'avatar-' + uniqueSuffix + ext);
+  }
+});
+
+const uploadAvatar = multer({ 
+  storage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png|gif/;
+    const mimetype = filetypes.test(file.mimetype);
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    
+    if (mimetype && extname) {
+      return cb(null, true);
+    }
+    cb(new Error('Only images are allowed'));
+  }
+});
 
 // ========================== Router beállítása ==========================
 const router = express.Router();
@@ -100,6 +133,110 @@ router.get("/listAllTokens", async (req, res) => {
     }
 });
 
+// Get current logged in user profile
+router.get("/me", async (req, res) => {
+  try {
+    // Extract token from header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: "Authorization header required" });
+    }
+    
+    const token = authHeader.split(' ')[1];
+    
+    // Get JWT secret from database
+    const data = await prisma.maindata.findFirst();
+    if (!data) {
+      return res.status(500).json({ message: "JWT configuration not found" });
+    }
+    
+    // Verify token using the secret from database
+    const decoded = jwt.verify(token, data.JWTSecret, {
+      algorithm: data.JWTAlgorithm
+    });
+    
+    const userId = decoded.sub;
+    
+    // Rest of your code to fetch and return user data
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        name: true,
+        avatar: true,
+        bio: true,
+        createdAt: true,
+        bookReviews: true,
+        movieReviews: true,
+        tvShowReviews: true,
+        group: true,
+        favorites: true,
+        comments: true
+      }
+    });
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+    res.status(500).json({ message: "Failed to fetch user profile" });
+  }
+});
+
+// Get current user data with token verification
+router.get("/user", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    
+    const token = authHeader.split(' ')[1];
+    
+    // Get data source for JWT verification
+    const data = await prisma.maindata.findFirst();
+    
+    if (!data || !data.JWTSecret) {
+      return res.status(500).json({ message: "Server configuration error" });
+    }
+    
+    // Verify token
+    const decoded = jwt.verify(token, data.JWTSecret, {
+      algorithm: data.JWTAlgorithm || 'HS256'
+    });
+    
+    // Get user info using the correct relationship field names
+    const userId = decoded.sub || decoded.id;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        bookRatings: true,
+        movieRatings: true,
+        tvShowRatings: true,
+        group: true
+      }
+    });
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    // Return user data
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Auth error:", error);
+    res.status(401).json({ message: "Authentication failed" });
+  }
+});
+
 // ========================== POST-ok ==========================
 router.post("/register", async (req, res) => {
     const { username, email, password, name, groupName } = req.body;
@@ -162,49 +299,83 @@ router.post("/login", async (req, res) => {
 
 router.post("/passChange", async (req, res) => {
     const { oldpass, newpass, id } = req.body;
+    
     try {
-        // Jelszó módosítása
-        await passChange(oldpass, newpass, id);
-        res.status(200).json({ message: "Password changed successfully" });
+        const result = await passChange(oldpass, newpass, id);
+        
+        if (result === false) {
+            return res.status(400).json({ message: "Az új jelszó nem egyezhet meg a régivel" });
+        }
+        
+        res.status(200).json({ message: "Jelszó sikeresen megváltoztatva" });
     } catch (error) {
-        res.status(500).json({ message: "Failed to change password" });
+        console.error("Password change error:", error);
+        res.status(500).json({ message: "Hiba történt a jelszó módosítása során" });
     }
 });
 
-router.post("/sendEmail", async (req, res) => {
-    const { useremail } = req.body;
+// Update current user profile
+router.put("/profile", uploadAvatar.single('avatar'), async (req, res) => {
     try {
-        // Email küldése a felhasználónak
-        await SendEmail(useremail);
-        res.status(200).json({ message: "Email sent successfully" });
+        // Extract token from header
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ message: "Authorization header required" });
+        }
+        
+        const token = authHeader.split(' ')[1];
+        
+        // Verify token and extract user ID
+        const data = await prisma.maindata.findFirst();
+        if (!data) {
+            return res.status(500).json({ message: "Server configuration error" });
+        }
+        
+        const decoded = jwt.verify(token, data.JWTSecret, {
+            algorithm: data.JWTAlgorithm || 'HS256'
+        });
+        
+        const userId = decoded.sub || decoded.id;
+        
+        const { name, email, password } = req.body;
+        
+        // Prepare update data
+        const updateData = {};
+        
+        if (name) updateData.name = name;
+        if (email) updateData.email = email;
+        
+        // Update avatar if a new one was uploaded
+        if (req.file) {
+            updateData.avatar = `/uploads/profile/${req.file.filename}`;
+        }
+        
+        // Only update password if provided
+        if (password) {
+            updateData.password = await bcrypt.hash(password, 10);
+        }
+        
+        // Update user
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: updateData
+        });
+        
+        res.status(200).json({ 
+            message: "Profile updated successfully",
+            user: {
+                id: updatedUser.id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                avatar: updatedUser.avatar
+            }
+        });
     } catch (error) {
-        res.status(500).json({ message: "Failed to send email" });
-    }
-});
-
-router.post("/logout", (req, res) => {
-    // Összes hitelesítéssel kapcsolatos cookie törlése
-    res.clearCookie("access_token", {
-        path: "/",
-    });
-    res.clearCookie("refresh_token", {
-        path: "/",
-    });
-    res.clearCookie("sid", {
-        path: "/",
-    });
-    res.status(200).json({ message: "Logget out" });
-});
-
-// ========================== PUT-ok ==========================
-router.put("/updateMainData", async (req, res) => {
-    const { JWTAlgorithm, JWTExpiration, JWTSecret, RefreshTokenAlgorithm, RefreshTokenSecret, RefreshTokenExpiration } = req.body;
-    try {
-        // JWT konfigurációs adatok frissítése
-        await updateMainData(JWTAlgorithm, JWTExpiration, JWTSecret, RefreshTokenAlgorithm, RefreshTokenSecret, RefreshTokenExpiration);
-        res.status(200).json({ message: "Main data updated successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Failed to update main data" });
+        console.error("Error updating profile:", error);
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+        res.status(500).json({ message: "Failed to update profile" });
     }
 });
 

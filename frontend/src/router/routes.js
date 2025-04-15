@@ -60,6 +60,34 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: "/profile/:id", 
+    component: () => import('../pages/Profile.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/search",
+    component: () => import('../pages/Search.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/reviews/:id", 
+    component: () => import('../pages/UserReviews.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/favorites/:id", 
+    component: () => import('../pages/UserFavorites.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
   
 ];
