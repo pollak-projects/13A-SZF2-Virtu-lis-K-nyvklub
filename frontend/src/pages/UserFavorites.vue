@@ -85,14 +85,11 @@ const handleImageError = (e) => {
   e.target.src = placeholderImage;
 };
 
-// Add this helper function to format cover art URLs
 const getFormattedCoverArt = (coverArt) => {
   if (!coverArt) return placeholderImage;
   
-  // If it's already a full URL, return it
   if (coverArt.startsWith('http')) return coverArt;
   
-  // Otherwise prepend the server URL
   return `http://localhost:3300${coverArt}`;
 };
 

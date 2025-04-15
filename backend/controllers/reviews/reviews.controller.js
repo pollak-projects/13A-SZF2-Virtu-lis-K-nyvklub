@@ -4,12 +4,10 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 const router = express.Router();
 
-// Get all reviews by user ID
 router.get("/user/:id", async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
     
-    // Get all types of reviews for the user
     const [bookRatings, movieRatings, tvShowRatings] = await Promise.all([
       prisma.userBookRating.findMany({
         where: { userId },
@@ -49,7 +47,6 @@ router.get("/user/:id", async (req, res) => {
       })
     ]);
     
-    // Format the results
     const formattedBookRatings = bookRatings.map(rating => ({
       id: rating.id,
       mediaType: 'books',
@@ -89,7 +86,6 @@ router.get("/user/:id", async (req, res) => {
       createdAt: rating.createdAt
     }));
     
-    // Combine all ratings and sort by creation date
     const allRatings = [
       ...formattedBookRatings,
       ...formattedMovieRatings,

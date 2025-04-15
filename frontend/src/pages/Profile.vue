@@ -79,7 +79,6 @@
         <div v-if="showEditForm && isOwnProfile" class="edit-form-container">
           <h3>Profil szerkesztése</h3>
           <form @submit.prevent="updateProfile">
-            <!-- Add this new profile picture upload section -->
             <div class="form-group">
               <label for="avatar">Profilkép:</label>
               <div class="avatar-upload-container">
@@ -773,7 +772,6 @@
   border-radius: 50%;
   }
 
-  /* Add this to your <style scoped> section */
   .avatar-upload-container {
     display: flex;
     flex-direction: column;

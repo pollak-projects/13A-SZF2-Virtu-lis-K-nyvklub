@@ -1,6 +1,6 @@
 // ========================== Import ==========================
 import express from 'express';
-import { PrismaClient } from "@prisma/client"; // Add this import
+import { PrismaClient } from "@prisma/client";
 import {
     forgotPassword,
     userUpdate,
@@ -9,7 +9,7 @@ import {
     Groups,
 } from "../../services/auth/user.service.js";
 
-const prisma = new PrismaClient(); // Initialize Prisma client
+const prisma = new PrismaClient();
 const router = express.Router();
 
 
@@ -52,12 +52,6 @@ router.get("/getById/:id", async (req, res) => {
   try {
     const { id } = req.params;
     
-    // Remove the permission check that's causing the 403 error
-    // const tokenUserId = req.user?.id;
-    // if (parseInt(id) !== tokenUserId && req.user?.group?.name !== 'ADMIN') {
-    //   return res.status(403).json({ message: "You can only view your own profile" });
-    // }
-    
     const user = await prisma.user.findUnique({
       where: { id: parseInt(id) },
       select: {
@@ -67,13 +61,10 @@ router.get("/getById/:id", async (req, res) => {
         avatar: true,
         bio: true,
         createdAt: true,
-        // Include ratings data for statistics
         bookRatings: true,
         movieRatings: true,
         tvShowRatings: true,
         group: true,
-        // Don't expose email for privacy when viewing other users' profiles
-        // email: true
       }
     });
     
@@ -88,7 +79,6 @@ router.get("/getById/:id", async (req, res) => {
   }
 });
 
-// Public endpoint to search users with limited information
 router.get("/search", async (req, res) => {
     try {
         const users = await prisma.user.findMany({

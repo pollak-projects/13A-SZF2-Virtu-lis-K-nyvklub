@@ -13,12 +13,11 @@ import { SendEmail, SendVerificationEmail } from "../../services/auth/emailsende
 import * as crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs"; // Add this import
+import bcrypt from "bcryptjs"; 
 import multer from "multer";
 import path from "path";
 const prisma = new PrismaClient();
 
-// Setup multer for avatar uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(process.cwd(), 'uploads/profile'));
@@ -32,7 +31,7 @@ const storage = multer.diskStorage({
 
 const uploadAvatar = multer({ 
   storage,
-  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
+  limits: { fileSize: 2 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const filetypes = /jpeg|jpg|png|gif/;
     const mimetype = filetypes.test(file.mimetype);

@@ -129,7 +129,6 @@ const errorMessage = ref('');
 const successMessage = ref('');
 const existingRating = ref(null);
 
-// Computed properties
 const isValid = computed(() => {
   return rating.value > 0 && reviewTitle.value.trim().length > 0;
 });
@@ -144,7 +143,6 @@ const getEndpoint = () => {
   return typeMap[props.type];
 };
 
-// Fetch existing rating if available
 const fetchExistingRating = async () => {
   try {
     const token = localStorage.getItem('token');
@@ -167,17 +165,14 @@ const fetchExistingRating = async () => {
   }
 };
 
-// Set star rating
 const setRating = (value) => {
   rating.value = value;
 };
 
-// Toggle favorite status
 const toggleFavorite = () => {
   isFavorite.value = !isFavorite.value;
 };
 
-// Submit rating
 const submitRating = async () => {
   if (!isValid.value) return;
   
@@ -203,14 +198,12 @@ const submitRating = async () => {
     
     let response;
     if (existingRating.value) {
-      // Update existing rating
       response = await axios.put(
         `http://localhost:3300/ratings/${endpoint}/${props.itemId}`,
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );
     } else {
-      // Create new rating
       response = await axios.post(
         `http://localhost:3300/ratings/${endpoint}`,
         payload,
@@ -224,7 +217,6 @@ const submitRating = async () => {
     
     existingRating.value = response.data;
     
-    // After successful submission, refresh the reviews
     fetchReviews();
     
   } catch (error) {
@@ -235,11 +227,9 @@ const submitRating = async () => {
   }
 };
 
-// Add these new properties for reviews
 const reviews = ref([]);
 const loading = ref(true);
 
-// Format date
 const formatDate = (dateString) => {
   if (!dateString) return "";
   const date = new Date(dateString);
@@ -250,7 +240,6 @@ const formatDate = (dateString) => {
   }).format(date);
 };
 
-// Fetch all reviews for this media item
 const fetchReviews = async () => {
   try {
     loading.value = true;
@@ -354,7 +343,6 @@ label {
   color: #444;
 }
 
-/* Improved input styling to ensure text isn't cut off */
 .light-input {
   width: 100%;
   padding: 12px;
@@ -419,7 +407,6 @@ textarea.light-input {
   margin-top: 10px;
 }
 
-/* Reviews section styling */
 .reviews-section {
   margin-top: 40px;
   border-top: 1px solid #ddd;

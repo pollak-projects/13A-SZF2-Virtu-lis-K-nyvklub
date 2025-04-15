@@ -184,7 +184,6 @@ const fetchCharacterActors = async () => {
     const response = await axios.get(endpoint);
     console.log("API response:", response.data);
     
-    // Don't filter out characters without actors!
     characterActors.value = response.data;
   } catch (error) {
     console.error(`Error fetching characters for ${props.type}:`, error);
@@ -192,7 +191,6 @@ const fetchCharacterActors = async () => {
   }
 };
 
-// Add this function to properly format image URLs
 const getActorImageUrl = (picturePath) => {
   if (!picturePath) return '/src/assets/images/placeholder.png';
   
@@ -200,7 +198,6 @@ const getActorImageUrl = (picturePath) => {
     return picturePath;
   }
   
-  // Make sure the backend URL is correct for your setup
   return `http://localhost:3300${picturePath}`;
 };
 

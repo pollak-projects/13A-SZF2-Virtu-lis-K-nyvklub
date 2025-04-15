@@ -40,16 +40,13 @@ const selectedItem = ref({});
 const loading = ref(true);
 const error = ref('');
 
-// Get media type and ID from route params
 const mediaType = computed(() => route.params.type);
 const mediaId = computed(() => route.params.id);
 
-// Add this computed property
 const isAuthenticated = computed(() => {
   return !!localStorage.getItem('token');
 });
 
-// Fetch the media item data based on type and ID
 const fetchMediaItem = async () => {
   loading.value = true;
   error.value = '';
@@ -69,12 +66,10 @@ const fetchMediaItem = async () => {
     
     const response = await axios.get(endpoint);
     
-    // Format the coverArt path if it exists
     if (response.data.coverArt && !response.data.coverArt.startsWith('http')) {
       response.data.coverArt = `http://localhost:3300${response.data.coverArt}`;
     }
     
-    // Format actor pictures if they exist
     if (response.data.movieActors) {
       response.data.movieActors.forEach(actorItem => {
         if (actorItem.actor.picture && !actorItem.actor.picture.startsWith('http')) {
@@ -165,7 +160,6 @@ onMounted(() => {
   color: #f44336;
 }
 
-/* Add this to your existing styles */
 .login-prompt {
   text-align: center;
   margin: 20px 0;
