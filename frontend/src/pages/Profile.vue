@@ -66,7 +66,7 @@
         </div>
         
         <!-- ========================== Műveleti gombok ========================== -->
-        <div class="action-buttons" v-if="isOwnProfile">>
+        <div class="action-buttons" v-if="isOwnProfile">
           <button class="edit-button" @click="showEditForm = true" v-if="!showEditForm">
             Profil szerkesztése
           </button>
