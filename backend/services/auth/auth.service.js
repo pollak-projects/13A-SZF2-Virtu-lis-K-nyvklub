@@ -72,7 +72,6 @@ async function verifyWithIgnoreExpiration(token) {
     const data = await prisma.maindata.findFirst();
     let ret;
     try {
-        // Ellenőrzi a tokent, figyelmen kívül hagyva a lejárati időt
         ret = jwt.verify(token, data.JWTSecret, {
             algorithm: data.JWTAlgorithm,
             ignoreExpiration: true,
