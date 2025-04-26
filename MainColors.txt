@@ -1,3 +1,5 @@
 Yellow: #FFA915
 Orange: #FA5E00
 Blue: #00767F
+
+Gradient: #ffe8da - #fffcf3

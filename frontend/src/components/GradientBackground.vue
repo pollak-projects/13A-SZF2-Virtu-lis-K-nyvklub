@@ -27,7 +27,6 @@ export default {
   overflow-x: hidden;
 }
 
-/* Fix text cut-off in input fields across all child components */
 :deep(input),
 :deep(textarea),
 :deep(.search-input) {
@@ -35,7 +34,7 @@ export default {
   line-height: 1.5;
   box-sizing: border-box;
   height: auto;
-  min-height: 44px; /* Ensure enough height */
+  min-height: 44px;
   font-family: inherit;
   font-size: 16px;
 }

@@ -313,10 +313,8 @@ router.post("/passChange", async (req, res) => {
     }
 });
 
-// Update current user profile
 router.put("/profile", uploadAvatar.single('avatar'), async (req, res) => {
     try {
-        // Extract token from header
         const authHeader = req.headers.authorization;
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return res.status(401).json({ message: "Authorization header required" });
@@ -324,7 +322,6 @@ router.put("/profile", uploadAvatar.single('avatar'), async (req, res) => {
         
         const token = authHeader.split(' ')[1];
         
-        // Verify token and extract user ID
         const data = await prisma.maindata.findFirst();
         if (!data) {
             return res.status(500).json({ message: "Server configuration error" });
@@ -338,23 +335,19 @@ router.put("/profile", uploadAvatar.single('avatar'), async (req, res) => {
         
         const { name, email, password } = req.body;
         
-        // Prepare update data
         const updateData = {};
         
         if (name) updateData.name = name;
         if (email) updateData.email = email;
         
-        // Update avatar if a new one was uploaded
         if (req.file) {
             updateData.avatar = `/uploads/profile/${req.file.filename}`;
         }
         
-        // Only update password if provided
         if (password) {
             updateData.password = await bcrypt.hash(password, 10);
         }
         
-        // Update user
         const updatedUser = await prisma.user.update({
             where: { id: userId },
             data: updateData

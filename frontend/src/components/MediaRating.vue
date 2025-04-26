@@ -133,7 +133,7 @@ const isValid = computed(() => {
   return rating.value > 0 && reviewTitle.value.trim().length > 0;
 });
 
-// Get the correct endpoint based on media type
+
 const getEndpoint = () => {
   const typeMap = {
     'books': 'book',
