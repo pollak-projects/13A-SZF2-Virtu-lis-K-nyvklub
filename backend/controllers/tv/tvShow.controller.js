@@ -1,5 +1,6 @@
 import express from "express";
 import multer from "multer";
+import { verifyUserGroups } from "../../middleware/auth.middleware.js";
 import {
   getAllTVShows,
   getTVShowById,
@@ -11,7 +12,7 @@ import {
 const tvshowRouter = express.Router();
 const upload = multer({ dest: "uploads/tv/" });
 
-tvshowRouter.post("/upload", upload.single("coverArt"), async (req, res) => {
+tvshowRouter.post("/upload", verifyUserGroups(["ADMIN"]), upload.single("coverArt"), async (req, res) => {
   try {
     const { title, creatorId, releaseYear, seasons, description } = req.body;
     const coverArt = req.file ? `/uploads/tv/${req.file.filename}` : null;

@@ -132,7 +132,7 @@ router.get("/listAllTokens", async (req, res) => {
     }
 });
 
-// Get current logged in user profile
+// Fix the /me endpoint
 router.get("/me", async (req, res) => {
   try {
     // Extract token from header
@@ -149,44 +149,33 @@ router.get("/me", async (req, res) => {
       return res.status(500).json({ message: "JWT configuration not found" });
     }
     
-    // Verify token using the secret from database
-    const decoded = jwt.verify(token, data.JWTSecret, {
-      algorithm: data.JWTAlgorithm
-    });
-    
-    const userId = decoded.sub;
-    
-    // Rest of your code to fetch and return user data
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        name: true,
-        avatar: true,
-        bio: true,
-        createdAt: true,
-        bookReviews: true,
-        movieReviews: true,
-        tvShowReviews: true,
-        group: true,
-        favorites: true,
-        comments: true
+    try {
+      // Verify token using the secret from database
+      const decoded = jwt.verify(token, data.JWTSecret, {
+        algorithm: data.JWTAlgorithm || 'HS256'
+      });
+      
+      const userId = decoded.sub || decoded.id;
+      
+      // Find user with their group
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { group: true }
+      });
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
       }
-    });
-    
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    
-    res.status(200).json(user);
-  } catch (error) {
-    console.error("Error fetching user profile:", error);
-    if (error.name === 'JsonWebTokenError') {
+      
+      // Return user data with group info
+      res.status(200).json(user);
+    } catch (jwtError) {
+      console.error("JWT verification error:", jwtError);
       return res.status(401).json({ message: "Invalid token" });
     }
-    res.status(500).json({ message: "Failed to fetch user profile" });
+  } catch (error) {
+    console.error("Auth error:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

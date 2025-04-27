@@ -8,6 +8,7 @@ import {
   updateMovie,
   deleteMovie,
 } from "../../services/movie/movie.service.js";
+import { verifyUserGroups } from "../../middleware/auth.middleware.js";
 
 // ========================== Router Setup ==========================
 const movieRouter = express.Router();
@@ -40,7 +41,7 @@ movieRouter.get("/getMovieById/:id", async (req, res) => {
 });
 
 // ========================== POST Routes ==========================
-movieRouter.post("/upload", upload.single("coverArt"), async (req, res) => {
+movieRouter.post("/upload", verifyUserGroups(["ADMIN"]), upload.single("coverArt"), async (req, res) => {
   try {
     const { title, directorId, releaseYear, description } = req.body;
     const coverArt = req.file ? `/uploads/movie/${req.file.filename}` : null;

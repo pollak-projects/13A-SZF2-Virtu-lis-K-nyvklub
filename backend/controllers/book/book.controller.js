@@ -9,6 +9,7 @@ import {
   updateBook,
   deleteBook,
 } from "../../services/book/book.service.js";
+import { verifyUserGroups } from "../../middleware/auth.middleware.js";
 
 // ========================== Setup ==========================
 const prisma = new PrismaClient();
@@ -45,7 +46,7 @@ bookRouter.get("/getBookById/:id", async (req, res) => {
 });
 
 // ========================== POST Routes ==========================
-bookRouter.post("/upload", upload.single("coverArt"), async (req, res) => {
+bookRouter.post("/upload", verifyUserGroups(["ADMIN"]), upload.single("coverArt"), async (req, res) => {
   try {
     // Könyv feltöltése borítóképpel együtt
     const { title, authorId, publishYear, isbn, description } = req.body;
@@ -68,7 +69,7 @@ bookRouter.post("/upload", upload.single("coverArt"), async (req, res) => {
   }
 });
 
-bookRouter.post("/createBook", async (req, res) => {
+bookRouter.post("/createBook", verifyUserGroups(["ADMIN"]), async (req, res) => {
   try {
     // Új könyv létrehozása borítókép nélkül
     const data = req.body;
